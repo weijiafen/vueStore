@@ -2,15 +2,20 @@ var path = require('path')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
+var glob = require('glob');
+var entries = getEntry(['./src/module/**/*.js']);
+
 
 function resolve (dir) {
   return path.join(__dirname, '..', dir)
 }
 
 module.exports = {
-  entry: {
-    app: './src/main.js'
-  },
+  entry:entries
+  //  {
+  //   app: './src/main.js'
+  // }
+  ,
   output: {
     path: config.build.assetsRoot,
     filename: '[name].js',
@@ -50,8 +55,9 @@ module.exports = {
         test: /\.(png|jpe?g|gif|svg)(\?.*)?$/,
         loader: 'url-loader',
         options: {
-          limit: 10000,
-          name: utils.assetsPath('img/[name].[hash:7].[ext]')
+          limit: 5000,
+          name: path.posix.join('./static', 'img/[name].[hash:7].[ext]')
+          // name: utils.assetsPath('img/[name].[hash:7].[ext]')
         }
       },
       {
@@ -64,4 +70,23 @@ module.exports = {
       }
     ]
   }
+}
+
+function getEntry(globPath) {
+    var entries = {},
+        basename, tmp, pathname;
+    if (typeof (globPath) != "object") {
+        globPath = [globPath]
+    }
+
+    var includeBaby = false;
+    globPath.forEach((itemPath) => {
+        glob.sync(itemPath).forEach(function (entry) {
+            basename = path.basename(entry, path.extname(entry));
+            if (entry.split('/').length === 5) {
+                entries[basename] = ['babel-polyfill', entry];
+            }
+        });
+    });
+    return entries;
 }
