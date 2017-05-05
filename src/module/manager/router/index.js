@@ -1,11 +1,16 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 
-import Login from '@/components/login.vue'
-import Index from '../components/index.vue'
-import accountManage from '../components/accountManage.vue'
-import categoryManage from '../components/categoryManage.vue'
-import welcome from '../components/welcome.vue'
+const Login = resolve => require(['@/components/login.vue'], resolve)
+const Index = resolve => require(['../components/index.vue'], resolve)
+const accountManage = resolve => require(['../components/accountManage.vue'], resolve)
+const categoryManage = resolve => require(['../components/categoryManage.vue'], resolve)
+const welcome = resolve => require(['../components/welcome.vue'], resolve)
+// import Login from '@/components/login.vue'
+// import Index from '../components/index.vue'
+// import accountManage from '../components/accountManage.vue'
+// import categoryManage from '../components/categoryManage.vue'
+// import welcome from '../components/welcome.vue'
 
 Vue.use(Router)
 export default new Router({
