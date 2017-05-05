@@ -2,32 +2,39 @@ var fs=require('fs');
 var mockConfig=[
 	{
 		//  url:  /users/user/:id
+		//example: get   /users/user/1
 		//  fileUrl:  mock/users/get_user1.json 
 		path:"users",
 		api:"user",
-		param:"id"
+		params:["id"]
 	},
 	{
+		//  url:  /order/orderList/:id/:type
+		//example: get  /order/orderList/1/1
+		//  fileUrl:  mock/order/get_orderList11.json 
 		path:"order",
 		api:"orderList",
-		param:"id"
+		params:["id","type"]
 	}
 ]
 module.exports=function(app){
-	for(mockItem of mockConfig){
-		var url=`/${mockItem.path}/${mockItem.api}`;
-		if(mockItem.param){
-			url+=`/:${mockItem.param}`
+	for(let mockItem of mockConfig){
+		let url=`/${mockItem.path}/${mockItem.api}`;
+		if(mockItem.params&&mockItem.params.length>0){
+			for(param of mockItem.params)
+			url+=`/:${param}`
 		}
+		console.log("url",url)
 		app.all(url, function (req, res) {
 			var method=req.method.toLowerCase()
-			var fileUrl=`mock/${mockItem.path}/${method}_${mockItem.api}`;
-			if(mockItem.param){
-				var param=req.params[mockItem.param]
-				fileUrl+=`${param}.json`
-			}else{
-				fileUrl+='.json'
+			let fileUrl=`mock/${mockItem.path}/${method}_${mockItem.api}`;
+			if(mockItem.params&&mockItem.params.length>0){
+				for(param of mockItem.params){
+					var reqParam=req.params[param]
+					fileUrl+=`${reqParam}`
+				}
 			}
+			fileUrl+='.json'
 			console.log("url",url)
 			console.log("fileUrl",fileUrl)
 			fs.readFile(fileUrl,function(err,data){

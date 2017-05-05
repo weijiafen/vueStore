@@ -14,8 +14,17 @@ app.get('/', function (req, res) {
 				res.end(data.toString());
 			}
 	})
+})
+app.get('/custom', function (req, res) {
+		fs.readFile('dist/custom.html',function(err,data){
+			if(err){
+				res.end('404');
+			}
+			else{
+				res.end(data.toString());
+			}
 	})
-
+})
 var server = app.listen(8080, function () {
   var host = server.address().address;
   var port = server.address().port;

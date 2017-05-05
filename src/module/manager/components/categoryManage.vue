@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<p>manager container</p>
-		<router-view></router-view>
+		<p>categoryManage</p>
 	</div>
 	
 </template>
@@ -9,7 +8,7 @@
 
     export default {
         mixins: [],
-        name: 'app',
+        name: 'categoryManage',
         components: {}
     }
 

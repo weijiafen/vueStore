@@ -1,7 +1,6 @@
 <template>
 	<div>
-		<p>manager container</p>
-		<router-view></router-view>
+		<p>login</p>
 	</div>
 	
 </template>
