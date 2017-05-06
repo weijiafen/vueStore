@@ -15,6 +15,11 @@ var mockConfig=[
 		path:"order",
 		api:"orderList",
 		params:["id","type"]
+	},
+	{
+		path:"manager",
+		api:"login",
+		params:[]
 	}
 ]
 module.exports=function(app){

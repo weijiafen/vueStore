@@ -2,7 +2,7 @@
 	<div>
         <el-row>
             <el-col :xs="24" :sm="24">
-                <el-menu theme="dark" mode="horizontal">
+                <el-menu :default-active="navbarIndex" theme="dark" mode="horizontal" menu-trigger="click">
                     <el-menu-item index="accountManage">
                         <a href="#/index/accountManage">
                         账号管理
@@ -44,10 +44,22 @@ export default {
     components:{},
     data(){
         return {
+            navbarIndex:""
         }
     },
+    mounted(){
+        this.setNavbarIndex()
+    },
+    updated(){
+        this.setNavbarIndex()
+    },
     methods:{
-
+        setNavbarIndex(){
+            var navbarPath=this.$router.history.current.path
+            var navbarIndex=navbarPath.replace("/index/","").split("/")[0];
+            this.navbarIndex=navbarIndex
+            console.log("router",navbarIndex)
+        }
     }
 }
 </script>
