@@ -1,6 +1,5 @@
 <template>
 	<div>
-		<p>manager container</p>
 		<router-view></router-view>
 	</div>
 	
