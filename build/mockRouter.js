@@ -18,7 +18,7 @@ var mockConfig=[
 	},
 	{
 		path:"manager",
-		api:"login",
+		api:"accounts",
 		params:[]
 	}
 ]
