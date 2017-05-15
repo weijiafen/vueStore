@@ -1,6 +1,5 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-
 const Login = resolve => require(['@/components/login.vue'], resolve)
 const Index = resolve => require(['../components/index.vue'], resolve)
 const accountManage = resolve => require(['../components/accountManage.vue'], resolve)
@@ -11,7 +10,6 @@ const welcome = resolve => require(['../components/welcome.vue'], resolve)
 // import accountManage from '../components/accountManage.vue'
 // import categoryManage from '../components/categoryManage.vue'
 // import welcome from '../components/welcome.vue'
-
 Vue.use(Router)
 export default new Router({
     routes: [
@@ -21,7 +19,7 @@ export default new Router({
             component: Login
         },
         {
-        	path:'/index',
+        	path:'/',
         	name:'index',
         	component:Index,
         	children:[

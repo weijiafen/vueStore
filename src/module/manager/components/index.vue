@@ -2,16 +2,12 @@
 	<div>
         <el-row>
             <el-col :xs="24" :sm="24">
-                <el-menu theme="dark" mode="horizontal">
+                <el-menu :default-active="navbarIndex" theme="dark" mode="horizontal" menu-trigger="click" :router="true">
                     <el-menu-item index="accountManage">
-                        <a href="#/index/accountManage">
                         账号管理
-                        </a>
                     </el-menu-item>
                     <el-menu-item index="categoryManage">
-                        <a href="#/index/categoryManage">
                         菜单管理
-                        </a>
                     </el-menu-item>
                     <el-menu-item index="goodsManage">商品管理</el-menu-item>
                     <el-menu-item index="activeManage">活动管理</el-menu-item>
@@ -44,10 +40,22 @@ export default {
     components:{},
     data(){
         return {
+            navbarIndex:""
         }
     },
+    mounted(){
+        this.setNavbarIndex()
+    },
+    updated(){
+        this.setNavbarIndex()
+    },
     methods:{
-
+        setNavbarIndex(){
+            var navbarPath=this.$router.history.current.path
+            var navbarIndex=navbarPath.replace("/index/","").split("/")[0];
+            this.navbarIndex=navbarIndex
+            console.log("router",navbarIndex)
+        }
     }
 }
 </script>
@@ -60,5 +68,14 @@ export default {
     float: right;
     color:#Fff;
     margin-right: 20px;
+}
+header{
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    line-height: 2;
+    padding: 0 8px 8px;
+    margin-bottom: 15px;
+    color:#444;
 }
 </style>
