@@ -3,7 +3,7 @@
 <div>
 
   <!-- Form -->
-  <el-button :plain="true" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
+  <el-button :plain="true" @click="dialogFormVisible = true">新增用户</el-button>
 
   <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
 	
@@ -54,6 +54,10 @@
 </template>
 
 <script>
+import Vue from 'vue'
+import { Button , Select , Dialog,Form} from 'element-ui'
+import accountService from '../service/accountService'
+
 export default {
 
 		//检验规则函数：
@@ -75,22 +79,17 @@ export default {
 		//如果可以，加个检查用户是否存在的API，然后请求它
 		//在输入完，即发生blur之后查询账号
 		setTimeout(() => {
-					axios.get('/manager/account',{
-						account: this.form.account
-					})
-					.then(function(response){
-						
-						//通过判断status，1为存在，0为不存在
-						if (response.status=='1') {
-							callback(new Error('用户已存在'));
-						} else {
-							callback();
-						}
-					})
-					.catch(function(error){
-						callback(new Error('无法连接到服务器检查用户是否存在'));
-					})
-					
+			accountService.getAccount().then((res)=>{
+				//通过判断status，1为存在，0为不存在
+				if (response.status=='1') {
+					callback(new Error('用户已存在'));
+				} else {
+					callback();
+				}
+			})
+			.catch(function(error){
+				callback(new Error('无法连接到服务器检查用户是否存在'));
+			})
 		}, 100);			
 	  };
 	var validateUserName = (rule, value, callback) => {
@@ -130,26 +129,26 @@ export default {
 		  account: '',
 		  password: '',
 		  confirmPassword: '',
-					selectedType:'',
+		  selectedType:'',
 		},
 				
 		matchPassword: false,
 		formLabelWidth: '120px',
-				checkRules:{
-					//控制每一项值的检验函数，以及触发事件
-					account:[
-						{validator:validateAccount,trigger:'blur'}
-					],
-					userName:[
-						{validator:validateUserName,trigger:'blur'}
-					],
-					password:[
-						{validator:validatePass,trigger:'blur'}
-					],
-					confirmPassword:[
-						{validator:validatePass2,trigger:'change'}
-					]
-				}
+		checkRules:{
+			//控制每一项值的检验函数，以及触发事件
+			account:[
+				{validator:validateAccount,trigger:'blur'}
+			],
+			userName:[
+				{validator:validateUserName,trigger:'blur'}
+			],
+			password:[
+				{validator:validatePass,trigger:'blur'}
+			],
+			confirmPassword:[
+				{validator:validatePass2,trigger:'change'}
+			]
+		}
 	  };
 	},
 
@@ -162,14 +161,8 @@ export default {
 				if (valid) {
 					//发送请求
 					var vm = this
-					axios.post('/manager/account', {
-						userName: vm.form.userName,
-						account: vm.form.account,
-						password: vm.form.password,
-						confirmPassword: vm.form.confirmPassword,
-						type: vm.form.selectedType
-					})
-					.then(function(response) {
+					accountService.RegisterAccount(this.form)
+					.then((response)=> {
 						console.log(vm.form)
 						if (response.msg == "success") {
 							alertSuccess()

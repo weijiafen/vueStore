@@ -20,15 +20,30 @@ const Service = {
         })
     },
     getPassword:(data)=>{
-    	return api.get('/manager/password',{
-    		params:{
-    			id:data.id
-    		}
-    	}).then((res)=>{
-    		return res
-    	},(error)=>{
-    		throw error
-    	})
-    }
+        	return api.get('/manager/password',{
+        		params:{
+        			id:data.id
+        		}
+        	}).then((res)=>{
+        		return res
+        	},(error)=>{
+        		throw error
+        	})
+    },
+    RegisterAccount(data)=>{
+        return api.post('/manager/accounts',{
+            userName: data.userName,
+            account: data.account,
+            password: data.password,
+            confirmPassword: data.confirmPassword,
+            type: data.selectedType
+        })
+        .then((res)=>{
+            return res;
+        },(error)=>{
+            throw error
+        })
+    },
+
 }
-export default Service
+exporte default Service
