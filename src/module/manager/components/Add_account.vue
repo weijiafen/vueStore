@@ -55,13 +55,21 @@
 
 <script>
 import Vue from 'vue'
-import { Button , Select , Dialog,Form} from 'element-ui'
+import { Button , Select , Dialog,Form ,FormItem , Option , Input} from 'element-ui'
 import accountService from '../service/accountService'
-
+Vue.use(Button)
+Vue.use(Select)
+Vue.use(Option)
+Vue.use(Dialog)
+Vue.use(Form)
+Vue.use(FormItem)
+Vue.use(Input)
 export default {
 
-	//检验规则函数：
-	validateAccount = (rule, value, callback)=>{
+	
+	data(){
+		//检验规则函数：
+	var validateAccount = (rule, value, callback)=>{
 		if (!value) {
 			 callback(new Error('请输入账号'));
 		} 
@@ -81,7 +89,7 @@ export default {
 		setTimeout(() => {
 			accountService.getAccount().then((res)=>{
 				//通过判断status，1为存在，0为不存在
-				if (response.status=='1') {
+				if (res.status=='1') {
 					callback(new Error('用户已存在'))
 				} else {
 					callback()
@@ -91,8 +99,8 @@ export default {
 				callback(new Error('无法连接到服务器检查用户是否存在'))
 			})
 		}, 100)			
-	  },
-	validateUserName = (rule, value, callback) => {
+	  };
+	var validateUserName = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('昵称不能为空'));
 		} else {
@@ -101,8 +109,8 @@ export default {
 		  }
 		  callback();
 		}
-	},
-	validatePass = (rule, value, callback) => {
+	};
+	var validatePass = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('请输入密码'));
 		} else {
@@ -111,8 +119,8 @@ export default {
 		  }
 		  callback();
 		}
-	},
-	validatePass2 = (rule, value, callback) => {
+	};
+	var validatePass2 = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('请再次输入密码'));
 		} else if (value !== this.form.password) {
@@ -120,8 +128,7 @@ export default {
 		} else {
 		  callback();
 		}
-	},
-	data(){
+	};
 		return {
 		dialogFormVisible: false,
 		form: {
@@ -166,8 +173,8 @@ export default {
 					.then((response)=> {
 						console.log(vm.form)
 						if (response.msg == "success") {
-							alertSuccess()
-							dialogFormVisible = false
+							this.alertSuccess()
+							this.dialogFormVisible = false
 						} else {
 							vm.alertFail()
 						}
@@ -180,8 +187,8 @@ export default {
 				else {
 					return false;
 		  		}		
-		});		
-	  },
+			});		
+	  	},
 			
 		//弹窗通知提示的方法
 		alertSuccess: function() {
