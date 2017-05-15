@@ -86,19 +86,19 @@ export default {
 					
 		//如果可以，加个检查用户是否存在的API，然后请求它
 		//在输入完，即发生blur之后查询账号
-		setTimeout(() => {
-			accountService.getAccount().then((res)=>{
-				//通过判断status，1为存在，0为不存在
-				if (res.status=='1') {
-					callback(new Error('用户已存在'))
-				} else {
-					callback()
-				}
-			})
-			.catch(function(error){
-				callback(new Error('无法连接到服务器检查用户是否存在'))
-			})
-		}, 100)			
+		
+		accountService.getAccounts().then((res)=>{
+			//通过判断status，1为存在，0为不存在
+			if (res.status=='1') {
+				callback(new Error('用户已存在'))
+			} else {
+				callback()
+			}
+		})
+		.catch(function(error){
+			callback(new Error('无法连接到服务器检查用户是否存在'))
+		})
+			
 	  };
 	var validateUserName = (rule, value, callback) => {
 		if (value === '') {
