@@ -60,8 +60,8 @@ import accountService from '../service/accountService'
 
 export default {
 
-		//检验规则函数：
-	var validateAccount = (rule, value, callback) => {
+	//检验规则函数：
+	validateAccount = (rule, value, callback)=>{
 		if (!value) {
 			 callback(new Error('请输入账号'));
 		} 
@@ -82,17 +82,17 @@ export default {
 			accountService.getAccount().then((res)=>{
 				//通过判断status，1为存在，0为不存在
 				if (response.status=='1') {
-					callback(new Error('用户已存在'));
+					callback(new Error('用户已存在'))
 				} else {
-					callback();
+					callback()
 				}
 			})
 			.catch(function(error){
-				callback(new Error('无法连接到服务器检查用户是否存在'));
+				callback(new Error('无法连接到服务器检查用户是否存在'))
 			})
-		}, 100);			
-	  };
-	var validateUserName = (rule, value, callback) => {
+		}, 100)			
+	  },
+	validateUserName = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('昵称不能为空'));
 		} else {
@@ -101,8 +101,8 @@ export default {
 		  }
 		  callback();
 		}
-	};
-	var validatePass = (rule, value, callback) => {
+	},
+	validatePass = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('请输入密码'));
 		} else {
@@ -111,8 +111,8 @@ export default {
 		  }
 		  callback();
 		}
-	};
-	var validatePass2 = (rule, value, callback) => {
+	},
+	validatePass2 = (rule, value, callback) => {
 		if (value === '') {
 		  callback(new Error('请再次输入密码'));
 		} else if (value !== this.form.password) {
@@ -120,9 +120,9 @@ export default {
 		} else {
 		  callback();
 		}
-	};
-			
-	return {
+	},
+	data(){
+		return {
 		dialogFormVisible: false,
 		form: {
 		  userName: '',
@@ -150,7 +150,8 @@ export default {
 			]
 		}
 	  };
-	},
+
+	},	
 
 	methods: {
 

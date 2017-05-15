@@ -30,7 +30,7 @@ const Service = {
         		throw error
         	})
     },
-    RegisterAccount(data)=>{
+    RegisterAccount:(data)=>{
         return api.post('/manager/accounts',{
             userName: data.userName,
             account: data.account,
@@ -43,7 +43,7 @@ const Service = {
         },(error)=>{
             throw error
         })
-    },
+    }
 
 }
-exporte default Service
+export default Service

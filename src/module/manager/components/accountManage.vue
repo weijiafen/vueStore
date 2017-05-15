@@ -2,6 +2,7 @@
 	<div>
 		<header>账号管理</header>
         <el-button @click="addAccount" type="primary">新增账号</el-button>
+        <addAccountBtn></addAccountBtn>
 		<el-table :data="accountList">
 			<el-table-column prop="id" label="ID"></el-table-column>
 			<el-table-column prop="userName" label="昵称"></el-table-column>
@@ -23,6 +24,8 @@
 import Vue from 'vue'
 import {  Table , TableColumn , Button , Switch , Message } from 'element-ui'
 import accountService from '../service/accountService'
+import addAccountBtn from '../components/Add_account'
+
 Vue.use(Table)
 Vue.use(TableColumn)
 Vue.use(Button)
@@ -31,7 +34,9 @@ Vue.prototype.$message = Message
 export default {
     mixins: [],
     name: 'accountManage',
-    components: {},
+    components: {
+        addAccountBtn
+    },
     data(){
     	return {
     		accountList:[
