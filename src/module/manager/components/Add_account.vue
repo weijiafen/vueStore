@@ -1,3 +1,11 @@
+<!-- 
+抽离一层出来，使得新增用户和编辑共用一个组件
+1， 使用Vuex管理组件状态，mutation来改变组件的值，
+2， 在编辑组件里面，获得state状态，把信息读出来。修改完信息，可以进行更新，并添加到表格。
+3， 检查账号是否已存在的话，已存在且是它本身，就可以允许，否则就禁止
+4，添加到表格里面显示出来
+ -->
+
 <template>
 
 <div>
@@ -26,11 +34,10 @@
 	  </el-form-item>
 
 
-	  <el-form-item label="角色身份" :label-width="formLabelWidth">
-		<el-select v-model="form.selectedType" placeholder="请选择用户身份">
-					<el-option label="柜台账号" value="2" ></el-option>
-		  <el-option label="厨房账号" value="3"></el-option>
-
+	  <el-form-item label="角色身份" :label-width="formLabelWidth" prop="type">
+		<el-select v-model="form.type" placeholder="请选择用户身份" >
+			<el-option label="柜台账号" value="2" ></el-option>
+			<el-option label="厨房账号" value="3"></el-option>
 		</el-select>
 	  </el-form-item>
 			
@@ -70,19 +77,6 @@ export default {
 	data(){
 		//检验规则函数：
 	var validateAccount = (rule, value, callback)=>{
-		if (!value) {
-			 callback(new Error('请输入账号'));
-		} 
-		//示例模拟,可在此添加检查用户是否存在的请求
-		/*
-		setTimeout(()=>{
-			if(value=='admin'){
-				callback(new Error('用户已存在'));
-			}else{
-				callback();
-			}
-		},1000);
-		*/
 					
 		//如果可以，加个检查用户是否存在的API，然后请求它
 		//在输入完，即发生blur之后查询账号
@@ -91,7 +85,7 @@ export default {
 			//通过判断status，1为存在，0为不存在
 			if (res.status=='1') {
 				callback(new Error('用户已存在'))
-			} else {
+			}else{
 				callback()
 			}
 		})
@@ -100,30 +94,16 @@ export default {
 		})
 			
 	  };
-	var validateUserName = (rule, value, callback) => {
-		if (value === '') {
-		  callback(new Error('昵称不能为空'));
-		} else {
-		  if (this.form.userName !== '') {
-			//todo
-		  }
-		  callback();
-		}
-	};
 	var validatePass = (rule, value, callback) => {
-		if (value === '') {
-		  callback(new Error('请输入密码'));
-		} else {
 		  if (this.form.checkPass !== '') {
 			this.$refs.form.validateField('confirmPassword');
+			callback();
+		  }else{
+		  	callback();
 		  }
-		  callback();
-		}
 	};
 	var validatePass2 = (rule, value, callback) => {
-		if (value === '') {
-		  callback(new Error('请再次输入密码'));
-		} else if (value !== this.form.password) {
+		if (value !== this.form.password) {
 		  callback(new Error('两次输入密码不一致!'));
 		} else {
 		  callback();
@@ -136,7 +116,7 @@ export default {
 		  account: '',
 		  password: '',
 		  confirmPassword: '',
-		  selectedType:'',
+		  type:'',
 		},
 				
 		matchPassword: false,
@@ -144,16 +124,24 @@ export default {
 		checkRules:{
 			//控制每一项值的检验函数，以及触发事件
 			account:[
+				{required:true ,message:"请输入账号"},
 				{validator:validateAccount,trigger:'blur'}
 			],
 			userName:[
-				{validator:validateUserName,trigger:'blur'}
+				// {validator:validateUserName,trigger:'blur'}
+				{required:true,message:'请输入用户昵称',trigger:'blur'},
+				{min:3,max:10,message:'长度在3到10个字符',trigger:'blur'}
 			],
 			password:[
+				{required:true,message:"请输入密码"},
 				{validator:validatePass,trigger:'blur'}
 			],
 			confirmPassword:[
+				{required:true,message:"请再次输入密码"},
 				{validator:validatePass2,trigger:'change'}
+			],
+			type:[
+				{required:true,message:'请选择用户身份',trigger:'change'}
 			]
 		}
 	  };
