@@ -2,8 +2,13 @@
 抽离一层出来，使得新增用户和编辑共用一个组件
 1， 使用Vuex管理组件状态，mutation来改变组件的值，
 2， 在编辑组件里面，获得state状态，把信息读出来。修改完信息，可以进行更新，并添加到表格。
-3， 检查账号是否已存在的话，已存在且是它本身，就可以允许，否则就禁止
-4，添加到表格里面显示出来
+3， 检查逻辑需要增加：账号是否存在冲突，当已存在且是它本身，就可以允许，否则就禁止。
+4，添加到表格里面显示出来，数据是直接存到get_accounts.json里面吗？
+5，如何关联到编辑按钮，使得点击编辑按钮会弹出该模态框
+
+6，使用props传递btnState，在父组件向子组件间进行通讯，然而各种努力之后宣告放弃……，无法在方法中取得props的值。搜索的用法是this.btnState，但无效(undefined)
+
+7.打算使用点击的时候调用不同方法……
  -->
 
 <template>
@@ -11,10 +16,12 @@
 <div>
 
   <!-- Form -->
-  <el-button :plain="true" @click="dialogFormVisible = true">新增用户</el-button>
+  <el-button  @click="dialogFormVisible = true" type="primary">新增用户{{btnState}}</el-button>
 
-  <el-dialog title="新增用户" :visible.sync="dialogFormVisible">
-	
+  <el-dialog  :visible.sync="dialogFormVisible">
+	<div slot="title">{{dialogName}}</div>
+
+
 	<el-form :model="form" ref="form" :rules="checkRules">
 
 	  <el-form-item label="登录账号" :label-width="formLabelWidth" prop="account">
@@ -62,6 +69,10 @@
 
 <script>
 import Vue from 'vue'
+
+//使用mapState辅助函数生成多个状态的计算属性
+import {mapState} from 'vuex'
+
 import { Button , Select , Dialog,Form ,FormItem , Option , Input} from 'element-ui'
 import accountService from '../service/accountService'
 Vue.use(Button)
@@ -72,8 +83,9 @@ Vue.use(Form)
 Vue.use(FormItem)
 Vue.use(Input)
 export default {
+	//使用Props识别按钮的功能，是新增还是编辑
+	props:['btnState'],
 
-	
 	data(){
 		//检验规则函数：
 	var validateAccount = (rule, value, callback)=>{
@@ -109,7 +121,8 @@ export default {
 		  callback();
 		}
 	};
-		return {
+	
+	return {
 		dialogFormVisible: false,
 		form: {
 		  userName: '',
@@ -144,38 +157,46 @@ export default {
 				{required:true,message:'请选择用户身份',trigger:'change'}
 			]
 		}
-	  };
+  };
 
+	},
+	ready:()=>{
+		this.$store.state.commit('changeDialogName',this.btnState)
 	},	
 
 	methods: {
 
-		sendAccountInfo: function(formName) {
-
-			//提交前进行检验,若检验有误，则不会进行下面的新增请求
-			this.$refs[formName].validate((valid) => {
-				if (valid) {
-					//发送请求
-					var vm = this
-					accountService.RegisterAccount(this.form)
-					.then((response)=> {
-						console.log(vm.form)
-						if (response.msg == "success") {
-							this.alertSuccess()
-							this.dialogFormVisible = false
-						} else {
+		sendAccountInfo: (formName,btnState=this.btnState)=>{
+			console.log(this.btnState)
+			if(btnState=='addAccount'){
+				console.log("a")
+				this.$store.state.commit('dialogName','添加用户')
+				//提交前进行检验,若检验有误，则不会进行下面的新增请求
+				this.$refs[formName].validate((valid) => {
+					if (valid) {
+						//发送请求
+						var vm = this
+						accountService.RegisterAccount(this.form)
+						.then((response)=> {
+							console.log(vm.form)
+							if (response.msg == "success") {
+								this.alertSuccess()
+								this.dialogFormVisible = false
+							} else {
+								vm.alertFail()
+							}
+						})
+						.catch(function(error) {
+							console.log(vm.form)
 							vm.alertFail()
-						}
-					})
-					.catch(function(error) {
-						console.log(vm.form)
-						vm.alertFail()
-					})
-		  		} 
-				else {
-					return false;
-		  		}		
-			});		
+						})
+			  		} 
+					else {
+						return false;
+			  		}		
+				});		
+
+			}
 	  	},
 			
 		//弹窗通知提示的方法
@@ -198,6 +219,18 @@ export default {
 			});
 		},
 	},
+
+	computed:{
+		dialogName:()=>{
+			//获得按钮功能
+			//无法获取
+			if(this.btnState=="addAcount"){
+				return "新增用户"
+			}else if(this.btnState=="editAccount"){
+				return "编辑"
+			}
+		}
+	}
 
 };
 </script>

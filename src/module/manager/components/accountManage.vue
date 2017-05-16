@@ -1,8 +1,8 @@
 <template>
 	<div>
 		<header>账号管理</header>
-        <el-button @click="addAccount" type="primary">新增账号</el-button>
-        <addAccountBtn></addAccountBtn>
+        <!-- <el-button @click="addAccount" type="primary">新增账号</el-button> -->
+        <addAccountBtn btnState="addAccount"></addAccountBtn>
 		<el-table :data="accountList">
 			<el-table-column prop="id" label="ID"></el-table-column>
 			<el-table-column prop="userName" label="昵称"></el-table-column>
