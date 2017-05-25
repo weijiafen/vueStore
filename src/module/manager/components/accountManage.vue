@@ -22,15 +22,15 @@
 </template>
 <script>
 import Vue from 'vue'
-import {  Table , TableColumn , Button , Switch , Message } from 'element-ui'
+// import {  Table , TableColumn , Button , Switch , Message } from 'element-ui'
 import accountService from '../service/accountService'
 import addAccountBtn from '../components/Add_account'
 
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(Button)
-Vue.use(Switch)
-Vue.prototype.$message = Message
+// Vue.use(Table)
+// Vue.use(TableColumn)
+// Vue.use(Button)
+// Vue.use(Switch)
+// Vue.prototype.$message = Message
 export default {
     mixins: [],
     name: 'accountManage',
@@ -56,7 +56,7 @@ export default {
     },
     methods:{
     	editAccount(row,index){
-    		console.log("edit",row,index)
+    		this.$message.error("edit")
     	},
     	toggleStatus(index,status){
     		console.log("toggle",index,status)

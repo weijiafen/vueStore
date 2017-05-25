@@ -73,15 +73,15 @@ import Vue from 'vue'
 //使用mapState辅助函数生成多个状态的计算属性
 import {mapState} from 'vuex'
 
-import { Button , Select , Dialog,Form ,FormItem , Option , Input} from 'element-ui'
+// import { Button , Select , Dialog,Form ,FormItem , Option , Input} from 'element-ui'
 import accountService from '../service/accountService'
-Vue.use(Button)
-Vue.use(Select)
-Vue.use(Option)
-Vue.use(Dialog)
-Vue.use(Form)
-Vue.use(FormItem)
-Vue.use(Input)
+// Vue.use(Button)
+// Vue.use(Select)
+// Vue.use(Option)
+// Vue.use(Dialog)
+// Vue.use(Form)
+// Vue.use(FormItem)
+// Vue.use(Input)
 export default {
 	//使用Props识别按钮的功能，是新增还是编辑
 	props:['btnState'],

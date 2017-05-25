@@ -53,7 +53,7 @@ module.exports=function(app){
 				else{
 					setTimeout(function(){
 						res.end(data.toString());
-					},600)
+					},900)
 					
 				}
 			})

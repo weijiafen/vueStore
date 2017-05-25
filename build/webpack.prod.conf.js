@@ -24,7 +24,7 @@ var webpackConfig = merge(baseWebpackConfig, {
    entry: {
           manager:'./src/module/manager/manager.js',
           customer:'./src/module/customer/customer.js',
-          vendor: ['vue','vuex','vue-router']
+          vendor: ['vue','vuex','vue-router','axios']
     },
   output: {
     path: config.build.assetsRoot,
