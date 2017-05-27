@@ -5,6 +5,7 @@
         <el-button type="primary" @click="addCategory">新增</el-button>
         <el-button type="success" @click="saveCategory">保存</el-button>
         <div  v-loading="loadList">
+        <p v-if="formData.categoryList.length==0" class="categoryTip">暂无数据</p>
         <el-form ref="categoryForm" :model="formData">
             <el-form-item v-for="(category,index) in formData.categoryList" class="rowItem" 
             :key="index"
@@ -133,3 +134,9 @@ export default {
 }
 
 </script>
+<style type="text/css">
+    .categoryTip{
+        margin: 25px;
+        color: #666
+    }
+</style>
