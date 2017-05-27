@@ -1,7 +1,8 @@
 <template>
-	<div>
-		<router-view></router-view>
-	</div>
+        <transition name="fade" mode="out-in">
+            <router-view></router-view>
+        </transition>
+		
 	
 </template>
 <script>
@@ -15,3 +16,11 @@ Vue.use(ElementUI)
     }
 
 </script>
+<style>
+.fade-enter-active, .fade-leave-active {
+  transition: opacity .2s
+}
+.fade-enter, .fade-leave-active {
+  opacity: 0
+}
+</style>

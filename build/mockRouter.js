@@ -20,6 +20,11 @@ var mockConfig=[
 		path:"manager",
 		api:"accounts",
 		params:[]
+	},
+	{
+		path:"manager",
+		api:"categories",
+		params:[]
 	}
 ]
 module.exports=function(app){
@@ -42,6 +47,7 @@ module.exports=function(app){
 			fileUrl+='.json'
 			console.log("url",url)
 			console.log("fileUrl",fileUrl)
+			res.setHeader('content-type', 'text/html;charset=utf-8');
 			fs.readFile(fileUrl,function(err,data){
 				if(err){
 					var obj={

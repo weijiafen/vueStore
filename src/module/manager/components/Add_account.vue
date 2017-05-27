@@ -68,7 +68,7 @@
 </template>
 
 <script>
-import Vue from 'vue'
+// import Vue from 'vue'
 
 //使用mapState辅助函数生成多个状态的计算属性
 import {mapState} from 'vuex'
