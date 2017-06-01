@@ -9,14 +9,6 @@ var mockConfig=[
 		params:["id"]
 	},
 	{
-		//  url:  /order/orderList/:id/:type
-		//example: get  /order/orderList/1/1
-		//  fileUrl:  mock/order/get_orderList11.json 
-		path:"order",
-		api:"orderList",
-		params:["id","type"]
-	},
-	{
 		path:"manager",
 		api:"accounts",
 		params:[]
@@ -24,6 +16,11 @@ var mockConfig=[
 	{
 		path:"manager",
 		api:"categories",
+		params:[]
+	},
+	{
+		path:"manager",
+		api:"goods",
 		params:[]
 	}
 ]
