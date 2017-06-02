@@ -44,6 +44,15 @@ const Service = {
                 console.log('error ', error);
                 throw error;
             });
+    },
+    deleteTag:(id)=>{
+        return api.delete('/manager/tags',{
+            params:{id:id}
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
     }
 }
 export default Service

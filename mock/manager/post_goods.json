@@ -1,0 +1,21 @@
+{
+    "status":0,
+    "msg":"success",
+    "data":{
+            "id":1,
+            "categoryId":1,
+            "category":"香烟",
+            "name":"利群",
+            "description":"用心灵，去旅行！",
+            "price":14.00,
+            "tags":[
+                {
+                    "id":1,
+                    "text":"进口",
+                    "color":"#20a0ff"
+                }
+            ],
+            "account":22,
+            "online":1
+    }
+}

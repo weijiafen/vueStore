@@ -22,6 +22,11 @@ var mockConfig=[
 		path:"manager",
 		api:"goods",
 		params:[]
+	},
+	{
+		path:"manager",
+		api:"tags",
+		params:[]
 	}
 ]
 module.exports=function(app){

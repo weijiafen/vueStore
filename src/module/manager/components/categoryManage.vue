@@ -100,14 +100,15 @@ export default {
         },
         delCategory(index){
             var temp=this.formData.categoryList[index];
-            if(temp.id==0){
-                this.formData.categoryList.splice(index,1)
-            }else{
-                this.$confirm('是否确定删除该菜单?', '提示', {
-                    confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
-                }).then(() => {
+            
+            this.$confirm('是否确定删除该菜单?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                if(temp.id==0){
+                    this.formData.categoryList.splice(index,1)
+                }else{
                     this.loadList=true
                     categoryService.deleteCategory(temp.id).then(res=>{
                         if(res.status==0){
@@ -124,11 +125,11 @@ export default {
                         }
                         this.loadList=false
                     })
-                    
-                }).catch(() => {         
-                });
-            }
-            
+                }
+                
+                
+            }).catch(() => {         
+            });
         }
     }
 }

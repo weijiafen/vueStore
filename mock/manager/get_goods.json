@@ -4,23 +4,45 @@
     "data":[
         {
             "id":1,
-            "categoryId":"1",
+            "categoryId":1,
             "category":"香烟",
             "name":"利群",
             "description":"用心灵，去旅行！",
-            "price":"14.00",
-            "tag":"进口&#20a0ff,免税&#13ce66",
+            "price":14.00,
+            "tags":[
+                {
+                    "id":1,
+                    "text":"进口",
+                    "color":"#20a0ff"
+                },
+                {
+                    "id":2,
+                    "text":"免税",
+                    "color":"#13ce66"
+                }
+            ],
             "account":22,
             "online":1
         },
         {
             "id":2,
-            "categoryId":"1",
+            "categoryId":1,
             "category":"香烟",
             "name":"双喜",
             "description":"囍传天下！",
             "price":11.00,
-            "tag":"免税&#13ce66",
+            "tags":[
+                {
+                    "id":1,
+                    "text":"进口",
+                    "color":"#20a0ff"
+                },
+                {
+                    "id":2,
+                    "text":"免税",
+                    "color":"#13ce66"
+                }
+            ],
             "account":11,
             "online":0
         }

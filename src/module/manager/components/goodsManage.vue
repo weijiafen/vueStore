@@ -11,7 +11,7 @@
             <el-table-column  label="标签">
                 <template scope="scope">
                     <el-tag
-                    v-for="tag in parseTag(scope.row.tag)"
+                    v-for="tag in scope.row.tags"
                   :color="tag.color"
                   close-transition>
                   {{tag.text}}
@@ -42,35 +42,61 @@
           title="编辑商品"
           :visible.sync="editVisible"
           size="small">
-          <el-form :model="currentGood" label-width="80px" :rules="rules">
-              <el-form-item label="商品名称" prop="name">
-                <el-input v-model="currentGood.name"></el-input>
-              </el-form-item>
-              <el-form-item label="商品分类" prop="category">
-                <el-select v-model="currentGood.categoryId" placeholder="请选择商品分类">
-                  <el-option label="香烟" value="1"></el-option>
-                  <el-option label="饮料" value="2"></el-option>
+            <el-form :model="currentGood" label-width="100px" :rules="rules"
+                ref="currentGoodForm"
+            >
+                <el-form-item label="商品名称" prop="name">
+                    <el-input v-model="currentGood.name"></el-input>
+                </el-form-item>
+                <el-form-item label="商品分类" prop="categoryId">
+                    <el-select v-model="currentGood.categoryId" placeholder="请选择商品分类"
+                    >
+                    <el-option v-for="ca in categories" :label="ca.text" :value="ca.id"></el-option> 
                 </el-select>
-              </el-form-item>
-              <el-form-item label="商品描述">
-                <el-input v-model="currentGood.description"></el-input>
-              </el-form-item>
-              <el-form-item label="商品价格" prop="price">
-                <el-input v-model.number="currentGood.price"></el-input>
-              </el-form-item>
-              <el-form-item label="剩余数量" prop="account">
-                <el-input v-model.number="currentGood.account"></el-input>
-              </el-form-item>
-              <el-form-item label="是否上线">
-                  <el-radio-group v-model="currentGood.online">
-                    <el-radio label="1">上线</el-radio>
-                    <el-radio label="0">下线</el-radio>
-                  </el-radio-group>
+                </el-form-item>
+                <el-form-item label="商品描述">
+                    <el-input v-model="currentGood.description"></el-input>
+                </el-form-item>
+                <el-form-item label="商品价格" prop="price">
+                    <el-input v-model.number="currentGood.price"></el-input>
+                </el-form-item>
+                <el-form-item label="剩余数量" prop="account">
+                    <el-input v-model.number="currentGood.account"></el-input>
+                </el-form-item>
+                <el-form-item label="是否上线">
+                    <el-radio-group v-model="currentGood.online">
+                        <el-radio :label="1">上线</el-radio>
+                        <el-radio :label="0">下线</el-radio>
+                    </el-radio-group>
+                </el-form-item>
+                <el-form-item label="标签">
+                    <el-button size="small" type="primary" @click="addTag">+</el-button>
+                </el-form-item>
+                <el-form-item
+                class="tagItem"
+                v-for="(tag , index) in currentGood.tags"
+                :prop="'tags.' + index + '.text'"
+                :key="tag.key"
+                :rules="{
+                  required: true, message: '标签名不能为空', trigger: 'blur'
+                }">
+                    
+                    <el-row  :gutter="20">
+                        <el-col :span="12">
+                            <el-input v-model="tag.text"
+                            ></el-input>
+                        </el-col>
+                        <el-col :span="8">
+                            <el-color-picker v-model="tag.color"></el-color-picker>
+                            <el-button class="deleteTag" type="danger" size="small" icon="delete" @click="deleteTag(tag,index)"></el-button>
+                        </el-col>
+                    </el-row>
+                    
                 </el-form-item>
             </el-form>
           <span slot="footer" class="dialog-footer">
             <el-button @click="editVisible = false">取 消</el-button>
-            <el-button type="primary" @click="editVisible = false">确 定</el-button>
+            <el-button type="primary" @click="saveGood">确 定</el-button>
           </span>
         </el-dialog>
     </div>
@@ -78,6 +104,7 @@
 </template>
 <script>
 import goodsService from '../service/goodsService.js'
+import categoryService from '../service/categoryService.js'
     export default {
         mixins: [],
         name: 'goods',
@@ -90,12 +117,13 @@ import goodsService from '../service/goodsService.js'
                 page:1,
                 pageSize:10,
                 currentGood:{},
+                categories:[],
                 editVisible:false,
                 rules:{
                     name:[
                         { required: true, message: '商品名称不能为空' ,trigger: 'blur'}
                     ],
-                    category:[
+                    categoryId:[
                         { required: true, message: '请选择商品分类'}
                     ],
                     price:[
@@ -112,6 +140,12 @@ import goodsService from '../service/goodsService.js'
         },
         mounted (){
             this.getGoodsLits();
+            categoryService.getCategories().then(res=>{
+                if(res.status===0){
+                    this.categories=res.data
+                }
+                
+            })
         },
         methods: {
             getGoodsLits(){
@@ -124,17 +158,6 @@ import goodsService from '../service/goodsService.js'
                         this.$message.error(res.msg);
                     }
                 })
-            },
-            parseTag(str){
-                let tags=[]
-                let tagArr=str.split(",");
-                for(let tagObj of tagArr){
-                    tags.push({
-                        text:tagObj.split("&")[0],
-                        color:tagObj.split("&")[1]
-                    })
-                }
-                return tags;
             },
             handleSizeChange(pageSize){
                 this.pageSize=pageSize;
@@ -155,13 +178,69 @@ import goodsService from '../service/goodsService.js'
                         name:"",
                         description:"",
                         price:null,
-                        tag:"",
+                        tags:[{
+                            id:0,
+                            text:'',
+                            color:"#000"
+                        }],
                         account:0,
-                        online:"0"
+                        online:0
                     }
                 }
-                console.log("obj",this.currentGood)
                 this.editVisible=true;
+            },
+            addTag(){
+                this.currentGood.tags.push({
+                    id:0,
+                    text:'',
+                    color:"#000"
+                })
+            },
+            deleteTag(tag,index){
+                this.$confirm('是否确定删除该菜单?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(() => {
+                    if(tag.id===0){
+                        this.currentGood.tags.splice(index,1)
+                    }else{
+                        goodsService.deleteTag(tag.id).then(res=>{
+                            if(res.status===0){
+                                this.$message({
+                                    type: 'success',
+                                    message: '删除成功!'
+                                });
+                                this.currentGood.tags.splice(index,1)
+                            }else{
+                                this.$message({
+                                    type: 'error',
+                                    message: res.msg
+                                });
+                            }
+                        })
+                    }
+                })
+                .catch(() => {         
+                });
+            },
+            saveGood(){
+                this.$refs.currentGoodForm.validate((valid) => {
+                    if (valid) {
+                        if(this.currentGood.id===0){
+                            goodsService.addGoods(this.currentGood).then(res=>{
+
+                            })
+                        }else{
+                            goodsService.setGoods(this.currentGood).then(res=>{
+
+                            })
+                        }
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
             }
         }
     }
@@ -177,5 +256,11 @@ import goodsService from '../service/goodsService.js'
     }
     .newBtn{
         margin:10px 0;
+    }
+    .deleteTag{
+        vertical-align:super;
+    }
+    .tagItem{
+        margin-bottom:6px;
     }
 </style>
