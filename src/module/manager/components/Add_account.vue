@@ -16,7 +16,7 @@
 <div>
 
   <!-- Form -->
-  <el-button  @click="dialogFormVisible = true" type="primary">新增用户{{btnState}}</el-button>
+  <el-button  @click="dialogFormVisible = true" type="primary">{{dialogName}}</el-button>
 
   <el-dialog  :visible.sync="dialogFormVisible">
 	<div slot="title">{{dialogName}}</div>
@@ -160,7 +160,8 @@ export default {
   };
 
 	},
-	ready:()=>{
+	ready:function(){
+		console.log(this.btnState)
 		this.$store.state.commit('changeDialogName',this.btnState)
 	},	
 
@@ -221,10 +222,11 @@ export default {
 	},
 
 	computed:{
-		dialogName:()=>{
+		dialogName:function(){
 			//获得按钮功能
 			//无法获取
-			if(this.btnState=="addAcount"){
+			console.log(this.btnState)
+			if(this.btnState=="addAccount"){
 				return "新增用户"
 			}else if(this.btnState=="editAccount"){
 				return "编辑"

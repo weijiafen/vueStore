@@ -9,7 +9,8 @@
 			<el-table-column prop="account" label="账号名"></el-table-column>
 			<el-table-column prop="" label="操作">
 				<template scope="scope"> 
-					<el-button @click.prevent="editAccount(scope.row,scope.$index)" type="primary" size="mini">编辑</el-button>
+					<!-- <el-button @click.prevent="editAccount(scope.row,scope.$index)" type="primary" size="mini">编辑</el-button> -->
+                      <addAccountBtn btnState="editAccount"></addAccountBtn>
 					<el-button v-if="scope.row.status" @click="toggleStatus(scope.$index,0)" type="warning" size="mini">禁用</el-button>
 					<el-button v-else @click="toggleStatus(scope.$index,1)" type="success" size="mini">启用</el-button>
 					<el-button type="danger" size="mini">删除</el-button>
