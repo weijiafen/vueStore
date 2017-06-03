@@ -104,6 +104,27 @@ input, select {
 /* End reset */
 
 /* manager global style */
+.logo{
+    height: 60px;
+    font-size: 20px;
+    line-height: 60px;
+    text-align: center;
+    float: right;
+    color:#Fff;
+    margin-right: 20px;
+}
 header{
-
+    font-size: 22px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+    line-height: 2;
+    padding: 0 8px 8px;
+    margin-bottom: 15px;
+    color:#444;
+}
+.mainContainer{
+    padding: 60px;
+}
+.rowItem{
+    margin: 20px 0;
 }

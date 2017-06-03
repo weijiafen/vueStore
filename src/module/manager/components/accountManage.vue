@@ -3,7 +3,7 @@
 		<header>账号管理</header>
         <!-- <el-button @click="addAccount" type="primary">新增账号</el-button> -->
         <addAccountBtn btnState="addAccount"></addAccountBtn>
-		<el-table :data="accountList">
+		<el-table :data="accountList" v-loading="loadAccounts">
 			<el-table-column prop="id" label="ID"></el-table-column>
 			<el-table-column prop="userName" label="昵称"></el-table-column>
 			<el-table-column prop="account" label="账号名"></el-table-column>
@@ -15,23 +15,22 @@
 					<el-button v-else @click="toggleStatus(scope.$index,1)" type="success" size="mini">启用</el-button>
 					<el-button type="danger" size="mini">删除</el-button>
 				</template>
-				
 			</el-table-column>
 		</el-table>
 	</div>
 	
 </template>
 <script>
-import Vue from 'vue'
-import {  Table , TableColumn , Button , Switch , Message } from 'element-ui'
+// import Vue from 'vue'
+// import {  Table , TableColumn , Button , Switch , Message } from 'element-ui'
 import accountService from '../service/accountService'
 import addAccountBtn from '../components/Add_account'
 
-Vue.use(Table)
-Vue.use(TableColumn)
-Vue.use(Button)
-Vue.use(Switch)
-Vue.prototype.$message = Message
+// Vue.use(Table)
+// Vue.use(TableColumn)
+// Vue.use(Button)
+// Vue.use(Switch)
+// Vue.prototype.$message = Message
 export default {
     mixins: [],
     name: 'accountManage',
@@ -43,13 +42,15 @@ export default {
     		accountList:[
     			
     		],
-    		status:true
+    		status:true,
+            loadAccounts:true
     	}
     },
     mounted(){
         accountService.getAccounts().then((res)=>{
             if(res.status==0){
                 this.accountList=res.data;
+                this.loadAccounts=false;
             }else{
                 this.$message.error(res.msg);
             }
@@ -57,7 +58,7 @@ export default {
     },
     methods:{
     	editAccount(row,index){
-    		console.log("edit",row,index)
+    		this.$message.error("edit")
     	},
     	toggleStatus(index,status){
     		console.log("toggle",index,status)

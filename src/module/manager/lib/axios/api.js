@@ -1,8 +1,8 @@
 import axios from 'axios';
 import NProgress from 'nprogress';
-import _ from 'underscore'
+// import _ from 'underscore'
 import { redirect } from '../util/function';
-import 'babel-polyfill';
+// import 'babel-polyfill';
 
 const NETWORK_ERROR_MESSAGE = '网络异常';
 const SERVER_ERROR_MESSAGE = '系统异常';
@@ -54,10 +54,10 @@ api.interceptors.response.use(
       if (status < COMMON_STATUS) {
         alert(response.data.msg || SERVER_ERROR_MESSAGE);
       }
-      const newData = _.defaults({}, response.data, {
+      const newData = {
         msg: SERVER_ERROR_MESSAGE,
-        status: UNEXPETED_STATUS,
-      });
+        status: UNEXPETED_STATUS
+      }
       return Promise.reject(newData);
     }
     return response.data || {};

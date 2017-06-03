@@ -9,16 +9,23 @@ var mockConfig=[
 		params:["id"]
 	},
 	{
-		//  url:  /order/orderList/:id/:type
-		//example: get  /order/orderList/1/1
-		//  fileUrl:  mock/order/get_orderList11.json 
-		path:"order",
-		api:"orderList",
-		params:["id","type"]
+		path:"manager",
+		api:"accounts",
+		params:[]
 	},
 	{
 		path:"manager",
-		api:"accounts",
+		api:"categories",
+		params:[]
+	},
+	{
+		path:"manager",
+		api:"goods",
+		params:[]
+	},
+	{
+		path:"manager",
+		api:"tags",
 		params:[]
 	}
 ]
@@ -42,6 +49,7 @@ module.exports=function(app){
 			fileUrl+='.json'
 			console.log("url",url)
 			console.log("fileUrl",fileUrl)
+			res.setHeader('content-type', 'text/html;charset=utf-8');
 			fs.readFile(fileUrl,function(err,data){
 				if(err){
 					var obj={
@@ -53,7 +61,7 @@ module.exports=function(app){
 				else{
 					setTimeout(function(){
 						res.end(data.toString());
-					},600)
+					},900)
 					
 				}
 			})
