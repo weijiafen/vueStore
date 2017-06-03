@@ -1,4 +1,4 @@
-<!-- 
+<!--
 抽离一层出来，使得新增用户和编辑共用一个组件
 1， 使用Vuex管理组件状态，mutation来改变组件的值，
 2， 在编辑组件里面，获得state状态，把信息读出来。修改完信息，可以进行更新，并添加到表格。
@@ -6,17 +6,17 @@
 4，添加到表格里面显示出来，数据是直接存到get_accounts.json里面吗？
 5，如何关联到编辑按钮，使得点击编辑按钮会弹出该模态框
 
-6，使用props传递btnState，在父组件向子组件间进行通讯，然而各种努力之后宣告放弃……，无法在方法中取得props的值。搜索的用法是this.btnState，但无效(undefined)
+6，使用props传递btnState，在父组件向子组件间进行通讯，
 
-7.打算使用点击的时候调用不同方法……
+
  -->
 
 <template>
 
-<div>
+<div style="display:inline-block">
 
   <!-- Form -->
-  <el-button  @click="dialogFormVisible = true" type="primary">{{dialogName}}</el-button>
+  <el-button  @click="showAccountEdit()" type="primary" size="mini">{{dialogName}}</el-button>
 
   <el-dialog  :visible.sync="dialogFormVisible">
 	<div slot="title">{{dialogName}}</div>
@@ -47,14 +47,14 @@
 			<el-option label="厨房账号" value="3"></el-option>
 		</el-select>
 	  </el-form-item>
-			
+
 	</el-form>
-		
+
 	<div slot="footer" class="dialog-footer">
 	  <el-button @click="dialogFormVisible = false">取 消</el-button>
 	  <el-button type="primary" @click="sendAccountInfo('form')">确 定</el-button>
 	</div>
-		
+
   </el-dialog>
 
 	<!-- 测试方法 -->
@@ -89,10 +89,10 @@ export default {
 	data(){
 		//检验规则函数：
 	var validateAccount = (rule, value, callback)=>{
-					
+
 		//如果可以，加个检查用户是否存在的API，然后请求它
 		//在输入完，即发生blur之后查询账号
-		
+
 		accountService.getAccounts().then((res)=>{
 			//通过判断status，1为存在，0为不存在
 			if (res.status=='1') {
@@ -104,7 +104,7 @@ export default {
 		.catch(function(error){
 			callback(new Error('无法连接到服务器检查用户是否存在'))
 		})
-			
+
 	  };
 	var validatePass = (rule, value, callback) => {
 		  if (this.form.checkPass !== '') {
@@ -121,7 +121,7 @@ export default {
 		  callback();
 		}
 	};
-	
+
 	return {
 		dialogFormVisible: false,
 		form: {
@@ -131,7 +131,7 @@ export default {
 		  confirmPassword: '',
 		  type:'',
 		},
-				
+
 		matchPassword: false,
 		formLabelWidth: '120px',
 		checkRules:{
@@ -163,9 +163,19 @@ export default {
 	ready:function(){
 		console.log(this.btnState)
 		this.$store.state.commit('changeDialogName',this.btnState)
-	},	
+	},
 
 	methods: {
+        //显示添加用户的窗口
+        showAccountEdit(userObj,index){
+            if(userObj){
+                this.form=userObj
+            }
+            else{
+
+            }
+            this.dialogFormVisible=true;
+        },
 
 		sendAccountInfo: (formName,btnState=this.btnState)=>{
 			console.log(this.btnState)
@@ -184,22 +194,22 @@ export default {
 								this.alertSuccess()
 								this.dialogFormVisible = false
 							} else {
-								vm.alertFail()
+					 			vm.alertFail()
 							}
 						})
 						.catch(function(error) {
 							console.log(vm.form)
 							vm.alertFail()
 						})
-			  		} 
+			  		}
 					else {
 						return false;
-			  		}		
-				});		
+			  		}
+				});
 
 			}
 	  	},
-			
+
 		//弹窗通知提示的方法
 		alertSuccess: function() {
 			this.$message({
