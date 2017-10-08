@@ -2,7 +2,7 @@ import api from '../lib/axios/api';
 const Service = {
 	login: (detail) => {
         return api
-            .post('/login', {
+            .post('/user/login', {
                 data: detail,
             })
             .then((res) => {

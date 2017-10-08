@@ -1,10 +1,10 @@
 var express = require('express');
 var app = express();
 var fs=require('fs');
-// var router=require('./src/main/server/routers/router.js');
+var router=require('./server/router.js');
 app.use(express.static('dist',{maxAge:36000000}));
 // app.use(express.static('upload',{maxAge:36000000}));
-// router(app);
+router(app);
 app.get('/', function (req, res) {
 		fs.readFile('dist/manager.html',function(err,data){
 			if(err){

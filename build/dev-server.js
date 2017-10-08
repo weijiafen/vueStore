@@ -5,7 +5,7 @@ var mockRouter=require('./mockRouter')
 if (!process.env.NODE_ENV) {
   process.env.NODE_ENV = JSON.parse(config.dev.env.NODE_ENV)
 }
-
+var router=require('../server/router.js');
 var opn = require('opn')
 var path = require('path')
 var express = require('express')
@@ -40,7 +40,8 @@ compiler.plugin('compilation', function (compilation) {
   })
 })
 //mock数据转发路由配置
-mockRouter(app);
+// mockRouter(app);
+router(app);
 
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
@@ -67,7 +68,7 @@ app.use(hotMiddleware)
 var staticPath = path.posix.join(config.dev.assetsPublicPath, config.dev.assetsSubDirectory)
 app.use(staticPath, express.static('./static'))
 
-var uri = 'http://localhost:' + port + '/manager.html'
+var uri = 'http://localhost:' + port + '/manager.html#/login'
 
 var _resolve
 var readyPromise = new Promise(resolve => {

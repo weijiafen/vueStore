@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-const Login = resolve => require(['@/components/login.vue'], resolve)
+const Login = resolve => require(['../components/login.vue'], resolve)
 const Index = resolve => require(['../components/index.vue'], resolve)
 const accountManage = resolve => require(['../components/accountManage.vue'], resolve)
 const categoryManage = resolve => require(['../components/categoryManage.vue'], resolve)
@@ -20,7 +20,7 @@ export default new Router({
             component: Login
         },
         {
-        	path:'/',
+        	path:'/index',
         	name:'index',
         	component:Index,
         	children:[
