@@ -4,14 +4,14 @@
 			<h1>登录后台管理系统</h1>
 			<el-form label-width="60px">
 				<el-form-item label="账号">
-					<el-input />
+					<el-input v-model="account" />
 				</el-form-item>
 				<el-form-item label="密码">
-					<input class="el-input__inner" type="password"/>
+					<input class="el-input__inner" type="password" v-model="password"/>
 				</el-form-item>
 				<el-form-item label="验证码">
-					<el-input class="verification_code" />
-					<img @click="changeCaptcha" :src="captcha" alt="验证码">
+					<el-input class="verification_code" v-model="captcha" />
+					<img @click="changeCaptcha" :src="captchaImg" alt="验证码">
 				</el-form-item>
 				<el-form-item>
 					<el-button type="primary" class="login_btn" @click="login">登录</el-button>
@@ -29,17 +29,30 @@
         components: {},
         data(){
         	return {
-        		captcha:"/captcha?"+new Date().valueOf()
+        		account:'',
+        		password:'',
+        		captcha:'',
+        		captchaImg:"/captcha?"+new Date().valueOf()
         	}
         },
         methods:{
         	login(){
-        		server.login().then((res)=>{
-        			this.$router.push("/index")
+        		server.login({
+        			account:this.account,
+        			password:this.password,
+        			captcha:this.captcha
+        		}).then((res)=>{
+        			if(res.status==0){
+        				this.$router.push("/index")
+        			}else{
+        				this.$alert(res.msg)
+        				this.changeCaptcha();
+        			}
+        			
         		})
         	},
         	changeCaptcha(){
-        		this.captcha="/captcha?"+new Date().valueOf()
+        		this.captchaImg="/captcha?"+new Date().valueOf()
         	}
         }
     }
