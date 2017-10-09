@@ -43,7 +43,7 @@
         			captcha:this.captcha
         		}).then((res)=>{
         			if(res.status==0){
-        				this.$router.push("/index")
+        				this.$router.push("/")
         			}else{
         				this.$alert(res.msg)
         				this.changeCaptcha();
