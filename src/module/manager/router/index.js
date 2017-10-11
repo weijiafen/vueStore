@@ -6,6 +6,7 @@ const accountManage = resolve => require(['../components/accountManage.vue'], re
 const categoryManage = resolve => require(['../components/categoryManage.vue'], resolve)
 const goodsManage = resolve => require(['../components/goodsManage.vue'], resolve)
 const welcome = resolve => require(['../components/welcome.vue'], resolve)
+const test = resolve => require(['../components/test.vue'], resolve)
 // import Login from '@/components/login.vue'
 // import Index from '../components/index.vue'
 // import accountManage from '../components/accountManage.vue'
@@ -39,6 +40,10 @@ export default new Router({
                 {
                     path:"goodsManage",
                     component:goodsManage
+                },
+                {
+                    path:"test",
+                    component:test
                 }
         	]
         }

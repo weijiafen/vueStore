@@ -14,6 +14,7 @@
                 <el-menu-item index="/goodsReport">商品销售报表</el-menu-item>
                 <el-menu-item index="/saleReport">销售额报表</el-menu-item>
             </el-submenu>
+            <el-menu-item index="/test">训练场</el-menu-item>
             <span class="logo">Manager</span>
         </el-menu>
         <div class="mainContainer">

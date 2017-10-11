@@ -156,6 +156,7 @@ import categoryService from '../service/categoryService.js'
                         this.total=res.total
                     }else{
                         this.$message.error(res.msg);
+                        this.loadGoods=false;
                     }
                 })
             },
