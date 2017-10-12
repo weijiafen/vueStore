@@ -34,7 +34,7 @@ npm run build
 
 #### 启动生产环境服务器
 node server.js
-```
+
 ## 项目结构
 ```
 vueStore
@@ -57,3 +57,4 @@ vueStore
             |——App.vue····挂载vue-router的总容器
 |——server·····后台业务逻辑
 |——static·····开发存放的静态文件
+```
