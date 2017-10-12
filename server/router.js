@@ -6,6 +6,7 @@ var bodyParser=require('body-parser')
 var captcha=require('./controler/captcha');
 var login=require('./controler/login.js');
 var category=require('./controler/category.js');
+var goods=require('./controler/goods.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -40,5 +41,9 @@ module.exports=function(app){
 	//删除菜单
 	app.delete('/shop/categories',function(req,res){
 		category('delete',req,res);
+	})
+	//获取商品
+	app.get('/shop/goods',function(req,res){
+		goods('get',req,res);
 	})
 }

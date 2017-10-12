@@ -1,27 +1,47 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
+var good=require('../modules/good.js');
 var category=require('../modules/category.js');
+var label=require('../modules/label.js');
 module.exports=(async (function(method,req,response){
 	var result={
 		status:-1,
 		msg:"请求数据异常"
 	}
 	if(method=='get'){
+		category.hasMany(good)
+		good.belongsTo(category);
+		good.hasMany(label)
+		label.belongsTo(good);
 		var uid=req.session.uid;
 		if(uid){
-			var res=await(category.findAll({
+			var res=await(good.findAll({
 				where:{
-					userId:uid
-				}
+				},
+				include:[{
+					model:category,
+					where:{
+						userId:uid
+					}
+				},{
+					model:label
+				}]
 			}))
+			console.log(res);
 			if(res.length>=0){
 				result.status=0;
 				result.msg="查询成功";
 				result.data=[]
-				for(var menu of res){
+				for(var item of res){
 					result.data.push({
-						id:menu.dataValues.id,
-						text:menu.dataValues.text
+						id:item.dataValues.id,
+						name:item.dataValues.name,
+						description:item.dataValues.description,
+						categoryId:item.dataValues.categoryId,
+						price:item.dataValues.price,
+						isOnline:item.dataValues.isOnline,
+						label:item.dataValues.labels,
+						category:item.dataValues.category
 					})
 				}
 			}

@@ -144,7 +144,6 @@ import categoryService from '../service/categoryService.js'
                 if(res.status===0){
                     this.categories=res.data
                 }
-                
             })
         },
         methods: {
