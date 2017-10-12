@@ -8,6 +8,7 @@
 2: 新建一个vuestore数据库
 3：在vuestore数据库运行项目根目录的sql文件，生成本地环境数据库vuestore
 4：在src/main/server/connection目录下新建一个dbConfig.js文件，配置你的本地数据库信息
+```
 	var dbConfig={
 		dbName:'vuestore',
 		user:'root',
@@ -20,6 +21,7 @@
 		}
 	}
 	module.exports=dbConfig;
+```
 ### 前端
 #### 安装依赖文件（前后端依赖都是用npm）
 npm install
