@@ -1,5 +1,5 @@
 <template>
-	<div>
+	<div @keyup="show($event)">
 		<el-card class="login_box">
 			<h1>登录后台管理系统</h1>
 			<el-form label-width="60px">
@@ -36,6 +36,12 @@
         	}
         },
         methods:{
+            show:function(ev){  
+                if(ev.keyCode == 13){  
+                    this.login();
+                }  
+            },
+
         	login(){
         		server.login({
         			account:this.account,
