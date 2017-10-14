@@ -1,25 +1,24 @@
 <template >
 	<div>
-        123
-        <compo :param=componentMsg></compo>
+        {{param}}
+
 	</div>
 
 </template>
 
+
+
+
 <script>
-
-
-    import compo from './compo'
     export default {
         mixins: [],
-        name: 'welcome',
-        components:{compo},
+        name: 'compo',
+        components:[],
+        props:['param'],
         data(){   
-
         	return {
         		msg:"hello world", 
                 message: 'Hello Vue!',
-                componentMsg:"hello component"
         	}
         },
         methods: {
