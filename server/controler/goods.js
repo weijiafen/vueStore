@@ -5,8 +5,8 @@ var category=require('../modules/category.js');
 var label=require('../modules/label.js');
 module.exports=(async (function(method,req,response){
 	var result={
-		status:-1,
-		msg:"请求数据异常"
+		status:1000,
+		msg:"未登录"
 	}
 	if(method=='get'){
 		category.hasMany(good)
@@ -37,6 +37,7 @@ module.exports=(async (function(method,req,response){
 						id:item.dataValues.id,
 						name:item.dataValues.name,
 						description:item.dataValues.description,
+						count:item.dataValues.count,
 						categoryId:item.dataValues.categoryId,
 						price:item.dataValues.price,
 						isOnline:item.dataValues.isOnline,
@@ -50,18 +51,54 @@ module.exports=(async (function(method,req,response){
 	else if(method=='post'){
 		var uid=req.session.uid;
 		// var id=req.body.id;
-		var text=req.body.text
+		var name=req.body.name
+		var description=req.body.description
+		var count=req.body.count
+		var categoryId=req.body.categoryId
+		var price=req.body.price
+		var isOnline=req.body.isOnline
 		if(uid){
-			var res=await(category.create({
-				userId:uid,
-				text:text
-			}))
-			result.status=0;
-			result.msg="success"
-			result.data={
-				id:res.id,
-				text:text
+			if(!categoryId){
+				result={
+					status:-1,
+					mag:"菜单分类必须选择"
+				}
 			}
+			else if(!name||name==""){
+				result={
+					status:-1,
+					mag:"商品名称必须输入"
+				}
+			}
+			else if(isNaN(parseInt(count))){
+				result={
+					status:-1,
+					mag:"库存参数不合法"
+				}
+			}
+			else if(!parseFloat(price)){
+				result={
+					status:-1,
+					mag:"价格参数不合法"
+				}
+			}
+			else{
+				var res=await(good.create({
+					name:name,
+					description:description,
+					count:parseInt(count),
+					categoryId:categoryId,
+					price:parseFloat(price),
+					isOnline:isOnline
+				}))
+				result.status=0;
+				result.msg="success"
+				result.data={
+					id:res.id,
+					name:res.name
+				}
+			}
+			
 		}
 	}
 	else if(method=='put'){
@@ -103,6 +140,6 @@ module.exports=(async (function(method,req,response){
 			}
 		}
 	}
-	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	response.end(JSON.stringify(result))
 }))

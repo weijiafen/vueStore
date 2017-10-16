@@ -46,4 +46,8 @@ module.exports=function(app){
 	app.get('/shop/goods',function(req,res){
 		goods('get',req,res);
 	})
+	//获取商品
+	app.post('/shop/goods',function(req,res){
+		goods('post',req,res);
+	})
 }

@@ -3,8 +3,8 @@ var await = require('asyncawait/await');
 var category=require('../modules/category.js');
 module.exports=(async (function(method,req,response){
 	var result={
-		status:-1,
-		msg:"请求数据异常"
+		status:1000,
+		msg:"未登录"
 	}
 	if(method=='get'){
 		var uid=req.session.uid;

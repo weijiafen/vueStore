@@ -23,7 +23,7 @@ const Service = {
     },
     addGoods:(data)=>{
         return api
-            .post('/manager/goods', {
+            .post('/shop/goods', {
                 data: data,
             })
             .then((res) => {
@@ -35,7 +35,7 @@ const Service = {
     },
     setGoods:(data)=>{
         return api
-            .put('/manager/goods', {
+            .put('/shop/goods', {
                 data: data,
             })
             .then((res) => {
