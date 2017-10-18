@@ -1,14 +1,14 @@
 import api from '../lib/axios/api';
 const Service = {
     getCategories:()=>{
-        return api.get('/shop/categories').then((res)=>{
+        return api.get('/manager/categories').then((res)=>{
             return res
         },(error)=>{
             throw error
         })
     },
     deleteCategory:(id)=>{
-        return api.delete('/shop/categories',{
+        return api.delete('/manager/categories',{
             params:{id:id}
         }).then((res)=>{
             return res
@@ -18,7 +18,7 @@ const Service = {
     },
     setCategory:(data)=>{
         return api
-            .post('/shop/categories', {
+            .post('/manager/categories', {
                 data: data,
             })
             .then((res) => {
@@ -30,7 +30,7 @@ const Service = {
     },
     modifyCategory:(data)=>{
         return api
-            .put('/shop/categories', {
+            .put('/manager/categories', {
                 data: data,
             })
             .then((res) => {

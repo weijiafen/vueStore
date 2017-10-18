@@ -7,6 +7,8 @@ var captcha=require('./controler/captcha');
 var login=require('./controler/login.js');
 var category=require('./controler/category.js');
 var goods=require('./controler/goods.js');
+var label=require('./controler/label.js');
+var stock=require('./controler/stock.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -27,27 +29,47 @@ module.exports=function(app){
 		captcha(req,res);
 	})
 	//获取菜单
-	app.get('/shop/categories',function(req,res){
+	app.get('/manager/categories',function(req,res){
 		category('get',req,res);
 	})
 	//新增菜单
-	app.post('/shop/categories',function(req,res){
+	app.post('/manager/categories',function(req,res){
 		category('post',req,res);
 	})
 	//修改菜单
-	app.put('/shop/categories',function(req,res){
+	app.put('/manager/categories',function(req,res){
 		category('put',req,res);
 	})
 	//删除菜单
-	app.delete('/shop/categories',function(req,res){
+	app.delete('/manager/categories',function(req,res){
 		category('delete',req,res);
 	})
 	//获取商品
-	app.get('/shop/goods',function(req,res){
+	app.get('/manager/goods',function(req,res){
 		goods('get',req,res);
 	})
-	//获取商品
-	app.post('/shop/goods',function(req,res){
+	//新增商品
+	app.post('/manager/goods',function(req,res){
 		goods('post',req,res);
+	})
+	//修改商品
+	app.put('/manager/goods',function(req,res){
+		goods('put',req,res);
+	})
+	//删除商品
+	app.delete('/manager/goods',function(req,res){
+		goods('delete',req,res);
+	})
+	//修改商品库存
+	app.put('/manager/stock',function(req,res){
+		stock('put',req,res);
+	})
+	//新增标签
+	app.post('/manager/label',function(req,res){
+		label('post',req,res);
+	})
+	//删除标签
+	app.delete('/manager/label',function(req,res){
+		label('delete',req,res);
 	})
 }

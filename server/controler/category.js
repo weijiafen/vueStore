@@ -83,6 +83,6 @@ module.exports=(async (function(method,req,response){
 			}
 		}
 	}
-	response.writeHead(200,{'Content-Type':'text/html;charset=utf-8'});//设置respons
+	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	response.end(JSON.stringify(result))
 }))

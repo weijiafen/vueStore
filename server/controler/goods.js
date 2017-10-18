@@ -3,6 +3,7 @@ var await = require('asyncawait/await');
 var good=require('../modules/good.js');
 var category=require('../modules/category.js');
 var label=require('../modules/label.js');
+var Sequelize=require('sequelize')
 module.exports=(async (function(method,req,response){
 	var result={
 		status:1000,
@@ -14,10 +15,17 @@ module.exports=(async (function(method,req,response){
 		good.hasMany(label)
 		label.belongsTo(good);
 		var uid=req.session.uid;
+		var categoryId=req.query.categoryId
+		var whereObj={}
+		if(categoryId&&categoryId!=""){
+			whereObj={
+				categoryId:categoryId
+			}
+		}
 		if(uid){
 			var res=await(good.findAll({
-				where:{
-				},
+				where:whereObj,
+				order:'id',
 				include:[{
 					model:category,
 					where:{
@@ -61,25 +69,25 @@ module.exports=(async (function(method,req,response){
 			if(!categoryId){
 				result={
 					status:-1,
-					mag:"菜单分类必须选择"
+					msg:"菜单分类必须选择"
 				}
 			}
 			else if(!name||name==""){
 				result={
 					status:-1,
-					mag:"商品名称必须输入"
+					msg:"商品名称必须输入"
 				}
 			}
 			else if(isNaN(parseInt(count))){
 				result={
 					status:-1,
-					mag:"库存参数不合法"
+					msg:"库存参数不合法"
 				}
 			}
 			else if(!parseFloat(price)){
 				result={
 					status:-1,
-					mag:"价格参数不合法"
+					msg:"价格参数不合法"
 				}
 			}
 			else{
@@ -104,40 +112,123 @@ module.exports=(async (function(method,req,response){
 	else if(method=='put'){
 		var uid=req.session.uid;
 		var id=req.body.id;
-		var text=req.body.text
+		var name=req.body.name
+		var description=req.body.description
+		var count=req.body.count
+		var categoryId=req.body.categoryId
+		var price=req.body.price
+		var isOnline=req.body.isOnline
 		if(uid){
-			var res=await(category.update({
-				text:text
-			},{
-				where:{
-					userId:uid,
-					id:id
+			if(!categoryId){
+				result={
+					status:-1,
+					msg:"菜单分类必须选择"
 				}
-			}))
-			result.status=0;
-			result.msg="success"
-			result.data={
-				id:id,
-				text:text
 			}
+			else if(!name||name==""){
+				result={
+					status:-1,
+					msg:"商品名称必须输入"
+				}
+			}
+			else if(isNaN(parseInt(count))){
+				result={
+					status:-1,
+					msg:"库存参数不合法"
+				}
+			}
+			else if(!parseFloat(price)){
+				result={
+					status:-1,
+					msg:"价格参数不合法"
+				}
+			}
+			else{
+				category.hasMany(good)
+				good.belongsTo(category);
+				good.hasMany(label)
+				label.belongsTo(good);
+				//查询商品是该User的
+				var isAutor=await(good.findOne({
+					where:{
+						id:id,
+						categoryId:categoryId
+					},
+					include:[{
+						model:category,
+						where:{
+							userId:uid,
+							id:categoryId
+						}
+					}]
+				}))
+				if(isAutor&&isAutor.dataValues.category){
+					var res=await(good.update({
+						name:name,
+						description:description,
+						count:parseInt(count),
+						categoryId:categoryId,
+						price:parseFloat(price),
+						isOnline:isOnline
+					},{
+						where:{
+							id:id
+						}
+					}))
+					result.status=0;
+					result.msg="success"
+					result.data={
+						id:res.id,
+						name:res.name
+					}
+				}else{
+					result.status=-1
+					result.msg="没有操作权限"
+				}
+				
+			}
+			
 		}
 	}
 	else if(method=='delete'){
 		var uid=req.session.uid;
 		var id=req.query.id;
 		if(uid){
-			var res=await(category.destroy({
+			category.hasMany(good)
+			good.belongsTo(category);
+			//查询商品是该User的
+			var isAutor=await(good.findOne({
 				where:{
-					userId:uid,
 					id:id
-				}
+				},
+				include:[{
+					model:category,
+					where:{
+						userId:uid,
+						id:Sequelize.col('good.categoryId')
+					}
+				}]
 			}))
-			if(res!=0){
-				result.status=0;
-				result.msg="success"
-				result.data={
+			if(isAutor&&isAutor.dataValues.category){
+				var res=await(good.destroy({
+					where:{
+						id:id
+					}
+				}))
+				if(res!=0){
+					result.status=0;
+					result.msg="success"
+					result.data={
+					}
+				}else{
+					result.status=-1;
+					result.msg="删除失败"
 				}
+			}else{
+				result.status=-1
+				result.msg="没有操作权限"
 			}
+			
 		}
 	}
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
