@@ -1,10 +1,11 @@
 import api from '../lib/axios/api';
 const Service = {
-    getGoods:(page = 1 , pageSize = 10)=>{
+    getGoods:(page = 1 , pageSize = 10,categoryId = "")=>{
         return api.get('/manager/goods',{
             params:{
                 page:page,
-                pageSize:pageSize
+                pageSize:pageSize,
+                categoryId:categoryId
             }
         }).then((res)=>{
             return res

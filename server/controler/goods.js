@@ -16,6 +16,8 @@ module.exports=(async (function(method,req,response){
 		label.belongsTo(good);
 		var uid=req.session.uid;
 		var categoryId=req.query.categoryId
+		var pageSize=req.query.pageSize||10
+		var page=req.query.page||1
 		var whereObj={}
 		if(categoryId&&categoryId!=""){
 			whereObj={
@@ -23,24 +25,23 @@ module.exports=(async (function(method,req,response){
 			}
 		}
 		if(uid){
-			var res=await(good.findAll({
+			var res=await(good.findAndCountAll({
+				'limit':parseInt(pageSize),
+				'offset':parseInt(pageSize*(page-1)),
+				'order':[['id']],
 				where:whereObj,
-				order:'id',
-				include:[{
-					model:category,
-					where:{
-						userId:uid
-					}
-				},{
-					model:label
-				}]
+
+				include:[category,label],
+
+				distinct: true
 			}))
 			console.log(res);
-			if(res.length>=0){
+			if(res.rows.length>=0){
 				result.status=0;
 				result.msg="查询成功";
+				result.total=res.count;
 				result.data=[]
-				for(var item of res){
+				for(var item of res.rows){
 					result.data.push({
 						id:item.dataValues.id,
 						name:item.dataValues.name,

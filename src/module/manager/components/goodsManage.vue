@@ -2,6 +2,10 @@
     <div class="goodsManage">
         <header>商品管理</header>
         <el-button type="success" class="newBtn" @click="showEdit(null)">新增商品</el-button>
+        <el-select v-model="filterCategory" @change="changeFilterCategory">
+            <el-option  label="全部" value=""></el-option> 
+            <el-option v-for="ca in categories" :label="ca.text" :value="ca.id"></el-option> 
+        </el-select>
         <el-table :data="goods" v-loading="loadGoods" border>
             <el-table-column prop="id" label="ID"></el-table-column>
             <el-table-column prop="name" label="商品名称"></el-table-column>
@@ -172,6 +176,7 @@ import categoryService from '../service/categoryService.js'
         components: {},
         data() {
             return {
+                filterCategory:"",
                 loadGoods:true,
                 goods:[],
                 total:0,
@@ -219,7 +224,7 @@ import categoryService from '../service/categoryService.js'
         },
         methods: {
             getGoodsLits(){
-                goodsService.getGoods(this.page,this.pageSize).then(res=>{
+                goodsService.getGoods(this.page,this.pageSize,this.filterCategory).then(res=>{
                     if(res.status==0){
                         this.goods=res.data;
                         this.loadGoods=false;
@@ -409,6 +414,10 @@ import categoryService from '../service/categoryService.js'
                         });
                     }
                 })
+            },
+            changeFilterCategory(v){
+                this.filterCategory=v;
+                this.getGoodsLits();
             }
         }
     }
