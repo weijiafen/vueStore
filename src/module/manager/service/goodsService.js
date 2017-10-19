@@ -82,5 +82,17 @@ const Service = {
                 throw error;
             });
     },
+    goodOnline:(data)=>{
+        return api
+            .put('/manager/goodOnline', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
 }
 export default Service

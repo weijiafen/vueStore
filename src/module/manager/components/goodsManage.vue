@@ -371,7 +371,25 @@ import categoryService from '../service/categoryService.js'
                 })
             },
             changeOnline(index){
-                console.log("v",index,this.goods)
+                var isOnline=this.goods[index].isOnline==0?'1':'0';
+                var id=this.goods[index].id;
+                goodsService.goodOnline({
+                    id:id,
+                    isOnline:isOnline
+                }).then((res)=>{
+                    var msg=`${isOnline==1?'上架':'下架'}成功！`
+                    if(res.status==0){
+                        this.$message({
+                            type: 'success',
+                            message: msg
+                        });
+                    }else{
+                        this.$message({
+                            type: 'error',
+                            message: res.msg
+                        });
+                    }
+                })
             },
             deleteLabel(index){
                 goodsService.deleteLabel({

@@ -9,6 +9,7 @@ var category=require('./controler/category.js');
 var goods=require('./controler/goods.js');
 var label=require('./controler/label.js');
 var stock=require('./controler/stock.js');
+var goodOnline=require('./controler/goodOnline.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -71,5 +72,9 @@ module.exports=function(app){
 	//删除标签
 	app.delete('/manager/label',function(req,res){
 		label('delete',req,res);
+	})
+	//修改商品上下架
+	app.put('/manager/goodOnline',function(req,res){
+		goodOnline('put',req,res);
 	})
 }
