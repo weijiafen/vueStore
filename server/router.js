@@ -4,6 +4,7 @@ var fs=require('fs');
 var path = require('path');
 var bodyParser=require('body-parser')
 var captcha=require('./controler/captcha');
+var upload=require('./controler/upload');
 var login=require('./controler/login.js');
 var category=require('./controler/category.js');
 var goods=require('./controler/goods.js');
@@ -28,6 +29,10 @@ module.exports=function(app){
 	//获取验证码
 	app.get('/captcha',function(req,res){
 		captcha(req,res);
+	})
+	//上传文件接口
+	app.post('/upload',function(req,res){
+		upload(req,res);
 	})
 	//获取菜单
 	app.get('/manager/categories',function(req,res){

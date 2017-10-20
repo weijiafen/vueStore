@@ -26,6 +26,18 @@ var User = sequelize.define('user', {
   userName:{
     type: Sequelize.STRING
   },
+  //店铺公告
+  notice:{  
+    type: Sequelize.STRING
+  },
+  //正在营业
+  openBusiness:{
+    type:Sequelize.INTEGER,
+  },
+  //店铺头像
+  photo:{  
+    type: Sequelize.STRING
+  },
   //最近一次登录时间
   lastLoginAt:{
     type:Sequelize.BIGINT

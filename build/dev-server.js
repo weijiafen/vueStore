@@ -42,7 +42,7 @@ compiler.plugin('compilation', function (compilation) {
 //mock数据转发路由配置
 // mockRouter(app);
 router(app);
-
+app.use(express.static('upload',{maxAge:36000000}));
 // proxy api requests
 Object.keys(proxyTable).forEach(function (context) {
   var options = proxyTable[context]
