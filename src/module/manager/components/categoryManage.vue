@@ -1,8 +1,8 @@
 <template>
 
 	<div>
-        <header>菜单管理</header>
-        <el-button type="primary" @click="addCategory">新增</el-button>
+        <header>分类管理</header>
+        <el-button type="primary" @click="addCategory" size="small">新增</el-button>
         <!-- <el-button type="success" @click="saveCategory">保存</el-button> -->
         <div  v-loading="loadList">
             <p v-if="formData.categoryList.length==0" class="categoryTip">暂无数据</p>
@@ -11,7 +11,7 @@
                 :key="index"
                 :prop="'categoryList.' + index + '.text'"
                 :rules="{
-                    required: true, message: '菜单名不能为空', trigger: 'blur'
+                    required: true, message: '分类名不能为空', trigger: 'blur'
                     }"
 
                 >
@@ -19,16 +19,16 @@
                         <el-col :span="1">
                             {{category.id}}
                         </el-col>
-                        <el-col :span="6">
+                        <el-col :span="10">
                             <el-input v-model="category.text" ></el-input> 
                         </el-col>
                         <el-col :span="12" v-if="category.id==0">
-                            <el-button  type="success" @click="saveCategory(index)">添加</el-button>
-                            <el-button type="default" @click="cancelCategory(index)">取消</el-button>
+                            <el-button  type="success" @click="saveCategory(index)" size="small">添加</el-button>
+                            <el-button type="default" @click="cancelCategory(index)" size="small">取消</el-button>
                         </el-col>
                         <el-col :span="12" v-else>
-                            <el-button type="success" @click="saveCategory(index)">修改</el-button>
-                            <el-button type="danger" @click="delCategory(index)">删除</el-button>
+                            <el-button type="success" @click="saveCategory(index)" size="small">修改</el-button>
+                            <el-button type="danger" @click="delCategory(index)" size="small">删除</el-button>
                         </el-col>
                     </el-row>
                 </el-form-item>
@@ -148,7 +148,7 @@ export default {
         delCategory(index){
             var temp=this.formData.categoryList[index];
             
-            this.$confirm('是否确定删除该菜单?', '提示', {
+            this.$confirm('是否确定删除该分类?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

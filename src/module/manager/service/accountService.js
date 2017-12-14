@@ -12,6 +12,25 @@ const Service = {
                 throw error;
             });
     },
+    getSetting:()=>{
+        return api.get('/manager/setting').then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
+    putSetting:(data)=>{
+        return api
+            .put('/manager/setting', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
     getAccounts:()=>{
         return api.get('/manager/accounts').then((res)=>{
             return res

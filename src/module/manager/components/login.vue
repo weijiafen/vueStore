@@ -2,7 +2,7 @@
 	<div @keyup="show($event)">
 		<el-card class="login_box">
 			<h1>登录后台管理系统</h1>
-			<el-form label-width="60px">
+			<el-form label-width="3rem">
 				<el-form-item label="账号">
 					<el-input v-model="account" />
 				</el-form-item>
@@ -13,9 +13,7 @@
 					<el-input class="verification_code" v-model="captcha" />
 					<img @click="changeCaptcha" :src="captchaImg" alt="验证码">
 				</el-form-item>
-				<el-form-item>
-					<el-button type="primary" class="login_btn" @click="login">登录</el-button>
-				</el-form-item>
+				<el-button type="primary" class="login_btn" @click="login">登录</el-button>
 			</el-form>
 		</el-card>
 	</div>
@@ -66,30 +64,34 @@
 </script>
 <style lang="scss">
 	.login_box{
-		min-width: 480px;
+		width: 80%;
 		position: absolute;
-		top: 50%;
+		top: 40%;
 		left: 50%;
-		transform: translate(-50%,-70%);
+		transform: translate(-50%,-50%);
 		h1{
-			font-size: 22px;
+			font-size: 1rem;
 			margin-bottom: 24px;
 			color:#20A0FF;
 		}
+		.el-form-item__label{
+			font-size:.6rem;
+		}
 		.verification_code{
-			width: 160px;
+			width: 100px;
 			& + img{
 				position:absolute;
 				cursor: pointer;
-				width: 120px;
+				width: 100px;
 				height: 36px;
-				left: 170px;
+				left: 100px;
 				top:2px;
 			}
 		}
 		.login_btn{
-			width:100px;
-			margin-left:110px;
+			width:100%;
+			font-size:.7rem;
+			// margin-left:110px;
 		}
 	}
 </style>

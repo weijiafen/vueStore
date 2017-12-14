@@ -11,6 +11,7 @@ var goods=require('./controler/goods.js');
 var label=require('./controler/label.js');
 var stock=require('./controler/stock.js');
 var goodOnline=require('./controler/goodOnline.js');
+var setting=require('./controler/setting.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -20,7 +21,7 @@ module.exports=function(app){
 	}));
 	app.use(session({
 	    secret: 'hubwiz app', //secret的值建议使用随机字符串
-	    cookie: {maxAge: 60 * 1000 * 30}, // 过期时间（毫秒）
+	    cookie: {maxAge: 60 * 1000 * 60*12}, // 过期时间（毫秒）
 	    resave:true		//在操作的时候重新设置session。顺延登录时间
 	}));
 	app.post('/user/login',function(req,res){
@@ -81,5 +82,13 @@ module.exports=function(app){
 	//修改商品上下架
 	app.put('/manager/goodOnline',function(req,res){
 		goodOnline('put',req,res);
+	})
+	//获取店铺设置
+	app.get('/manager/setting',function(req,res){
+		setting('get',req,res);
+	})
+	//修改店铺设置
+	app.put('/manager/setting',function(req,res){
+		setting('put',req,res);
 	})
 }

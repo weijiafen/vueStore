@@ -106,7 +106,7 @@ input, select {
 /* manager global style */
 .logo{
     height: 60px;
-    font-size: 20px;
+    font-size: 1rem;
     line-height: 60px;
     text-align: center;
     float: right;
@@ -127,4 +127,32 @@ header{
 }
 .rowItem{
     margin: 20px 0;
+}
+html {
+    font-size : 16px;
+}
+@media only screen and (min-width: 401px){
+    html {
+        font-size: 24px !important;
+    }
+}
+@media only screen and (min-width: 428px){
+    html {
+        font-size: 26px !important;
+    }
+}
+@media only screen and (min-width: 481px){
+    html {
+        font-size: 28px !important; 
+    }
+}
+@media only screen and (min-width: 569px){
+    html {
+        font-size: 32px !important; 
+    }
+}
+@media only screen and (min-width: 641px){
+    html {
+        font-size: 36px !important; 
+    }
 }

@@ -35,7 +35,6 @@ module.exports=(async (function(method,req,response){
 
 				distinct: true
 			}))
-			console.log(res);
 			if(res.rows.length>=0){
 				result.status=0;
 				result.msg="查询成功";
@@ -51,7 +50,8 @@ module.exports=(async (function(method,req,response){
 						price:item.dataValues.price,
 						isOnline:item.dataValues.isOnline,
 						label:item.dataValues.labels,
-						category:item.dataValues.category
+						category:item.dataValues.category,
+						img:item.dataValues.img||""
 					})
 				}
 			}
@@ -66,6 +66,7 @@ module.exports=(async (function(method,req,response){
 		var categoryId=req.body.categoryId
 		var price=req.body.price
 		var isOnline=req.body.isOnline
+		var img=req.body.img
 		if(uid){
 			if(!categoryId){
 				result={
@@ -98,7 +99,8 @@ module.exports=(async (function(method,req,response){
 					count:parseInt(count),
 					categoryId:categoryId,
 					price:parseFloat(price),
-					isOnline:isOnline
+					isOnline:isOnline,
+					img:img
 				}))
 				result.status=0;
 				result.msg="success"
@@ -119,6 +121,7 @@ module.exports=(async (function(method,req,response){
 		var categoryId=req.body.categoryId
 		var price=req.body.price
 		var isOnline=req.body.isOnline
+		var img=req.body.img
 		if(uid){
 			if(!categoryId){
 				result={
@@ -170,7 +173,8 @@ module.exports=(async (function(method,req,response){
 						count:parseInt(count),
 						categoryId:categoryId,
 						price:parseFloat(price),
-						isOnline:isOnline
+						isOnline:isOnline,
+						img:img
 					},{
 						where:{
 							id:id

@@ -37,6 +37,10 @@ var good = sequelize.define('good', {
     //商品是否上线 1：上线 ， 0 ：下线
     type:Sequelize.INTEGER,
   },
+  img:{
+    //商品图片
+    type: Sequelize.STRING
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

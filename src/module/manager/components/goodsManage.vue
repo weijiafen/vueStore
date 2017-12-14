@@ -1,7 +1,7 @@
 <template>
     <div class="goodsManage">
         <header>商品管理</header>
-        <el-button type="success" class="newBtn" @click="showEdit(null)">新增商品</el-button>
+        <el-button type="success" size="small" class="newBtn" @click="showEdit(null)">新增商品</el-button>
         <el-select v-model="filterCategory" @change="changeFilterCategory">
             <el-option  label="全部" value=""></el-option> 
             <el-option v-for="ca in categories" :label="ca.text" :value="ca.id"></el-option> 
@@ -62,13 +62,13 @@
           @current-change="handleCurrentChange"
           :page-sizes="[10, 20, 50, 100]"
           :page-size="pageSize"
-          layout="total, sizes, prev, pager, next"
+          layout="total, prev, pager, next"
           :total="total">
         </el-pagination>
         <el-dialog
           title="编辑商品"
           :visible.sync="editVisible"
-          size="small">
+          size="large">
             <el-form :model="currentGood" label-width="100px" :rules="rules"
                 ref="currentGoodForm"
             >
@@ -86,6 +86,17 @@
                 </el-form-item>
                 <el-form-item label="商品价格" prop="price">
                     <el-input v-model.number="currentGood.price"></el-input>
+                </el-form-item>
+                <el-form-item label="商品图片" prop="price">
+                    <el-upload
+                      class="avatar-uploader"
+                      action="/upload"
+                      :show-file-list="false"
+                      :on-success="handleAvatarSuccess"
+                      :before-upload="beforeAvatarUpload">
+                      <img v-if="currentGood.img" :src="currentGood.img" class="avatar goodImage">
+                      <i v-else class="el-icon-plus avatar-uploader-icon"></i>
+                    </el-upload>
                 </el-form-item>
                 <el-form-item label="剩余数量" prop="count">
                     {{currentGood.count}}
@@ -105,9 +116,9 @@
         <el-dialog
           title="编辑标签"
           :visible.sync="labelsVisible"
-          size="small"
+          size="large"
           class="labelDialog">
-            <el-form label-width="80px" :model="editLabel"
+            <el-form label-width="52px" :model="editLabel"
                 ref="labelForm"
             >
                 <el-form-item
@@ -115,12 +126,12 @@
                 :rules="[
                     { required: true, message: '标签名不能为空',trigger: 'blur' }
                 ]" label="标签">
-                    <el-row  :gutter="20">
+                    <el-row  :gutter="4">
                         <el-col :span="12">
                             <el-input v-model="editLabel.name"
                             ></el-input>
                         </el-col>
-                        <el-col :span="8">
+                        <el-col :span="11">
                             <el-color-picker v-model="editLabel.bgColor"></el-color-picker>
                             <el-button size="small" class="addLabelBtn" type="primary" @click="addTag">添加</el-button>
                         </el-col>
@@ -143,7 +154,7 @@
         <el-dialog
           title="修改库存"
           :visible.sync="stockVisible"
-          size="small"
+          size="large"
           class="">
             <p class="stockTip">填入正数为增加库存，负数为减少库存</p>
             <el-form label-width="60px"
@@ -255,7 +266,8 @@ import categoryService from '../service/categoryService.js'
                         description:"",
                         price:0,
                         count:0,
-                        isOnline:0
+                        isOnline:0,
+                        img:""
                     }
                 }
                 this.editVisible=true;
@@ -436,7 +448,12 @@ import categoryService from '../service/categoryService.js'
             changeFilterCategory(v){
                 this.filterCategory=v;
                 this.getGoodsLits();
-            }
+            },
+            handleAvatarSuccess(res){
+                this.currentGood.img=res.src
+                debugger
+            },
+            beforeAvatarUpload(){}
         }
     }
 
@@ -470,6 +487,9 @@ import categoryService from '../service/categoryService.js'
     .stockTip{
         margin: 0 0 16px;
         padding: 0 20px;
+    }
+    .goodImage{
+        max-width:100%;
     }
 }
     
