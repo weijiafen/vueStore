@@ -1,7 +1,9 @@
 <template>
 	<div class="index">
         <transition name="fade" mode="out-in">
-            <router-view></router-view>
+            <keep-alive>
+                <router-view></router-view>
+            </keep-alive>
         </transition>
         <mt-tabbar v-model="selected" :fixed="true">
             <mt-tab-item id="tab1">
@@ -49,8 +51,9 @@
             a{
                 display:block;
                 font-size:1rem;
+                line-height:2;
                 text-decoration: none;
-                color: #888;
+                color: #666;
             }
         } 
     }

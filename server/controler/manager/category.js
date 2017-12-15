@@ -1,6 +1,6 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-var category=require('../modules/category.js');
+var category=require('../../modules/category.js');
 module.exports=(async (function(method,req,response){
 	var result={
 		status:1000,

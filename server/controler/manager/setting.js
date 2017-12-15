@@ -1,6 +1,6 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-var user=require('../modules/user.js');
+var user=require('../../modules/user.js');
 var Sequelize=require('sequelize')
 module.exports=(async (function(method,req,response){
 	var result={

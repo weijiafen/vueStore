@@ -451,7 +451,6 @@ import categoryService from '../service/categoryService.js'
             },
             handleAvatarSuccess(res){
                 this.currentGood.img=res.src
-                debugger
             },
             beforeAvatarUpload(){}
         }

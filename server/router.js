@@ -5,13 +5,14 @@ var path = require('path');
 var bodyParser=require('body-parser')
 var captcha=require('./controler/captcha');
 var upload=require('./controler/upload');
-var login=require('./controler/login.js');
-var category=require('./controler/category.js');
-var goods=require('./controler/goods.js');
-var label=require('./controler/label.js');
-var stock=require('./controler/stock.js');
-var goodOnline=require('./controler/goodOnline.js');
-var setting=require('./controler/setting.js');
+var login=require('./controler/manager/login.js');
+var category=require('./controler/manager/category.js');
+var goods=require('./controler/manager/goods.js');
+var label=require('./controler/manager/label.js');
+var stock=require('./controler/manager/stock.js');
+var goodOnline=require('./controler/manager/goodOnline.js');
+var setting=require('./controler/manager/setting.js');
+var menu=require('./controler/customer/goods.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -90,5 +91,9 @@ module.exports=function(app){
 	//修改店铺设置
 	app.put('/manager/setting',function(req,res){
 		setting('put',req,res);
+	})
+	//获取店铺设置
+	app.get('/customer/menu',function(req,res){
+		menu('get',req,res);
 	})
 }

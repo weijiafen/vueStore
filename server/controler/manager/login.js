@@ -1,4 +1,4 @@
-var User=require('../modules/user.js');
+var User=require('../../modules/user.js');
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 //node提供的加密模块

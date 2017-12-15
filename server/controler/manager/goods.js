@@ -1,8 +1,8 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-var good=require('../modules/good.js');
-var category=require('../modules/category.js');
-var label=require('../modules/label.js');
+var good=require('../../modules/good.js');
+var category=require('../../modules/category.js');
+var label=require('../../modules/label.js');
 var Sequelize=require('sequelize')
 module.exports=(async (function(method,req,response){
 	var result={

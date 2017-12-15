@@ -1,7 +1,7 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
-var good=require('../modules/good.js');
-var category=require('../modules/category.js');
+var good=require('../../modules/good.js');
+var category=require('../../modules/category.js');
 module.exports=(async (function(method,req,response){
 	var result={
 		status:1000,
@@ -10,7 +10,7 @@ module.exports=(async (function(method,req,response){
 	if(method=='put'){
 		var uid=req.session.uid;
 		var id=req.body.id;
-		var count=req.body.count
+		var isOnline=parseInt(req.body.isOnline)
 		if(uid){
 			if(!id){
 				result={
@@ -18,34 +18,28 @@ module.exports=(async (function(method,req,response){
 					msg:"商品id为空"
 				}
 			}
-			else if(isNaN(parseInt(count))){
+			else if(isOnline==null||isOnline==undefined){
 				result={
 					status:-1,
-					msg:"库存参数不合法"
+					msg:"上架参数不合法"
 				}
 			}else{
-				category.hasMany(good)
-				good.belongsTo(category);
-				//查询商品是该User的
-				var isAutor=await(good.findOne({
+				var goodObj=await(good.findOne({
 					where:{
 						id:id
-					},
-					include:[{
-						model:category,
+					}
+				}))
+				if(goodObj){
+					//查询商品是该User的
+					var isAutor=await(category.findOne({
 						where:{
+							id:goodObj.dataValues.categoryId,
 							userId:uid
 						}
-					}]
-				}))
-				if(isAutor&&isAutor.dataValues.category){
-					var newCount=isAutor.dataValues.count+parseInt(count)
-					if(newCount<0){
-						result.status=-1;
-						result.msg="库存不能低于0"
-					}else{
+					}))
+					if(isAutor){
 						var res=await(good.update({
-							count:newCount,
+							isOnline:isOnline,
 						},{
 							where:{
 								id:id
@@ -56,11 +50,8 @@ module.exports=(async (function(method,req,response){
 						result.data={
 						}
 					}
-					
-				}else{
-					result.status=-1
-					result.msg="没有操作权限"
 				}
+				
 			}
 		}
 	}
