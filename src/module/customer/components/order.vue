@@ -16,7 +16,7 @@
         	}
         },
         activated(){
-        	this.$nextTik(()=>{
+        	this.$nextTick(()=>{
         	})
         }
     }

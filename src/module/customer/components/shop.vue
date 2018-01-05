@@ -48,7 +48,34 @@
           </span>
         </div>
         <mt-popup v-model="isShowCart" position="bottom">
-            <div>{{shoppingCart}}</div>
+            <div class="shoppingCartDialog">
+                <h2>购物车</h2>
+                <div class="goodNum clearfix" v-for="good in shoppingCart">
+                    <div class="goodTitle">
+                        <div class="goodName">{{good.name}}</div>
+                        <div class="cartLabels">
+                            <div v-for="label in good.chooceLabels" :style="{backgroundColor:getLabelColor(label,good)}">
+                                {{getLabelName(label,good)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="numControler">
+                        <span class="iconfont icon-minus" @click="minusGood(good)"></span>
+                        {{good.number}}
+                        <span class="iconfont icon-plus" @click="addGood(good)"></span>
+                    </div>
+                    <div class="goodPrice priceIcon">
+                    {{good.price}}*{{good.number}}
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="totalPrice priceIcon">
+                    总价：{{amount}}
+                    </div>
+                    <div class="order" :class="{disabled:noOrder}" @click="submit">确认下单</div>
+                </div>
+            </div>
         </mt-popup>
         <mt-popup v-model="isShowBuyDialog" position="bottom">
             <div class="buyDialog">
@@ -62,9 +89,9 @@
                     {{(currentGood.number*(currentGood.price*100))/100}}
                     </div>
                     <div class="numControler">
-                        <span class="iconfont icon-minus" @click="minusGood"></span>
+                        <span class="iconfont icon-minus" @click="minusGood(currentGood)"></span>
                         {{currentGood.number}}
-                        <span class="iconfont icon-plus" @click="addGood"></span>
+                        <span class="iconfont icon-plus" @click="addGood(currentGood,true)"></span>
                     </div>
                 </div>
                 <div class="goodLabel" v-if="currentGood.labels.length>0">
@@ -133,6 +160,13 @@
                     sum=(sum*100+orderPay*100)/100
                 }
                 return sum
+            },
+            noOrder(){
+                if(this.shoppingCart.length==0){
+                    return true
+                }else{
+                    return false
+                }
             }
         },
         mounted(){
@@ -169,14 +203,20 @@
                     this.isShowBuyDialog=true
                 }
             },
-            minusGood(){
-                if(this.currentGood.number>0){
-                    this.currentGood.number=this.currentGood.number-1
+            minusGood(good){
+                if(good.number>0){
+                    good.number=good.number-1
                 }
             },
-            addGood(){
-                if(this.currentGood.number<this.currentGood.count){
-                    this.currentGood.number=this.currentGood.number+1
+            addGood(good,isAdd){
+                let count=this.getSelectCount(good.id);
+                let allCount=(good.count);
+                let surplus=allCount-count;
+                if(isAdd){
+                    surplus=surplus-good.number
+                }
+                if(surplus>0){
+                    good.number=good.number+1
                 }else{
                     Toast({
                         message: '库存不足了',
@@ -238,7 +278,39 @@
                 this.currentGood.number=0;
                 this.currentGood.chooceLabels=[]
                 this.currentGood.labels=item.labels;
-            }
+            },
+            getLabelName(label , good ){
+                for(let item of good.labels){
+                    if(label==item.id){
+                        return item.name
+                    }
+                }
+                return ""
+            },
+            getLabelColor(label , good ){
+                for(let item of good.labels){
+                    if(label==item.id){
+                        return item.bgColor
+                    }
+                }
+                return ""
+            },
+            getSelectCount(id){
+                let count=0
+                for(let good of this.shoppingCart){
+                    if(good.id==id){
+                        count+=good.number
+                    }
+                }
+                return count
+            },
+            submit(){
+                if(this.shoppingCart.length==0){
+                    return 
+                }else{
+                    //下单操作
+                }
+            },
         }
     }
 
@@ -399,6 +471,90 @@
         }
         .mint-popup-bottom{
             width:100%;
+        }
+        .shoppingCartDialog{
+            h2{
+                font-size: 1rem;
+                font-style: normal;
+                color: #333;
+                background-color: #eee;
+                line-height: 2;
+                padding-left: .8rem;
+                border-left: 4px solid #26a2ff;
+                
+            }
+            .goodNum{
+                padding: 10px;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                .goodTitle{
+                    width:55%;
+                    float:left;
+                    .goodName{
+                        font-size: 1rem;
+                    }
+                    .goodDescription{
+                        font-size: 10px;
+                        color: #999;
+                    }
+                    
+                }
+                .goodPrice{
+                    width:25%;
+                    text-align: center;
+                    color: #fb4c16;
+                    position: absolute;
+                    top: 50%;
+                    left: 55%;
+                    transform: translateY(-50%);
+                }
+                .cartLabels{
+                    &>div{
+                        color: #fff;
+                        background-color: rgb(231, 12, 12);
+                        display: inline-block;
+                        padding: .1rem .3rem;
+                        font-size: 0.4rem;
+                        border-radius: 6px;
+                    }
+                }
+                .numControler{
+                    width: 20%;
+                    text-align: center;
+                    position: absolute;
+                    top: 50%;
+                    left: 80%;
+                    -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    color:#26a2ff;
+                    .icon-minus{
+                        font-size: 1rem;
+                        padding: 3px;
+                        border-radius: 50%;
+                    }
+                    .icon-plus{
+                        color:#fff;
+                        background-color:#26a2ff;
+                        font-size: 1rem;
+                        padding: 3px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .totalPrice{
+                color: #fb4c16;
+                float: left;
+                margin-top: .6rem;
+            }
+            .order{
+                float: right;
+                background-color: #13ce66;
+                color: #fff;
+                padding: .6rem .8rem;
+                &.disabled{
+                    background-color: #ddd;
+                }
+            }
         }
         .buyDialog{
             h2{
