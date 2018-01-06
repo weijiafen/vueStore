@@ -13,6 +13,7 @@ var stock=require('./controler/manager/stock.js');
 var goodOnline=require('./controler/manager/goodOnline.js');
 var setting=require('./controler/manager/setting.js');
 var menu=require('./controler/customer/goods.js');
+var order=require('./controler/customer/order.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -95,5 +96,9 @@ module.exports=function(app){
 	//获取店铺设置
 	app.get('/customer/menu',function(req,res){
 		menu('get',req,res);
+	})
+	//下单
+	app.post('/customer/order',function(req,res){
+		order('post',req,res);
 	})
 }

@@ -111,7 +111,7 @@
 </template>
 <script>
     import server from '../service/customerService'
-    import { Toast } from 'mint-ui';
+    import { Toast , MessageBox  } from 'mint-ui';
     export default {
         mixins: [],
         name: 'shop',
@@ -309,6 +309,23 @@
                     return 
                 }else{
                     //下单操作
+                    server.applyOrder({
+                        cart:this.shoppingCart,
+                        deskId:this.deskId
+                    }).then(res=>{
+                        if(res.status==0){
+                            Toast({
+                                message: '下单成功',
+                                position: 'bottom',
+                                duration: 1500
+                            });
+                            this.$router.push(`/pay/${res.data.id}`)
+                        }else{
+                            MessageBox('Notice', res.msg);
+                        }
+                        
+                    })
+                    // console.log("购物车",this.shoppingCart)
                 }
             },
         }

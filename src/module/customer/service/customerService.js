@@ -11,5 +11,17 @@ const Service = {
             throw error
         })
     },
+    applyOrder:(data)=>{
+        return api
+            .post('/customer/order', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
 }
 export default Service

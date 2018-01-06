@@ -34,7 +34,8 @@ module.exports=(async (function(req,response){
 				status:0,
 				msg:"登录成功",
 				data:{
-					userName:res.dataValues.userName
+					userName:res.dataValues.userName,
+					shopId:res.dataValues.id
 				}
 			}
 			var now=(new Date()).valueOf();

@@ -3,6 +3,7 @@ import Router from 'vue-router'
 const Shop = resolve => require(['../components/shop.vue'], resolve)
 const Index = resolve => require(['../components/index.vue'], resolve)
 const Order = resolve => require(['../components/order.vue'], resolve)
+const Pay = resolve => require(['../components/pay.vue'], resolve)
 Vue.use(Router)
 //菜单页，结算页，订单列表页，订单详情页
 export default new Router({
@@ -24,5 +25,10 @@ export default new Router({
             	}
             ]
         },
+        {
+            path: '/pay/:orderId',
+            name:'pay',
+            component:Pay
+        }
     ]
 })

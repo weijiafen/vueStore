@@ -3,6 +3,7 @@
         <el-menu :default-active="$route.path" theme="dark" mode="horizontal" menu-trigger="click" :router="true">
             <el-submenu index="shop">
                 <template slot="title">店铺</template>
+                <el-menu-item index="/">首页</el-menu-item>
                 <el-menu-item index="/activeManage">活动</el-menu-item>
                 <el-menu-item index="/setting">设置</el-menu-item>
             </el-submenu>

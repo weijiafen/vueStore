@@ -8,12 +8,24 @@
 <body>
 	<h1>socket.io</h1>
 	<p>Welcome to socket.io</p>
+	<span id="open">开启</span>
+	<span id="close">关闭</span>
 	<script>
-	var socket = io.connect('http://localhost:8080?shopId=1');
-	socket.on('news', function (data) {
-		console.log(data);
-		socket.emit('my other event', { my: 'data' });
-	});
+		var socket 
+		document.getElementById("open").addEventListener('click',function(){
+			socket = io.connect('http://localhost:8088?shopId=1');
+			socket.on('news', function (data) {
+				console.log(data);
+				socket.emit('my other event', { my: 'data' });
+			});
+			socket.on('disconnect', function (data) {
+				console.log(data);
+				socket.emit('disconnect', 'client disconnect');
+			});
+		})
+		document.getElementById("close").addEventListener('click',function(){
+			socket.close()
+		})
 	</script>
 </body>
 </html>

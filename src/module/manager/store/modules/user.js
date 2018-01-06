@@ -2,6 +2,7 @@ export default {
     state: {
         name: '',
         type: 1,
+        shopId:''
     },
     mutations: {
         update(state, valObj) {

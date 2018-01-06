@@ -47,7 +47,9 @@
         			captcha:this.captcha
         		}).then((res)=>{
         			if(res.status==0){
+        				localStorage.setItem('shopId', res.data.shopId);
         				this.$router.push("/")
+
         			}else{
         				this.$alert(res.msg)
         				this.changeCaptcha();
