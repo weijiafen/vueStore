@@ -14,6 +14,7 @@ var goodOnline=require('./controler/manager/goodOnline.js');
 var setting=require('./controler/manager/setting.js');
 var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
+var orderList=require('./controler/customer/orderList.js');
 var pay=require('./controler/customer/pay.js');
 
 module.exports=function(app){
@@ -109,5 +110,9 @@ module.exports=function(app){
 	//下单
 	app.post('/customer/pay',function(req,res){
 		pay('post',req,res);
+	})
+	//查询订单列表
+	app.get('/customer/orderList',function(req,res){
+		orderList('get',req,res);
 	})
 }

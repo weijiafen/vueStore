@@ -46,5 +46,13 @@ const Service = {
                 throw error;
             });
     },
+    getOrderList:()=>{
+        return api.get('/customer/orderList',{
+        }).then((res)=>{
+        return res
+        },(error)=>{
+            throw error
+        })
+    },
 }
 export default Service

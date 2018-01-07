@@ -3,11 +3,6 @@ var await = require('asyncawait/await');
 var order=require('../../modules/order.js');
 var Sequelize=require('sequelize')
 var dbConfig=require('../../connection/dbConfig.js')
-var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
-  host: dbConfig.host,
-  dialect: 'mysql',
-  pool: dbConfig.pool,
-});
 module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={

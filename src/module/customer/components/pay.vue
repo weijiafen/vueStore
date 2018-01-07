@@ -33,7 +33,7 @@
             <div class="totalPrice priceIcon">
                 总额：{{order.count}}
             </div>
-            <div class="payBtn" :class="{disabled:!canPay}" @click="payOrder">确认支付</div>
+            <div v-if="order.status==1" class="payBtn" :class="{disabled:!canPay}" @click="payOrder">确认支付</div>
         </div>
 	</div>
 </template>
@@ -219,7 +219,7 @@
             .totalPrice{
                 color: #fb4c16;
                 float: left;
-                margin-top: .6rem;
+                padding: .6rem .8rem;
             }
             .payBtn{
                 float: right;
