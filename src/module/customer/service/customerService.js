@@ -11,9 +11,32 @@ const Service = {
             throw error
         })
     },
+    getOrder:(orderId)=>{
+        return api.get('/customer/order',{
+            params:{
+                orderId:orderId
+            }
+        }).then((res)=>{
+        return res
+        },(error)=>{
+            throw error
+        })
+    },
     applyOrder:(data)=>{
         return api
             .post('/customer/order', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
+    payOrder:(data)=>{
+        return api
+            .post('/customer/pay', {
                 data: data,
             })
             .then((res) => {

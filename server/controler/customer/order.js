@@ -4,6 +4,7 @@ var good=require('../../modules/good.js');
 var order=require('../../modules/order.js');
 var subOrder=require('../../modules/subOrder.js');
 var label=require('../../modules/label.js');
+var desk=require('../../modules/desk.js');
 var Sequelize=require('sequelize')
 var dbConfig=require('../../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
@@ -18,45 +19,51 @@ module.exports=(async (function(method,req,response){
 		msg:"未登录"
 	}
 	if(method=='get'){
-		var shopId=req.query.shopId;
-		//临时增加顾客id，待接入微信登录
-		req.session.cid=1;
-		good.hasMany(label)
-		label.belongsTo(good);
-		var shopRes=await(user.findOne({
-			where:{
-				id:shopId
-			}
-		}))
-		if(shopRes){
-			result.status=0;
-			result.msg="success"
-			result.data={
-				shopInfo:{
-					name:shopRes.dataValues.userName,
-					notice:shopRes.dataValues.notice,
-					photo:shopRes.dataValues.photo,
-					openBusiness:shopRes.dataValues.openBusiness
-				}
-			}
-			var menuRes=await(category.findAll({
+		var orderId=req.query.orderId;
+		var cid=req.session.cid
+		if(cid){
+			order.hasMany(subOrder)
+			subOrder.belongsTo(order);
+			desk.hasOne(order)
+			order.belongsTo(desk);
+			good.hasOne(subOrder)
+			subOrder.belongsTo(good);
+			good.hasMany(label)
+			label.belongsTo(good);
+			var orderRes=await(order.findOne({
 				where:{
-					userId:shopId
+					customerId:cid,
+					id:orderId	
 				},
 				include:[{
-					model:good,
+					model:subOrder,
 					where:{
-						isOnline:1
+						orderId:Sequelize.col('order.id')
 					},
-					include:[label]
-				}],
+					include:[{
+						model:good,
+						include:[label]
+					}]
+				},
+				{
+					model:desk,
+					where:{
+						id:Sequelize.col('order.deskId')
+					}
+				}
+				]
 			}))
-			result.data.menu=menuRes
-		}else{
-			result.status=-1;
-			result.msg="此店铺不存在"
+			if(orderRes){
+				result.status=0;
+				result.msg="success"
+				result.data={
+					order:orderRes.dataValues
+				}
+			}else{
+				result.status=-1;
+				result.msg="查询订单失败"
+			}
 		}
-		
 	}
 	else if(method=='post'){
 		var cid=req.session.cid;

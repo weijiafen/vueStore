@@ -26,7 +26,7 @@ export default new Router({
             ]
         },
         {
-            path: '/pay/:orderId',
+            path: '/pay/:shopId/:deskId/:orderId',
             name:'pay',
             component:Pay
         }

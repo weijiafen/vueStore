@@ -319,7 +319,7 @@
                                 position: 'bottom',
                                 duration: 1500
                             });
-                            this.$router.push(`/pay/${res.data.id}`)
+                            this.$router.push(`/pay/${this.shopId}/${this.deskId}/${res.data.id}`)
                         }else{
                             MessageBox('Notice', res.msg);
                         }
