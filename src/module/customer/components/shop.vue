@@ -311,7 +311,8 @@
                     //下单操作
                     server.applyOrder({
                         cart:this.shoppingCart,
-                        deskId:this.deskId
+                        deskId:this.deskId,
+                        shopId:this.shopId
                     }).then(res=>{
                         if(res.status==0){
                             Toast({

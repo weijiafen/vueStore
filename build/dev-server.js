@@ -90,15 +90,11 @@ var io = require('socket.io').listen(server);
 global.sockets={};
 io.sockets.on('connection', function (socket) {
   var shopId=socket.handshake.query.shopId
-  console.log('connection')
+  socket.shopId=shopId
   global.sockets[shopId]=socket
-    socket.emit('news', { hello: 'world' });
-    socket.on('my other event', function (data) {
-      console.log(data);
-    });
-    socket.on('disconnect', function (data) {
-      console.log('server disconnect');
-    });
+  socket.on('disconnect', function (data) {
+    delete global.sockets[socket.shopId]
+  });
 });
 module.exports = {
   ready: readyPromise,

@@ -71,6 +71,7 @@ module.exports=(async (function(method,req,response){
 		if(cid){
 			var cart=req.body.cart
 			var deskId=req.body.deskId
+			var userId=req.body.shopId
 			var countObj={}
 			await(sequelize.transaction()
 				.then(async(function (t) {
@@ -102,6 +103,7 @@ module.exports=(async (function(method,req,response){
 						customerId:parseInt(cid),
 						isPay:0,
 						status:1,
+						userId:userId,
 						deskId:parseInt(deskId),
 						createAt:(new Date()).valueOf()
 					}, {transaction: t})

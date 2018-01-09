@@ -130,7 +130,8 @@
             payOrder(){
                 if(this.canPay){
                     server.payOrder({
-                        orderId:this.orderId
+                        orderId:this.orderId,
+                        shopId:this.shopId
                     }).then(res=>{
                         if(res.status==0){
                             Toast({

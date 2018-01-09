@@ -17,6 +17,10 @@ var Order = sequelize.define('order', {
   customerId:{
     type:Sequelize.INTEGER,
   },
+  //订单所属商店ID
+  userId:{
+    type:Sequelize.INTEGER,
+  },
   count: {
     //总额
     type: Sequelize.STRING 

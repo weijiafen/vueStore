@@ -12,6 +12,7 @@ var label=require('./controler/manager/label.js');
 var stock=require('./controler/manager/stock.js');
 var goodOnline=require('./controler/manager/goodOnline.js');
 var setting=require('./controler/manager/setting.js');
+var managerOrder=require('./controler/manager/order.js');
 var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
@@ -114,5 +115,13 @@ module.exports=function(app){
 	//查询订单列表
 	app.get('/customer/orderList',function(req,res){
 		orderList('get',req,res);
+	})
+	//后台查询已支付订单列表
+	app.get('/manager/orderList',function(req,res){
+		managerOrder('get',req,res);
+	})
+	//修改订单状态
+	app.put('/manager/order',function(req,res){
+		managerOrder('put',req,res);
 	})
 }

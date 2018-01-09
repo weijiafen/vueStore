@@ -6,6 +6,12 @@ var subOrder=require('../../modules/subOrder.js');
 var label=require('../../modules/label.js');
 var desk=require('../../modules/desk.js');
 var Sequelize=require('sequelize')
+var dbConfig=require('../../connection/dbConfig.js')
+var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
+  host: dbConfig.host,
+  dialect: 'mysql',
+  pool: dbConfig.pool,
+});
 module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={
@@ -13,13 +19,8 @@ module.exports=(async (function(method,req,response){
 		msg:"未登录"
 	}
 	if(method=='get'){
-		
-	}
-	else if(method=='post'){
-		var cid=req.session.cid;
-		var orderId=req.body.orderId
-		var shopId=req.body.shopId
-		if(cid){
+		var uid=req.session.uid
+		if(uid){
 			order.hasMany(subOrder)
 			subOrder.belongsTo(order);
 			desk.hasOne(order)
@@ -28,9 +29,11 @@ module.exports=(async (function(method,req,response){
 			subOrder.belongsTo(good);
 			good.hasMany(label)
 			label.belongsTo(good);
-			var orderRes=await(order.findOne({
+			var orderRes=await(order.findAll({
+                'order':[['createAt','ASC']],
 				where:{
-					id:orderId
+					userId:uid,
+					status:[2,4]	
 				},
 				include:[{
 					model:subOrder,
@@ -50,27 +53,41 @@ module.exports=(async (function(method,req,response){
 				}
 				]
 			}))
-			if(orderRes.dataValues.status==1){
-				var payRes=await(order.update({
-					status:2,
-					isPay:1
-				},{
-					where:{
-						id:orderId
-					}
-				}))
-				if(payRes){
-					//支付成功后向后台推送订单
-					orderRes.dataValues.status=2;
-					global.sockets[shopId].emit('postOrder',orderRes)
-					result.status=0
-					result.msg='支付成功'
+			if(orderRes){
+				result.status=0;
+				result.msg="success"
+				result.data={
+					order:orderRes
 				}
 			}else{
-				result.status=-1
-				result.msg='支付异常'
+				result.status=-1;
+				result.msg="查询订单失败"
 			}
-			
+		}
+	}
+	else if(method=='put'){
+		var uid=req.session.uid;
+		var orderId=req.body.orderId
+		var status=req.body.status
+		if(uid){
+			var orderRes=await(order.update({
+                status:status
+            },{
+                where:{
+                    id:orderId,
+                    userId:uid
+                }
+            }))
+            if(orderRes==1){
+                result.status=0;
+				result.msg="success"
+                result.data={
+                    id:orderId
+                }
+            }else{
+                result.status=-1;
+				result.msg="更新订单失败"
+            }
 		}
 	}
 	response.end(JSON.stringify(result))
