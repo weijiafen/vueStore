@@ -25,7 +25,7 @@ var Order = sequelize.define('order', {
   isPay:{
     type:Sequelize.INTEGER,
   },
-  //订单状态，1下单，2取消，3正在制作，4完成
+  //订单状态，1下单，2已支付，3取消，4正在制作，5完成
   status:{
     type:Sequelize.INTEGER,
   },

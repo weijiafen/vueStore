@@ -28,6 +28,13 @@
                 selected:"tab1"
         	}
         },
+        mounted() {
+            this.$root.eventHub.$on('selectTab',(data)=>{
+                if(data){
+                    this.selected = data;
+                }
+            })
+        },
         activated(){
         	this.$nextTik(()=>{
         	})

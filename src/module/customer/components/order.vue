@@ -4,9 +4,10 @@
             <h2>
                 {{order.desk.name}}
                 <span v-if="order.status==1">未支付</span>
-                <span v-if="order.status==2" class="cancelTag">已取消</span>
-                <span v-if="order.status==3" class="doingTag">正在制作</span>
-                <span v-if="order.status==4" class="completeTag">订单已完成</span>
+                <span v-if="order.status==2" class="completeTag">已支付</span>
+                <span v-if="order.status==3" class="cancelTag">已取消</span>
+                <span v-if="order.status==4" class="doingTag">正在制作</span>
+                <span v-if="order.status==5" class="completeTag">订单已完成</span>
             </h2>
             <div class="orderTime">
                 {{getDate(order.createAt)}}
@@ -38,12 +39,14 @@
         },
         mounted(){
             this.$nextTick(()=>{
+                this.$root.eventHub.$emit('selectTab','tab2')
                 server.getOrderList().then(res=>{
                     if(res.status==0){
                         this.orderList=res.data
                     }
                     
                 })
+                
             })
         },
         methods:{

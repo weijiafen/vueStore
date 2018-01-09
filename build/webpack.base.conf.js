@@ -1,4 +1,5 @@
 var path = require('path')
+var webpack = require('webpack')
 var utils = require('./utils')
 var config = require('../config')
 var vueLoaderConfig = require('./vue-loader.conf')
@@ -23,6 +24,9 @@ module.exports = {
       ? config.build.assetsPublicPath
       : config.dev.assetsPublicPath
   },
+  plugins:[
+    new webpack.SourceMapDevToolPlugin()
+  ],
   resolve: {
     extensions: ['.js', '.vue', '.json'],
     alias: {

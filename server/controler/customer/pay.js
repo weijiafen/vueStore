@@ -16,8 +16,29 @@ module.exports=(async (function(method,req,response){
 		var cid=req.session.cid;
 		var orderId=req.body.orderId
 		if(cid){
-			result.status=0
-			result.msg='支付成功'
+			var orderRes=await(order.findOne({
+				where:{
+					id:orderId
+				}
+			}))
+			if(orderRes.dataValues.status==1){
+				var payRes=await(order.update({
+					status:2,
+					isPay:1
+				},{
+					where:{
+						id:orderId
+					}
+				}))
+				if(payRes){
+					result.status=0
+					result.msg='支付成功'
+				}
+			}else{
+				result.status=-1
+				result.msg='支付异常'
+			}
+			
 		}
 	}
 	response.end(JSON.stringify(result))
