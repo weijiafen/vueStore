@@ -20,6 +20,9 @@ module.exports=(async (function(method,req,response){
 	}
 	if(method=='get'){
 		var uid=req.session.uid
+		var orderBy=req.query.orderBy
+		var status=req.query.status
+		
 		if(uid){
 			order.hasMany(subOrder)
 			subOrder.belongsTo(order);
@@ -29,12 +32,27 @@ module.exports=(async (function(method,req,response){
 			subOrder.belongsTo(good);
 			good.hasMany(label)
 			label.belongsTo(good);
+
+			var whereObj={
+				userId:uid,
+				status:status
+			}
+			if(req.query.fileterOrderId){
+				var fileterOrderId=req.query.fileterOrderId
+				whereObj.id=fileterOrderId
+			}
+			if(req.query.filterDate){
+				var filterDateStar=parseInt(req.query.filterDate)
+				//当天的23:59:59
+				var filterDateEnd=filterDateStar+86399999
+				whereObj.createAt={
+					$gte:filterDateStar,
+					$lte:filterDateEnd
+				}	
+			}
 			var orderRes=await(order.findAll({
-                'order':[['createAt','ASC']],
-				where:{
-					userId:uid,
-					status:[2,4]	
-				},
+                'order':[['createAt',orderBy]],
+				where:whereObj,
 				include:[{
 					model:subOrder,
 					where:{

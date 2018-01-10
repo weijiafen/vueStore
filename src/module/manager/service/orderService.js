@@ -1,9 +1,8 @@
 import api from '../lib/axios/api';
 const Service = {
-    getOrderList:()=>{
+    getOrderList:(data)=>{
         return api.get('/manager/orderList',{
-            params:{
-            }
+            params:data
         }).then((res)=>{
             return res
         },(error)=>{

@@ -1,6 +1,7 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var good=require('../../modules/good.js');
+var user=require('../../modules/user.js');
 var order=require('../../modules/order.js');
 var subOrder=require('../../modules/subOrder.js');
 var label=require('../../modules/label.js');
@@ -28,51 +29,61 @@ module.exports=(async (function(method,req,response){
 			subOrder.belongsTo(good);
 			good.hasMany(label)
 			label.belongsTo(good);
-			var orderRes=await(order.findOne({
+			var shopRes=await(user.findOne({},{
 				where:{
-					id:orderId
-				},
-				include:[{
-					model:subOrder,
-					where:{
-						orderId:Sequelize.col('order.id')
-					},
-					include:[{
-						model:good,
-						include:[label]
-					}]
-				},
-				{
-					model:desk,
-					where:{
-						id:Sequelize.col('order.deskId')
-					}
+					id:shopId
 				}
-				]
 			}))
-			if(orderRes.dataValues.status==1){
-				var payRes=await(order.update({
-					status:2,
-					isPay:1
-				},{
+			if(shopRes&&shopRes.dataValues.openBusiness==0){
+				//店铺没有开启营业不可支付
+				result.status=-1
+				result.msg='该店铺已停止营业，不可支付'
+			}else{
+				var orderRes=await(order.findOne({
 					where:{
 						id:orderId
+					},
+					include:[{
+						model:subOrder,
+						where:{
+							orderId:Sequelize.col('order.id')
+						},
+						include:[{
+							model:good,
+							include:[label]
+						}]
+					},
+					{
+						model:desk,
+						where:{
+							id:Sequelize.col('order.deskId')
+						}
 					}
+					]
 				}))
-				if(payRes){
-					//支付成功后向后台推送订单
-					orderRes.dataValues.status=2;
-					if(global.sockets[shopId]){
-						global.sockets[shopId].emit('postOrder',orderRes)
+				if(orderRes.dataValues.status==1){
+					var payRes=await(order.update({
+						status:2,
+						isPay:1
+					},{
+						where:{
+							id:orderId
+						}
+					}))
+					if(payRes){
+						//支付成功后向后台推送订单
+						orderRes.dataValues.status=2;
+						if(global.sockets[shopId]){
+							global.sockets[shopId].emit('postOrder',orderRes)
+						}
+						result.status=0
+						result.msg='支付成功'
 					}
-					result.status=0
-					result.msg='支付成功'
+				}else{
+					result.status=-1
+					result.msg='支付异常'
 				}
-			}else{
-				result.status=-1
-				result.msg='支付异常'
 			}
-			
 		}
 	}
 	response.end(JSON.stringify(result))

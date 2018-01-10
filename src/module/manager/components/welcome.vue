@@ -53,7 +53,10 @@
                         }
                     }
                 })
-                server.getOrderList().then(res=>{
+                server.getOrderList({
+                    orderBy:'ASC',
+                    status:[2,4]
+                }).then(res=>{
                     if(res.status==0){
                         for(let order of res.data.order){
                             this.getLabelObj(order.subOrders)

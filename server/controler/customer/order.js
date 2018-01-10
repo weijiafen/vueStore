@@ -1,5 +1,6 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
+var user=require('../../modules/user.js');
 var good=require('../../modules/good.js');
 var order=require('../../modules/order.js');
 var subOrder=require('../../modules/subOrder.js');
@@ -77,6 +78,15 @@ module.exports=(async (function(method,req,response){
 				.then(async(function (t) {
 					let sum=0;
 					let cid=123;
+					var shopRes=await(user.findOne({},{
+						where:{
+							id:userId
+						}
+					}))
+					if(shopRes&&shopRes.dataValues.openBusiness==0){
+						//店铺没有开启营业不可下单
+						throw new Error
+					}
 					//从数据库计算订单总额
 				    for(let item of cart){
 				    	let goodRes=await(good.findOne({
@@ -172,7 +182,14 @@ module.exports=(async (function(method,req,response){
 			    	return t.rollback();
 			    	
 			  	});
-			})));
+			})).catch(function(err){
+				//下单时店铺已关闭
+				result={
+					status:-1,
+					msg:"该店铺已停止营业"
+				}
+				response.end(JSON.stringify(result))
+			}));
 		}
 	}
 	response.end(JSON.stringify(result))

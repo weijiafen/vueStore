@@ -16,6 +16,7 @@
             </el-submenu>
             <el-submenu index="report">
                 <template slot="title">统计</template>
+                <el-menu-item index="/saleHistory">订单历史</el-menu-item>
                 <el-menu-item index="/goodsReport">商品销售报表</el-menu-item>
                 <el-menu-item index="/saleReport">销售额报表</el-menu-item>
             </el-submenu>
