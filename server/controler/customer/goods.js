@@ -20,7 +20,8 @@ module.exports=(async (function(method,req,response){
 		label.belongsTo(good);
 		var shopRes=await(user.findOne({
 			where:{
-				id:shopId
+				id:shopId,
+				openBusiness:1
 			}
 		}))
 		if(shopRes){
@@ -49,7 +50,7 @@ module.exports=(async (function(method,req,response){
 			result.data.menu=menuRes
 		}else{
 			result.status=-1;
-			result.msg="此店铺不存在"
+			result.msg="此店铺未开启营业"
 		}
 		
 	}

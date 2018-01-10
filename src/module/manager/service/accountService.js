@@ -62,7 +62,29 @@ const Service = {
         },(error)=>{
             throw error
         })
-    }
+    },
+    getBusiness:(data)=>{
+            return api.get('/manager/openBusiness',{
+                params:{
+                }
+            }).then((res)=>{
+                return res
+            },(error)=>{
+                throw error
+            })
+    },
+    putBusiness:(data)=>{
+        return api
+            .put('/manager/openBusiness', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
 
 }
 export default Service

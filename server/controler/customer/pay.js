@@ -62,7 +62,9 @@ module.exports=(async (function(method,req,response){
 				if(payRes){
 					//支付成功后向后台推送订单
 					orderRes.dataValues.status=2;
-					global.sockets[shopId].emit('postOrder',orderRes)
+					if(global.sockets[shopId]){
+						global.sockets[shopId].emit('postOrder',orderRes)
+					}
 					result.status=0
 					result.msg='支付成功'
 				}

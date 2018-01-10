@@ -21,11 +21,14 @@
                 <div class="fr completeBtn" v-if="order.status==4" @click="completeOrder(index)">完成订单</div>
             </div>
         </div>
+        <audio id="media" src="/static/mp3/order.mp3" controls="controls" style="display:none">
+        </audio>
 	</div>
 	
 </template>
 <script>
     import server from '../service/orderService'
+    import accountServer from '../service/accountService'
 	import io from 'socket.io-client';
     export default {
         mixins: [],
@@ -42,6 +45,14 @@
         },
         mounted(){
             this.$nextTick(()=>{
+                var that=this;
+                accountServer.getBusiness().then(res=>{
+                    if(res.status==0){
+                        if(res.data.openBusiness==1){
+                            this.open();
+                        }
+                    }
+                })
                 server.getOrderList().then(res=>{
                     if(res.status==0){
                         for(let order of res.data.order){
@@ -50,20 +61,47 @@
                         this.orderList=res.data.order;
                     }
                 })
+                //判断页面手动关闭或刷新时是否正在营业
+                window.addEventListener("beforeunload",function(event){
+                    that.close()
+                })
             })
+        },
+        beforeDestroy(){
+            if(this.isOpen){
+                this.close();
+            }
         },
         methods:{
         	open(){
-        		this.socket = io.connect(`http://localhost:8080?shopId=${this.shopId}`);
-        		this.isOpen=true;
-                this.socket.on('postOrder',(data)=>{
-                    this.getNewOrder(data);
-                    console.log("getDate ",data)
+                accountServer.putBusiness({
+                    openBusiness:1
+                }).then(res=>{
+                    if(res.status==0){
+                        this.socket = io.connect(`http://localhost:8080?shopId=${this.shopId}`);
+                        this.isOpen=true;
+                        this.socket.on('postOrder',(data)=>{
+                            this.getNewOrder(data);
+                            console.log("getDate ",data)
+                        })
+                    }else{
+                        this.$message.error(res.msg);
+                    }
                 })
+        		
         	},
         	close(){
-        		this.socket.close();
-        		this.isOpen=false
+                accountServer.putBusiness({
+                    openBusiness:0
+                }).then(res=>{
+                    if(res.status==0){
+                        this.socket.close();
+                        this.isOpen=false
+                    }else{
+                        this.$message.error(res.msg);
+                    }
+                })
+        		
         	},
             getLabelObj(subOrders){
                 //遍历每个子单
@@ -114,6 +152,7 @@
             },
             getNewOrder(order){
                 this.orderList.push(order)
+                document.getElementById("media").play();
             }
         }
     }

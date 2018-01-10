@@ -13,6 +13,7 @@ var stock=require('./controler/manager/stock.js');
 var goodOnline=require('./controler/manager/goodOnline.js');
 var setting=require('./controler/manager/setting.js');
 var managerOrder=require('./controler/manager/order.js');
+var openBusiness=require('./controler/manager/openBusiness.js');
 var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
@@ -123,5 +124,13 @@ module.exports=function(app){
 	//修改订单状态
 	app.put('/manager/order',function(req,res){
 		managerOrder('put',req,res);
+	})
+	//修改店铺开店状态
+	app.put('/manager/openBusiness',function(req,res){
+		openBusiness('put',req,res);
+	})
+	//查询店铺开店状态
+	app.get('/manager/openBusiness',function(req,res){
+		openBusiness('get',req,res);
 	})
 }

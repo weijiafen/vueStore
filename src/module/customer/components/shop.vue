@@ -107,6 +107,7 @@
                 </div>
             </div>
         </mt-popup>
+        <div class="mode" v-if="!isOpenBusiness"></div>
 	</div>
 </template>
 <script>
@@ -149,7 +150,8 @@
                     number:0,
                     chooceLabels:[]
                 },
-                shoppingCart:[]
+                shoppingCart:[],
+                isOpenBusiness:true
         	}
         },
         computed:{
@@ -181,6 +183,13 @@
                             that.initMenuScroll()
                         },500)
                         
+                    }else{
+                        this.isOpenBusiness=false;
+                        Toast({
+                            message: res.msg,
+                            position: 'center',
+                            duration: 99999999
+                        });
                     }
                     
                 })
@@ -655,6 +664,14 @@
             display:inline-block;
             content:'￥';
             font-size:.6rem;
+        }
+        .mode{
+            position: fixed;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            top: 0;
+            left: 0;
         }
     }
     .mint-toast{
