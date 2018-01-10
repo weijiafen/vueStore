@@ -14,6 +14,7 @@ var goodOnline=require('./controler/manager/goodOnline.js');
 var setting=require('./controler/manager/setting.js');
 var managerOrder=require('./controler/manager/order.js');
 var openBusiness=require('./controler/manager/openBusiness.js');
+var goodReport=require('./controler/manager/goodReport.js');
 var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
@@ -132,5 +133,9 @@ module.exports=function(app){
 	//查询店铺开店状态
 	app.get('/manager/openBusiness',function(req,res){
 		openBusiness('get',req,res);
+	})
+	//查询商品报表
+	app.get('/manager/goodReport',function(req,res){
+		goodReport('get',req,res);
 	})
 }

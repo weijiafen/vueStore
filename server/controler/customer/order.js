@@ -153,7 +153,8 @@ module.exports=(async (function(method,req,response){
 							count:parseFloat((item.number*100*item.price*100)/10000),
 							labels:item.chooceLabels.join(","),
 							goodId:item.id,
-							orderId:orderRes.dataValues.id
+							orderId:orderRes.dataValues.id,
+							createAt:new Date().valueOf()
 						}, {transaction: t}))
 						if(!subOrderRes){
 							//操作失败，回滚

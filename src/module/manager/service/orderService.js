@@ -9,7 +9,15 @@ const Service = {
             throw error
         })
     },
-    
+    getGoodReport:(data)=>{
+        return api.get('/manager/goodReport',{
+            params:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
     putOrder:(data)=>{
         return api
             .put('/manager/order', {

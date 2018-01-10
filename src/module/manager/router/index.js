@@ -7,6 +7,7 @@ const goodsManage = resolve => require(['../components/goodsManage.vue'], resolv
 const welcome = resolve => require(['../components/welcome.vue'], resolve)
 const setting = resolve => require(['../components/setting.vue'], resolve)
 const saleHistory = resolve => require(['../components/saleHistory.vue'], resolve)
+const goodsReport = resolve => require(['../components/goodsReport.vue'], resolve)
 const active = resolve => require(['../components/active.vue'], resolve)
 // import Login from '@/components/login.vue'
 // import Index from '../components/index.vue'
@@ -51,7 +52,7 @@ export default new Router({
                 },
                 {
                     path:"goodsReport",
-                    component:active
+                    component:goodsReport
                 },
                 {
                     path:"saleReport",
