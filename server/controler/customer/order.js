@@ -68,7 +68,7 @@ module.exports=(async (function(method,req,response){
 	}
 	else if(method=='post'){
 		var cid=req.session.cid;
-		var orderId={}
+		var orderObj={}
 		if(cid){
 			var cart=req.body.cart
 			var deskId=req.body.deskId
@@ -118,7 +118,7 @@ module.exports=(async (function(method,req,response){
 						createAt:(new Date()).valueOf()
 					}, {transaction: t})
 			  	.then(async(function (orderRes) {
-			  		orderId=orderRes
+			  		orderObj=orderRes
 			  		for(let item in countObj){
 			  			let goodRes=await(good.findOne({
 				  			where:{
@@ -166,10 +166,46 @@ module.exports=(async (function(method,req,response){
 				.then(function () {
 					result={
 			    		status:0,
-						data:orderId
+						data:orderObj
 			    	}
 			    	response.end(JSON.stringify(result))
 			  		console.log("commit1！！！！")
+					  setTimeout(async(function(){
+						  //十五分钟后未支付自动取消未支付订单
+						  var orderId=orderObj.dataValues.id
+						  var OrderRes=await(order.update({
+							  status:3
+						  },{
+							  where:{
+								  id:orderId,
+								  status:1
+							  }
+						  }))
+						  if(OrderRes[0]){
+							  //取消订单后将库存恢复
+							  var subOrderRes=await(subOrder.findAll({
+								  where:{
+									  orderId:orderId
+								  }
+							  }))
+							  if(subOrderRes){
+								  for(var subOrderData of subOrderRes){
+									  var goodRes=await(good.findOne({
+										  where:{
+											  id:subOrderData.dataValues.goodId
+										  }
+									  }))
+									  var updateGood=await(good.update({
+										  count:goodRes.dataValues.count+subOrderData.dataValues.number
+									  },{
+										  where:{
+											  id:subOrderData.dataValues.goodId
+										  }
+									  }))
+								  }
+							  }
+						  }
+					  }),15*60*1000)
 			    	return t.commit();
 			    	
 			    })
