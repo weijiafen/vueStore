@@ -26,12 +26,21 @@ module.exports=(async (function(method,req,response){
 	if(method=='get'){
 		var cid=req.session.cid
 		if(cid){
+			var temp=new Date()
+			var year=temp.getFullYear()
+			var month=temp.getMonth()
+			var starDate=new Date(year,month,1).valueOf()
+			var endDate=temp.valueOf()
 			desk.hasOne(order)
 			order.belongsTo(desk);
 			var orderRes=await(order.findAll({
 				'order':[['createAt','DESC']],
 				where:{
-					customerId:cid
+					customerId:cid,
+					createAt:{
+                        $gte:starDate,
+					    $lte:endDate
+                    }
 				},
 				include:[
 				{

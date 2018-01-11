@@ -23,6 +23,7 @@ module.exports=(async (function(method,req,response){
 		var orderId=req.query.orderId;
 		var cid=req.session.cid
 		if(cid){
+			
 			order.hasMany(subOrder)
 			subOrder.belongsTo(order);
 			desk.hasOne(order)
@@ -34,7 +35,7 @@ module.exports=(async (function(method,req,response){
 			var orderRes=await(order.findOne({
 				where:{
 					customerId:cid,
-					id:orderId	
+					id:orderId
 				},
 				include:[{
 					model:subOrder,
