@@ -27,17 +27,6 @@
 			</el-form-item>
   		</el-form>
 		<chart :options="polar" style="width:100%"></chart>
-		商品销售报表
-		柱状图
-		默认查当天每个商品的销售量
-		开始结束时间查区间销售量
-		可选择某个商品结合时间查销售量
-
-		销售额报表
-		折线图
-		默认查当前月销售额
-		可选择查某个月销售额
-		筛选桌号
 	</div>
 	
 </template>
@@ -83,7 +72,7 @@
         mounted(){
         	this.$nextTick(()=>{
         		this.filterDate=new Date()
-        		this.getReport()
+        		// this.getReport()
         	})
         },
         methods:{

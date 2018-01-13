@@ -27,11 +27,6 @@
 			</el-form-item>
   		</el-form>
 		<chart :options="polar" style="width:100%"></chart>
-		商品销售报表
-		柱状图
-		默认查当天每个商品的销售量
-		开始结束时间查区间销售量
-		可选择某个商品结合时间查销售量
 
 		销售额报表
 		折线图
@@ -66,19 +61,11 @@
 				    tooltip: {
 				        trigger: 'axis'
 				    },
-				    legend: {
-				        data:[]
-				    },
 				    grid: {
 				        left: '3%',
 				        right: '4%',
 				        bottom: '3%',
 				        containLabel: true
-				    },
-				    toolbox: {
-				        feature: {
-				            saveAsImage: {}
-				        }
 				    },
 				    xAxis: {
 				        type: 'category',
@@ -103,7 +90,7 @@
         mounted(){
         	this.$nextTick(()=>{
         		this.filterDate=new Date()
-        		this.getReport()
+        		// this.getReport()
         	})
         },
         methods:{
