@@ -15,6 +15,7 @@ var setting=require('./controler/manager/setting.js');
 var managerOrder=require('./controler/manager/order.js');
 var openBusiness=require('./controler/manager/openBusiness.js');
 var goodReport=require('./controler/manager/goodReport.js');
+var saleReport=require('./controler/manager/saleReport.js');
 var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
@@ -137,5 +138,9 @@ module.exports=function(app){
 	//查询商品报表
 	app.get('/manager/goodReport',function(req,res){
 		goodReport('get',req,res);
+	})
+	//查询销售报表
+	app.get('/manager/saleReport',function(req,res){
+		saleReport('get',req,res);
 	})
 }

@@ -12,12 +12,23 @@ module.exports=(async (function(method,req,response){
 	}
 	if(method=='get'){
 		var uid=req.session.uid
-		var filterMonth=req.query.filterMonth
-        var temp=new Date(parseInt(filterMonth))
+		var filterDate=req.query.filterDate
+		var type=req.query.type
+        var temp=new Date(parseInt(filterDate))
         var year=temp.getFullYear()
         var month=temp.getMonth()
-		var starDate=new Date(year,month,1).valueOf()
-		var endDate=new Date(year,month+1,0,23,59,59).valueOf()+999
+        var date=temp.getDate()
+		if(type==1){
+			//按天搜索
+			var starDate=new Date(year,month,date).valueOf()
+			var endDate=starDate+24*60*60*1000-1
+		}
+		else if(type==2){
+			//按月份搜索
+			var starDate=new Date(year,month,1).valueOf()
+			var endDate=new Date(year,month+1,0,23,59,59).valueOf()+999
+		}
+		
 		if(uid){
 			good.hasOne(subOrder)
 			subOrder.belongsTo(good);
@@ -42,7 +53,8 @@ module.exports=(async (function(method,req,response){
                     {
                         model:order,
                         where:{
-                            status:5
+                            status:5,
+							userId:uid
                         }
                     }
                 ]
@@ -55,7 +67,7 @@ module.exports=(async (function(method,req,response){
 				}
 			}else{
 				result.status=-1;
-				result.msg="查询报表"
+				result.msg="查询报表失败"
 			}
 		}
 	}

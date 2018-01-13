@@ -4,22 +4,22 @@
 		<el-form :inline="true">
 			<el-form-item label="报表类型">
 			    <el-select v-model="type">
-			    	<el-option label="天" value="1"></el-option>
 			    	<el-option label="月" value="2"></el-option>
+			    	<el-option label="年" value="3"></el-option>
 			    </el-select>
 			</el-form-item>
-			<el-form-item label="日期" v-if="type==1">
-		    	<el-date-picker
-				    v-model="filterDate"
-				    type="date"
-				    placeholder="选择日期">
-				 </el-date-picker>
-  			</el-form-item>
-  			<el-form-item label="月份" v-else>
+			<el-form-item label="日期" v-if="type==2">
 		    	<el-date-picker
 				    v-model="filterDate"
 				    type="month"
 				    placeholder="选择月">
+				 </el-date-picker>
+  			</el-form-item>
+  			<el-form-item label="年份" v-else>
+		    	<el-date-picker
+				    v-model="filterDate"
+				    type="year"
+				    placeholder="选择年">
 				 </el-date-picker>
   			</el-form-item>
   			<el-form-item>
@@ -45,7 +45,7 @@
 	import Vue from 'vue'
 	import ECharts from 'vue-echarts/components/ECharts.vue'
 	// 手动引入 ECharts 各模块来减小打包体积
-	import 'echarts/lib/chart/bar'
+	import 'echarts/lib/chart/line'
 	import 'echarts/lib/component/tooltip'
 
 	// 注册组件后即可使用
@@ -59,25 +59,45 @@
 		    return {
 		    	filterDate:'',
 		      	polar: {
-			      	color: ['#3398DB'],
-			        title: {
-		                text: '商品销售报表'
-		            },
-		            tooltip: {},
-		            legend: {
-		                data:['销量']
-		            },
-		            xAxis: {
-		                data: []
-		            },
-		            yAxis: {},
-		            series: [{
-		                name: '销量',
-		                type: 'bar',
-		                data: []
-		            }]
+		      		color: ['#3398DB'],
+			      	title: {
+				        text: '销售额报表'
+				    },
+				    tooltip: {
+				        trigger: 'axis'
+				    },
+				    legend: {
+				        data:[]
+				    },
+				    grid: {
+				        left: '3%',
+				        right: '4%',
+				        bottom: '3%',
+				        containLabel: true
+				    },
+				    toolbox: {
+				        feature: {
+				            saveAsImage: {}
+				        }
+				    },
+				    xAxis: {
+				        type: 'category',
+				        boundaryGap: false,
+				        data: []
+				    },
+				    yAxis: {
+				        type: 'value'
+				    },
+				    series: [
+				        {
+				            name:'销售额',
+				            type:'line',
+				            stack: '总量',
+				            data:[]
+				        }
+				    ]
 		      	},
-		      	type:"1"
+		      	type:"2"
 		    }
         },
         mounted(){
@@ -89,12 +109,12 @@
         methods:{
         	getReport(){
         		if(this.filterDate){
-        			server.getGoodReport({
+        			server.getSaleReport({
 	        			filterDate:this.filterDate.valueOf(),
 	        			type:this.type
 	        		}).then(res=>{
 	        			if(res.status==0){
-	        				this.parseData(res.data.order);
+	        				this.parseData(res.data);
 	        			}else{
 	        				this.$message.error(res.msg);
 	        			}
@@ -105,12 +125,12 @@
         		
         		
         	},
-        	parseData(dataList){
+        	parseData(data){
         		let xAxis=[]
         		let series=[]
-        		for(let data of dataList){
-        			xAxis.push(data.good.name)
-        			series.push(data.sum)
+        		for(let i=0;i<data.titleArr.length;i++){
+        			xAxis.push(data.titleArr[i])
+        			series.push(data.reports[i].sum||0)
         		}
         		this.polar.xAxis.data=xAxis
         		this.polar.series[0].data=series

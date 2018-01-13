@@ -18,6 +18,15 @@ const Service = {
             throw error
         })
     },
+    getSaleReport:(data)=>{
+        return api.get('/manager/saleReport',{
+            params:data
+        }).then((res)=>{
+            return res
+        },(error)=>{
+            throw error
+        })
+    },
     putOrder:(data)=>{
         return api
             .put('/manager/order', {
