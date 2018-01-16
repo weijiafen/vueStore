@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50717
 File Encoding         : 65001
 
-Date: 2018-01-13 17:16:33
+Date: 2018-01-16 15:46:08
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -65,12 +65,13 @@ CREATE TABLE `desk` (
   PRIMARY KEY (`id`) USING BTREE,
   KEY `duserId` (`userId`) USING BTREE,
   CONSTRAINT `duserId` FOREIGN KEY (`userId`) REFERENCES `user` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8 ROW_FORMAT=DYNAMIC;
 
 -- ----------------------------
 -- Records of desk
 -- ----------------------------
 INSERT INTO `desk` VALUES ('1', '1号桌', '1', null, null);
+INSERT INTO `desk` VALUES ('3', '外卖', '1', null, null);
 
 -- ----------------------------
 -- Table structure for `good`

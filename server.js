@@ -31,13 +31,10 @@ app.get('/custom', function (req, res) {
 })
 global.sockets={};
 io.sockets.on('connection', function (socket) {
-	var shopId=socket.handshake.query.shopId
-	console.log('connection',shopId)
-	socket.shopId=shopId
-	global.sockets[shopId]=socket
-  	socket.emit('postOrder', {a:'test'});
-  	socket.on('disconnect', function (data) {
-  		delete global.sockets[socket.shopId]
-    	console.log('server disconnect',global.sockets);
-  	});
+  var shopId=socket.handshake.query.shopId
+  socket.shopId=shopId
+  global.sockets[shopId]=socket
+  socket.on('disconnect', function (data) {
+    delete global.sockets[socket.shopId]
+  });
 });

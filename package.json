@@ -11,6 +11,7 @@
     "lint": "eslint --ext .js,.vue src"
   },
   "dependencies": {
+    "pm2": "^2.9.1",
     "socket.io": "^2.0.4",
     "vue": "^2.2.6",
     "vue-router": "^2.3.1"
