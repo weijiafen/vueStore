@@ -31,7 +31,8 @@ module.exports=function(app){
 	app.use(session({
 	    secret: 'hubwiz app', //secret的值建议使用随机字符串
 	    cookie: {maxAge: 60 * 1000 * 60*12}, // 过期时间（毫秒）
-	    resave:true		//在操作的时候重新设置session。顺延登录时间
+	    resave:true,		//在操作的时候重新设置session。顺延登录时间
+		saveUninitialized: true
 	}));
 	app.post('/user/login',function(req,res){
 		login(req,res);
