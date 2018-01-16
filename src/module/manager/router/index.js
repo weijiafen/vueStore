@@ -6,6 +6,7 @@ const categoryManage = resolve => require(['../components/categoryManage.vue'], 
 const goodsManage = resolve => require(['../components/goodsManage.vue'], resolve)
 const welcome = resolve => require(['../components/welcome.vue'], resolve)
 const setting = resolve => require(['../components/setting.vue'], resolve)
+const desk = resolve => require(['../components/desk.vue'], resolve)
 const saleHistory = resolve => require(['../components/saleHistory.vue'], resolve)
 const goodsReport = resolve => require(['../components/goodsReport.vue'], resolve)
 const saleReport = resolve => require(['../components/saleReport.vue'], resolve)
@@ -42,6 +43,10 @@ export default new Router({
                 {
                     path:"setting",
                     component:setting
+                },
+                {
+                    path:"desk",
+                    component:desk
                 },
                 {
                     path:"activeManage",

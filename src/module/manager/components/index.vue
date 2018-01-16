@@ -5,7 +5,8 @@
                 <template slot="title">店铺</template>
                 <el-menu-item index="/">首页</el-menu-item>
                 <el-menu-item index="/activeManage">活动</el-menu-item>
-                <el-menu-item index="/setting">设置</el-menu-item>
+                <el-menu-item index="/setting">店铺设置</el-menu-item>
+                <el-menu-item index="/desk">桌号设置</el-menu-item>
             </el-submenu>
             <el-submenu index="goods">
                 <template slot="title">菜单</template>

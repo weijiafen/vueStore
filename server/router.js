@@ -11,6 +11,7 @@ var goods=require('./controler/manager/goods.js');
 var label=require('./controler/manager/label.js');
 var stock=require('./controler/manager/stock.js');
 var goodOnline=require('./controler/manager/goodOnline.js');
+var desk=require('./controler/manager/desk.js');
 var setting=require('./controler/manager/setting.js');
 var managerOrder=require('./controler/manager/order.js');
 var openBusiness=require('./controler/manager/openBusiness.js');
@@ -102,6 +103,22 @@ module.exports=function(app){
 	//获取店铺设置
 	app.get('/customer/menu',function(req,res){
 		menu('get',req,res);
+	})
+	//获取桌号
+	app.get('/manager/desk',function(req,res){
+		desk('get',req,res);
+	})
+	//新增桌号
+	app.post('/manager/desk',function(req,res){
+		desk('post',req,res);
+	})
+	//修改桌号
+	app.put('/manager/desk',function(req,res){
+		desk('put',req,res);
+	})
+	//删除桌号
+	app.delete('/manager/desk',function(req,res){
+		desk('delete',req,res);
 	})
 	//下单
 	app.post('/customer/order',function(req,res){
