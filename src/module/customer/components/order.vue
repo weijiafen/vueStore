@@ -1,5 +1,6 @@
 <template>
 	<div class="orderList">
+        <mt-loadmore :top-method="loadTop"  ref="loadmore">
 		<div class="orderItem" v-for="order in orderList">
             <h2>
                 {{order.desk.name}}
@@ -18,11 +19,15 @@
                 <a v-else :href='`#/pay/${shopId}/${deskId}/${order.id}`' class="detailBtn">订单详情</a>
             </div>
         </div>
+        </mt-loadmore>
 	</div>
 </template>
 <script>
     import server from '../service/customerService'
     import util from '../../../assets/public/util'
+    import { Loadmore } from 'mint-ui';
+    import Vue from 'vue';
+    Vue.component(Loadmore.name, Loadmore);
     export default {
         mixins: [util],
         name: 'shop',
@@ -51,7 +56,15 @@
             })
         },
         methods:{
-            
+            loadTop(){
+                server.getOrderList().then(res=>{
+                    if(res.status==0){
+                        this.orderList=res.data
+                        this.$refs.loadmore.onTopLoaded();
+                    }
+                    
+                })
+            }
         }
         
     }

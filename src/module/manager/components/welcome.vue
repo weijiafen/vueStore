@@ -83,7 +83,7 @@
                     openBusiness:1
                 }).then(res=>{
                     if(res.status==0){
-                        this.socket = io.connect(`http://localhost:8080?shopId=${this.shopId}`);
+                        this.socket = io.connect(`http://yslpartition.com?shopId=${this.shopId}`);
                         this.isOpen=true;
                         this.socket.on('postOrder',(data)=>{
                             this.getNewOrder(data);
