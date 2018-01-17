@@ -71,6 +71,7 @@
           size="large">
             <el-form :model="currentGood" label-width="100px" :rules="rules"
                 ref="currentGoodForm"
+                v-loading="lockGoodDialog"
             >
                 <el-form-item label="商品名称" prop="name">
                     <el-input v-model="currentGood.name"></el-input>
@@ -87,7 +88,7 @@
                 <el-form-item label="商品价格" prop="price">
                     <el-input v-model.number="currentGood.price"></el-input>
                 </el-form-item>
-                <el-form-item label="商品图片" prop="price">
+                <el-form-item v-loading="uploading" label="商品图片" prop="price">
                     <el-upload
                       class="avatar-uploader"
                       action="/upload"
@@ -221,7 +222,9 @@ import categoryService from '../service/categoryService.js'
                         { required: true, message: '数量不能为空' },
                         { type: 'number', message: '数量必须为数字值' , trigger: 'blur'}
                     ]
-                }
+                },
+                uploading:false,
+                lockGoodDialog:false
             }
             
         },
@@ -331,8 +334,10 @@ import categoryService from '../service/categoryService.js'
             },
             saveGood(){
                 var that=this;
+                
                 this.$refs.currentGoodForm.validate((valid) => {
                     if (valid) {
+                        this.lockGoodDialog=true
                         if(this.currentGood.id===0){
                             goodsService.addGoods(this.currentGood).then(res=>{
                                 if(res.status==0){
@@ -345,6 +350,7 @@ import categoryService from '../service/categoryService.js'
                                 }else{
                                     this.$message.error(res.msg);
                                 }
+                                this.lockGoodDialog=false
                             })
                         }else{
                             goodsService.setGoods(this.currentGood).then(res=>{
@@ -358,6 +364,7 @@ import categoryService from '../service/categoryService.js'
                                 }else{
                                     this.$message.error(res.msg);
                                 }
+                                this.lockGoodDialog=false
                             })
                         }
                     } else {
@@ -451,8 +458,11 @@ import categoryService from '../service/categoryService.js'
             },
             handleAvatarSuccess(res){
                 this.currentGood.img=res.src
+                this.uploading=false
             },
-            beforeAvatarUpload(){}
+            beforeAvatarUpload(){
+                this.uploading=true
+            }
         }
     }
 
@@ -488,7 +498,7 @@ import categoryService from '../service/categoryService.js'
         padding: 0 20px;
     }
     .goodImage{
-        max-width:100%;
+        max-width:300px;
     }
 }
     

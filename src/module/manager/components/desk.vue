@@ -27,7 +27,7 @@
                         </el-col>
                         <el-col :span="12" v-else>
                             <el-button type="success" @click="saveDesk(index)" size="small">修改</el-button>
-                            <el-button type="danger" @click="delDesk(index)" size="small">删除</el-button>
+                            <!-- <el-button type="danger" @click="delDesk(index)" size="small">删除</el-button> -->
                         </el-col>
                     </el-row>
                 </el-form-item>
@@ -142,37 +142,6 @@ export default {
                 console.log('error submit!!');
                 return false;
               }
-            });
-        },
-        delDesk(index){
-            var temp=this.formData.deskList[index];
-            
-            this.$confirm('是否确定删除该桌号?', '提示', {
-                confirmButtonText: '确定',
-                cancelButtonText: '取消',
-                type: 'warning'
-            }).then(() => {
-                
-                this.loadList=true
-                deskService.deleteDesk(temp.id).then(res=>{
-                    if(res.status==0){
-                        this.formData.deskList.splice(index,1)
-                        this.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
-                    }else{
-                        this.$message({
-                            type: 'error',
-                            message: res.msg
-                        });
-                    }
-                    this.loadList=false
-                })
-                
-                
-                
-            }).catch(() => {         
             });
         },
         cancelDesk(index){
