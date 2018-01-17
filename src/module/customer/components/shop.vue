@@ -239,6 +239,9 @@
                 this.isShowBuyDialog=false
             },
             saveGood(){
+                if(this.currentGood.number==0){
+                    return 
+                }
                 var order =$.extend(true,{},this.currentGood)
                 this.shoppingCart.push(order)
                 this.isShowBuyDialog=false
@@ -284,7 +287,7 @@
                 this.currentGood.description=item.description;
                 this.currentGood.count=item.count;
                 this.currentGood.price=item.price;
-                this.currentGood.number=0;
+                this.currentGood.number=1;
                 this.currentGood.chooceLabels=[]
                 this.currentGood.labels=item.labels;
             },

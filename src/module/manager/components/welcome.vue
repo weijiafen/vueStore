@@ -58,9 +58,11 @@
                     status:[2,4]
                 }).then(res=>{
                     if(res.status==0){
+
                         for(let order of res.data.order){
                             this.getLabelObj(order.subOrders)
                         }
+
                         this.orderList=res.data.order;
                     }
                 })
@@ -154,6 +156,7 @@
                 })
             },
             getNewOrder(order){
+                this.getLabelObj(order.subOrders);
                 this.orderList.push(order)
                 document.getElementById("media").play();
             }
