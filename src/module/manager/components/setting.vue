@@ -83,7 +83,7 @@ import accountService from '../service/accountService.js'
 			width:100%;
 		}
 		.userPhoto{
-			max-width:300px;
+			max-width:200px;
 		}
 	}
 </style>

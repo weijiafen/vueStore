@@ -4,6 +4,9 @@ v1.4.1
 2010-03-01
 Author: Richard Clark - http://richclarkdesign.com
 */
+*{
+    box-sizing: border-box;
+}
 html, body, div, span, object, iframe,
 h1, h2, h3, h4, h5, h6, p, blockquote, pre,
 abbr, address, cite, code,
@@ -123,7 +126,7 @@ header{
     color:#444;
 }
 .mainContainer{
-    padding: 20px;
+    padding: 8px;
 }
 .rowItem{
     margin: 20px 0;

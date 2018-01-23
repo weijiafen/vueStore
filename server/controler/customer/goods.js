@@ -11,7 +11,7 @@ module.exports=(async (function(method,req,response){
 		msg:"未登录"
 	}
 	if(method=='get'){
-		var shopId=req.query.shopId;
+		var shopId=req.query.shopId||req.session.uid;
 		//临时增加顾客id，待接入微信登录
 		req.session.cid=123;
 		category.hasMany(good)

@@ -8,6 +8,7 @@
 <script>
 import Vue from 'vue'
 import   ElementUI  from 'element-ui'
+import '../../assets/css/font/iconfont.css'
 Vue.use(ElementUI)
     export default {
         mixins: [],
