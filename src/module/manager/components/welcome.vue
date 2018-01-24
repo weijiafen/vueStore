@@ -207,19 +207,7 @@
                         }
                     }
                 })
-                server.getOrderList({
-                    orderBy:'ASC',
-                    status:[2,4]
-                }).then(res=>{
-                    if(res.status==0){
-
-                        for(let order of res.data.order){
-                            this.getLabelObj(order.subOrders)
-                        }
-
-                        this.orderList=res.data.order;
-                    }
-                })
+                this.getOrderList();
                 //判断页面手动关闭或刷新时是否正在营业
                 window.addEventListener("beforeunload",function(event){
                     that.close()
@@ -263,6 +251,21 @@
                 })
         		
         	},
+            getOrderList(){
+                server.getOrderList({
+                    orderBy:'ASC',
+                    status:[2,4]
+                }).then(res=>{
+                    if(res.status==0){
+
+                        for(let order of res.data.order){
+                            this.getLabelObj(order.subOrders)
+                        }
+
+                        this.orderList=res.data.order;
+                    }
+                })
+            },
             getLabelObj(subOrders){
                 //遍历每个子单
                 for(let subOrder of subOrders){
@@ -456,12 +459,33 @@
                 return count
             },
             submit(){
-
+                var that=this;
+                if(this.shoppingCart.length==0){
+                    return 
+                }else{
+                    if(this.deskId==''){
+                       this.$message.error('请选择下单桌号')
+                    }else{
+                        server.postOrder({
+                            cart:this.shoppingCart,
+                            deskId:""+this.deskId
+                        }).then(res=>{
+                            if(res.status==0){
+                                that.getOrderList();
+                                that.isShowCart=false;
+                                that.shoppingCart=[];
+                                that.$message.success('下单成功')
+                            }else{
+                                that.$message.error(res.msg)
+                            }
+                        })
+                    }
+                }
             },
             clearCart(){
                 this.shoppingCart=[]
                 this.isShowCart=false
-            }
+            },
         }
     }
 
@@ -607,7 +631,7 @@
                                 height: 20px;
                                 margin-top: 2px;
                                 background: #fff;
-                                font-size:.7rem;
+                                font-size:.8rem;
                                 color:#fb4c16;
                                 display:inline-block;
                             }
@@ -617,7 +641,7 @@
                                 background-color: #26a2ff;
                                 color: #fff;
                                 padding: 4px 8px;
-                                font-size: .6rem;
+                                font-size: .7rem;
                                 border-radius: 4px;
                                 float:right;
                                 &.disabled{
@@ -672,7 +696,7 @@
                 padding: 10px 0;
                 border-bottom: 1px solid #eee;
                 .goodTitle{
-                    width:60%;
+                    width:55%;
                     float:left;
                     .goodName{
                         font-size: 1rem;
@@ -691,7 +715,7 @@
                     font-size:.8rem;
                 }
                 .numControler{
-                    width:20%;
+                    width:25%;
                     float:left;
                     margin-top: .7rem;
                     text-align: right;
@@ -722,7 +746,7 @@
                 border-bottom: 1px solid #eee;
                 position: relative;
                 .goodTitle{
-                    width:55%;
+                    width:50%;
                     float:left;
                     .goodName{
                         font-size: 1rem;
@@ -739,7 +763,7 @@
                     color: #fb4c16;
                     position: absolute;
                     top: 50%;
-                    left: 55%;
+                    left: 50%;
                     font-size:.8rem;
                     transform: translateY(-50%);
                 }
@@ -754,11 +778,11 @@
                     }
                 }
                 .numControler{
-                    width: 20%;
+                    width: 25%;
                     text-align: center;
                     position: absolute;
                     top: 50%;
-                    left: 80%;
+                    left: 75%;
                     font-size:.8rem;
                     -webkit-transform: translateY(-50%);
                     transform: translateY(-50%);

@@ -135,7 +135,8 @@ module.exports=(async (function(method,req,response){
 						createAt:(new Date()).valueOf()
 					}, {transaction: t})
 			  	.then(async(function (orderRes) {
-			  		orderObj=orderRes
+			  		orderObj=orderRes.dataValues
+					orderObj.subOrders=[]
 			  		for(let item in countObj){
 			  			let goodRes=await(good.findOne({
 				  			where:{
@@ -177,7 +178,6 @@ module.exports=(async (function(method,req,response){
 							//操作失败，回滚
 							throw new Error
 						}
-				  		
 			  		}
 				;}))
 				.then(function () {

@@ -39,6 +39,18 @@ const Service = {
                 throw error;
             });
     },
+    postOrder:(data)=>{
+        return api
+            .post('/manager/order', {
+                data: data,
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
     getGoods:(shopId)=>{
         return api.get('/customer/menu',{
             params:{

@@ -140,6 +140,10 @@ module.exports=function(app){
 	app.get('/manager/orderList',function(req,res){
 		managerOrder('get',req,res);
 	})
+	//后台下单
+	app.post('/manager/order',function(req,res){
+		managerOrder('post',req,res);
+	})
 	//修改订单状态
 	app.put('/manager/order',function(req,res){
 		managerOrder('put',req,res);
