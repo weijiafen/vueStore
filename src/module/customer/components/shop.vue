@@ -49,7 +49,10 @@
         </div>
         <mt-popup v-model="isShowCart" position="bottom">
             <div class="shoppingCartDialog">
-                <h2>购物车</h2>
+                <h2>
+                    购物车
+                    <span @click="clearCart" class="clearCart iconfont icon-icon--"></span>
+                </h2>
                 <div class="goodNum clearfix" v-for="good in shoppingCart">
                     <div class="goodTitle">
                         <div class="goodName">{{good.name}}</div>
@@ -213,7 +216,7 @@
                 }
             },
             minusGood(good){
-                if(good.number>0){
+                if(good.number>1){
                     good.number=good.number-1
                 }
             },
@@ -341,6 +344,9 @@
                     // console.log("购物车",this.shoppingCart)
                 }
             },
+            clearCart(){
+                this.shoppingCart=[]
+            }
         }
     }
 
@@ -511,7 +517,11 @@
                 line-height: 2;
                 padding-left: .8rem;
                 border-left: 4px solid #26a2ff;
-                
+                .clearCart{
+                    float: right;
+                    margin-right: .5rem;
+                    color: #ff4949;
+                }
             }
             .goodNum{
                 padding: 10px;
@@ -595,7 +605,6 @@
                 line-height: 2;
                 padding-left: .8rem;
                 border-left: 4px solid #26a2ff;
-                
             }
             .goodNum{
                 padding: 10px;

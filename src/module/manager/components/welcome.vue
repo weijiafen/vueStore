@@ -29,6 +29,13 @@
                 </audio>
             </el-tab-pane>
             <el-tab-pane label="新增订单" name="addOrder">
+                <el-form :inline="true">
+                    <el-form-item label="桌号">
+                        <el-select v-model="deskId" placeholder="未选择">
+                          <el-option v-for="desk in deskList" :label="desk.name" :value="desk.id"></el-option>
+                        </el-select>
+                    </el-form-item>
+                </el-form>
                 <div class="content">
                   <div class="left" id="left">
                     <ul>
@@ -106,10 +113,34 @@
           size="large"
           class="cartDialog"
           >
-            {{shoppingCart}}
+            <div class="goodNum clearfix" v-for="good in shoppingCart">
+                    <div class="goodTitle">
+                        <div class="goodName">{{good.name}}</div>
+                        <div class="cartLabels">
+                            <div v-for="label in good.chooceLabels" :style="{backgroundColor:getLabelColor(label,good)}">
+                                {{getLabelName(label,good)}}
+                            </div>
+                        </div>
+                    </div>
+                    <div class="numControler">
+                        <span class="iconfont icon-minus" @click="minusGood(good)"></span>
+                        {{good.number}}
+                        <span class="iconfont icon-plus" @click="addGood(good)"></span>
+                    </div>
+                    <div class="goodPrice priceIcon">
+                    {{good.price}}*{{good.number}}
+                    </div>
+                    
+                </div>
+                <div>
+                    <div class="totalPrice priceIcon">
+                    总价：{{amount}}
+                    </div>
+                    <div class="clearCart" @click="clearCart">清空购物车</div>
+                </div>
           <span slot="footer" class="dialog-footer">
             <el-button @click="isShowCart = false">取 消</el-button>
-            <el-button type="primary" @click="saveGood">确 定</el-button>
+            <el-button type="primary" :disabled="noOrder" @click="submit">确认下单</el-button>
           </span>
         </el-dialog>
 	</div>
@@ -117,6 +148,7 @@
 <script>
     import server from '../service/orderService'
     import accountServer from '../service/accountService'
+    import deskServer from '../service/deskService'
 	import io from 'socket.io-client';
     export default {
         mixins: [],
@@ -126,6 +158,8 @@
         	return {
         		isOpen:false,
         		shopId:localStorage.getItem('shopId'),
+                deskId:'',
+                deskList:[],
         		socket:null,
                 orderList:[
                 ],
@@ -292,17 +326,23 @@
             },
             handleClick(){
                 if(this.goodsList.length==0){
-                    var that=this; 
-                    server.getGoods().then(res=>{
+                    var that=this;
+                    deskServer.getDesks().then(res=>{
                         if(res.status==0){
-                            this.goodsList=res.data.menu
-                            setTimeout(function(){
-                                that.initMenuScroll()
-                            },500)
+                            this.deskList=res.data
+                            server.getGoods().then(res2=>{
+                                if(res2.status==0){
+                                    this.goodsList=res2.data.menu
+                                    setTimeout(function(){
+                                        that.initMenuScroll()
+                                    },500)
+                                }else{
+                                    this.$message.error(res2.msg)
+                                }
+                            })
                         }else{
-                            
+                            this.$message.error(res.msg)
                         }
-                        
                     })
                 }
             },
@@ -316,7 +356,7 @@
                 }
             },
             minusGood(good){
-                if(good.number>0){
+                if(good.number>1){
                     good.number=good.number-1
                 }
             },
@@ -415,6 +455,13 @@
                 }
                 return count
             },
+            submit(){
+
+            },
+            clearCart(){
+                this.shoppingCart=[]
+                this.isShowCart=false
+            }
         }
     }
 
@@ -491,7 +538,6 @@
         }
         .content{
             width: 100%;
-            margin-bottom:4rem;
             overflow: hidden;
             .active{
                 background: #fff;
@@ -616,16 +662,6 @@
             }
         }
         .buyDialog{
-            h2{
-                font-size: 1rem;
-                font-style: normal;
-                color: #333;
-                background-color: #eee;
-                line-height: 2;
-                padding-left: .8rem;
-                border-left: 4px solid #26a2ff;
-                
-            }
             .goodLabel{
                 padding-top:10px;
                 .el-checkbox{
@@ -645,7 +681,6 @@
                         font-size: .6rem;
                         color: #999;
                     }
-                    
                 }
                 .goodPrice{
                     width:20%;
@@ -680,6 +715,80 @@
                 display:inline-block
             }
             
+        }
+        .cartDialog{
+            .goodNum{
+                padding: 10px 0;
+                border-bottom: 1px solid #eee;
+                position: relative;
+                .goodTitle{
+                    width:55%;
+                    float:left;
+                    .goodName{
+                        font-size: 1rem;
+                    }
+                    .goodDescription{
+                        font-size: .6rem;
+                        color: #999;
+                    }
+                    
+                }
+                .goodPrice{
+                    width:25%;
+                    text-align: center;
+                    color: #fb4c16;
+                    position: absolute;
+                    top: 50%;
+                    left: 55%;
+                    font-size:.8rem;
+                    transform: translateY(-50%);
+                }
+                .cartLabels{
+                    &>div{
+                        color: #fff;
+                        background-color: rgb(231, 12, 12);
+                        display: inline-block;
+                        padding: .1rem .3rem;
+                        font-size: 0.4rem;
+                        border-radius: 6px;
+                    }
+                }
+                .numControler{
+                    width: 20%;
+                    text-align: center;
+                    position: absolute;
+                    top: 50%;
+                    left: 80%;
+                    font-size:.8rem;
+                    -webkit-transform: translateY(-50%);
+                    transform: translateY(-50%);
+                    color:#26a2ff;
+                    .icon-minus{
+                        font-size: 1rem;
+                        padding: 3px;
+                        border-radius: 50%;
+                    }
+                    .icon-plus{
+                        color:#fff;
+                        background-color:#26a2ff;
+                        font-size: 1rem;
+                        padding: 3px;
+                        border-radius: 50%;
+                    }
+                }
+            }
+            .totalPrice{
+                color: #fb4c16;
+                float: left;
+                margin-top: .6rem;
+            }
+            .clearCart{
+                float: right;
+                background-color: #ff4949;
+                color: #fff;
+                padding: .4rem .6rem;
+                margin-top:.2rem;
+            }
         }
     }
 </style>
