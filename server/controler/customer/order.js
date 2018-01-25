@@ -155,6 +155,8 @@ module.exports=(async (function(method,req,response){
 							labels:item.chooceLabels.join(","),
 							goodId:item.id,
 							orderId:orderRes.dataValues.id,
+							goodName:item.name,
+							price:item.price,
 							createAt:new Date().valueOf()
 						}, {transaction: t}))
 						if(!subOrderRes){

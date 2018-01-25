@@ -54,7 +54,7 @@
 		    return {
 		    	filterDate:'',
 		      	polar: {
-		      		color: ['#3398DB'],
+		      		color: ['#fd7428','#3398DB'],
 			      	title: {
 				        text: '销售额报表'
 				    },
@@ -77,9 +77,13 @@
 				    },
 				    series: [
 				        {
-				            name:'销售额',
+				            name:'在线支付',
 				            type:'line',
-				            stack: '总量',
+				            data:[]
+				        },
+				        {
+				            name:'总销售额',
+				            type:'line',
 				            data:[]
 				        }
 				    ]
@@ -115,12 +119,16 @@
         	parseData(data){
         		let xAxis=[]
         		let series=[]
+        		let online=[]
         		for(let i=0;i<data.titleArr.length;i++){
         			xAxis.push(data.titleArr[i])
         			series.push(data.reports[i].sum||0)
+        			online.push(data.onlinePayReport[i].sum||0)
         		}
         		this.polar.xAxis.data=xAxis
-        		this.polar.series[0].data=series
+        		this.polar.series[0].data=online
+        		this.polar.series[1].data=series
+        		
         	},
         }
     }

@@ -160,6 +160,7 @@
             <p class="stockTip">填入正数为增加库存，负数为减少库存</p>
             <el-form label-width="60px"
                 :model="stock"
+                v-loading="lockStockDialog"
             >
                 <el-form-item label="增量" 
                 prop="count"
@@ -224,7 +225,8 @@ import categoryService from '../service/categoryService.js'
                     ]
                 },
                 uploading:false,
-                lockGoodDialog:false
+                lockGoodDialog:false,
+                lockStockDialog:false
             }
             
         },
@@ -436,6 +438,7 @@ import categoryService from '../service/categoryService.js'
             submitStock(){
                 var id=this.currentGood.id
                 var count=this.stock.count;
+                this.lockStockDialog=true;
                 goodsService.putStock({id:id,count:count}).then((res)=>{
                     if(res.status==0){
                         this.$message({
@@ -450,6 +453,7 @@ import categoryService from '../service/categoryService.js'
                             message: res.msg
                         });
                     }
+                    this.lockStockDialog=false
                 })
             },
             changeFilterCategory(v){

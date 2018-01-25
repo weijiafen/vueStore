@@ -115,7 +115,7 @@
 </template>
 <script>
     import server from '../service/customerService'
-    import { Toast , MessageBox  } from 'mint-ui';
+    import { Toast , MessageBox , Indicator } from 'mint-ui';
     export default {
         mixins: [],
         name: 'shop',
@@ -324,6 +324,7 @@
                     return 
                 }else{
                     //下单操作
+                    Indicator.open();
                     server.applyOrder({
                         cart:this.shoppingCart,
                         deskId:this.deskId,
@@ -339,7 +340,7 @@
                         }else{
                             MessageBox('Notice', res.msg);
                         }
-                        
+                        Indicator.close();
                     })
                     // console.log("购物车",this.shoppingCart)
                 }
@@ -688,5 +689,8 @@
     }
     .mint-toast{
         z-index:2009;
+    }
+    .mint-indicator-mask{
+        z-index:9999;
     }
 </style>

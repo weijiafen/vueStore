@@ -41,6 +41,10 @@ var good = sequelize.define('good', {
     //商品图片
     type: Sequelize.STRING
   },
+  isDelete:{
+    //商品是否被删除 1：删除 ， 0 ：未删除
+    type:Sequelize.INTEGER,
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

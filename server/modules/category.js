@@ -21,6 +21,10 @@ var category = sequelize.define('category', {
   userId:{
     type:Sequelize.INTEGER,
   },
+  isDelete:{
+    //分类是否被删除 1：删除 ， 0 ：未删除
+    type:Sequelize.INTEGER,
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

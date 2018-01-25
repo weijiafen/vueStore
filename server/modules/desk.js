@@ -21,6 +21,10 @@ var Desk = sequelize.define('desk', {
   userId:{
     type:Sequelize.INTEGER
   },
+  isDelete:{
+    //桌子是否删除，1删除，0未删除
+    type:Sequelize.INTEGER
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

@@ -14,7 +14,7 @@
             <div class="subOrder clearfix" v-for="item in subOrders">
                 <div class="name">
                     <div>
-                        {{item.good.name}}
+                        {{item.goodName}}
                     </div>
                     <span v-for="label in item.chooceLabels" :style="{backgroundColor:label.bgColor}">
                         {{label.name}}
@@ -39,7 +39,7 @@
 </template>
 <script>
     import server from '../service/customerService'
-    import { Header , MessageBox ,Toast } from 'mint-ui';
+    import { Header , MessageBox ,Toast , Indicator } from 'mint-ui';
     export default {
         mixins: [],
         name: 'pay',
@@ -129,6 +129,7 @@
             },
             payOrder(){
                 if(this.canPay){
+                    Indicator.open();
                     server.payOrder({
                         orderId:this.orderId,
                         shopId:this.shopId
@@ -143,6 +144,7 @@
                         }else{
                             MessageBox('Notice', res.msg);
                         }
+                        Indicator.close();
                     })
                 }
             }
@@ -232,6 +234,8 @@
                 }
             }
         }
-        
+    }
+    .mint-indicator-mask{
+        z-index:9999;
     }
 </style>

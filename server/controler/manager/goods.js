@@ -18,11 +18,11 @@ module.exports=(async (function(method,req,response){
 		var categoryId=req.query.categoryId
 		var pageSize=req.query.pageSize||10
 		var page=req.query.page||1
-		var whereObj={}
+		var whereObj={
+			isDelete:0
+		}
 		if(categoryId&&categoryId!=""){
-			whereObj={
-				categoryId:categoryId
-			}
+			whereObj.categoryId=categoryId
 		}
 		if(uid){
 			var res=await(good.findAndCountAll({
@@ -31,7 +31,16 @@ module.exports=(async (function(method,req,response){
 				'order':[['id']],
 				where:whereObj,
 
-				include:[category,label],
+				include:[
+					{
+						model:category,
+						where:{
+							userId:uid
+						}
+					},
+					{
+						model:label
+					}],
 
 				distinct: true
 			}))
@@ -215,7 +224,9 @@ module.exports=(async (function(method,req,response){
 				}]
 			}))
 			if(isAutor&&isAutor.dataValues.category){
-				var res=await(good.destroy({
+				var res=await(good.update({
+					isDelete:1
+				},{
 					where:{
 						id:id
 					}

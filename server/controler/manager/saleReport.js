@@ -52,6 +52,7 @@ module.exports=(async (function(method,req,response){
             order.hasMany(subOrder)
 			subOrder.belongsTo(order);
             var reports=[]
+            var onlinePayReport=[]
             for(let i=0;i<titleArr.length;i++){
                 var orderRes=await(subOrder.findOne({
                     attributes:[[Sequelize.fn('SUM',Sequelize.col('subOrder.count')),'sum']],
@@ -71,14 +72,37 @@ module.exports=(async (function(method,req,response){
                         }
                     ]
                 }))
+                var onlinePayRes=await(subOrder.findOne({
+                    attributes:[[Sequelize.fn('SUM',Sequelize.col('subOrder.count')),'sum']],
+                    where:{
+                        createAt:{
+                            $gte:startArr[i],
+                            $lte:endArr[i]
+                        }
+                    },
+                    include:[
+                        {
+                            model:order,
+                            where:{
+                                status:5,
+                                isPay:1,
+                                userId:uid
+                            }
+                        }
+                    ]
+                }))
                 if(orderRes){
                     reports.push(orderRes);
+                }
+                if(onlinePayRes){
+                    onlinePayReport.push(onlinePayRes);
                 }
             }
 			result.status=0;
             result.msg="success"
             result.data={
                 reports:reports,
+                onlinePayReport:onlinePayReport,
                 titleArr:titleArr
             }
 			

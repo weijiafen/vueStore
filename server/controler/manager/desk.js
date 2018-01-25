@@ -68,7 +68,9 @@ module.exports=(async (function(method,req,response){
 		var uid=req.session.uid;
 		var id=req.query.id;
 		if(uid){
-			var res=await(desk.destroy({
+			var res=await(desk.update({
+				isDelete:1
+			},{
 				where:{
 					userId:uid,
 					id:id

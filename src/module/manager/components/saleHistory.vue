@@ -21,7 +21,7 @@
 				<template scope="scope">
 					<el-form label-position="left" inline class="demo-table-expand" v-for="suborder in scope.row.subOrders">
 						<el-form-item label="商品名称">
-				        	<span>{{ suborder.good.name }}</span>
+				        	<span>{{ suborder.goodName }}</span>
 				        </el-form-item>
 				        <el-form-item label="商品数量">
 				        	<span>{{ suborder.number }}</span>

@@ -33,6 +33,14 @@ var SubOrder = sequelize.define('subOrder', {
   labels:{
     type: Sequelize.STRING 
   },
+  price:{
+    //商品价格
+    type:Sequelize.INTEGER,
+  },
+  goodName:{
+    //保存商品名称快照
+    type: Sequelize.STRING 
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

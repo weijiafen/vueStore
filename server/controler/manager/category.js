@@ -11,7 +11,8 @@ module.exports=(async (function(method,req,response){
 		if(uid){
 			var res=await(category.findAll({
 				where:{
-					userId:uid
+					userId:uid,
+					isDelete:0
 				}
 			}))
 			if(res.length>=0){
@@ -69,7 +70,9 @@ module.exports=(async (function(method,req,response){
 		var uid=req.session.uid;
 		var id=req.query.id;
 		if(uid){
-			var res=await(category.destroy({
+			var res=await(category.update({
+				isDelete:1
+			},{
 				where:{
 					userId:uid,
 					id:id

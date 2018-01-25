@@ -42,9 +42,14 @@ module.exports=(async (function(method,req,response){
 				include:[{
 					model:good,
 					where:{
-						isOnline:1
+						isOnline:1,
+						isDelete:0
 					},
-					include:[label]
+					include:[
+						{
+							model:label
+						}
+					]
 				}],
 			}))
 			result.data.menu=menuRes

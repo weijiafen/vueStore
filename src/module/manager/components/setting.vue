@@ -1,5 +1,5 @@
 <template>
-	<div class="setting">
+	<div class="setting" v-loading.fullscreen.lock="settingLoading">
 		<header>店铺设置</header>
 		<el-form :model="setting"  label-width="5rem" ref="settingForm" >
 			<el-form-item label="店铺名称" prop="userName" :rules="[
@@ -39,8 +39,8 @@ import accountService from '../service/accountService.js'
 	        		userName:"",
 	        		notice:"",
 	            	photo:""
-	        	}
-	        	
+	        	},
+	        	settingLoading:true
 	        }
 	    },
 	    mounted(){
@@ -49,6 +49,7 @@ import accountService from '../service/accountService.js'
                     this.setting.userName=res.data.userName
                     this.setting.notice=res.data.notice
                     this.setting.photo=res.data.photo
+                    this.settingLoading=false
                 }
 	    	})
 	    },
@@ -60,6 +61,7 @@ import accountService from '../service/accountService.js'
         	save(){
         		this.$refs.settingForm.validate((valid) => {
         			if (valid) {
+        				this.settingLoading=true;
         				accountService.putSetting(this.setting).then(res=>{
         					if(res.status==0){
         						this.$message({
@@ -69,6 +71,7 @@ import accountService from '../service/accountService.js'
         					}else{
         						this.$message.error(res.msg);
         					}
+        					this.settingLoading=false;
         				})
         			}
         		})
