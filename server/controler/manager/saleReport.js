@@ -92,9 +92,17 @@ module.exports=(async (function(method,req,response){
                     ]
                 }))
                 if(orderRes){
+                    if(orderRes.dataValues.sum){
+                        let temp=orderRes.dataValues.sum
+                        orderRes.dataValues.sum=parseInt(temp*100)/100
+                    }
                     reports.push(orderRes);
                 }
                 if(onlinePayRes){
+                    if(onlinePayRes.dataValues.sum){
+                        let temp=onlinePayRes.dataValues.sum
+                        onlinePayRes.dataValues.sum=parseInt(temp*100)/100
+                    }
                     onlinePayReport.push(onlinePayRes);
                 }
             }

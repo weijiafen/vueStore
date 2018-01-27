@@ -27,12 +27,6 @@
 			</el-form-item>
   		</el-form>
 		<chart :options="polar" style="width:100%"></chart>
-
-		销售额报表
-		折线图
-		默认查当前月销售额
-		可选择查某个月销售额
-		筛选桌号
 	</div>
 	
 </template>

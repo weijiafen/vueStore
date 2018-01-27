@@ -95,7 +95,7 @@ module.exports=(async (function(method,req,response){
 			await(sequelize.transaction()
 				.then(async(function (t) {
 					let sum=0;
-					var shopRes=await(user.findOne({},{
+					var shopRes=await(user.findOne({
 						where:{
 							id:userId
 						}
@@ -172,6 +172,8 @@ module.exports=(async (function(method,req,response){
 							labels:item.chooceLabels.join(","),
 							goodId:item.id,
 							orderId:orderRes.dataValues.id,
+							goodName:item.name,
+							price:item.price,
 							createAt:new Date().valueOf()
 						}, {transaction: t}))
 						if(!subOrderRes){

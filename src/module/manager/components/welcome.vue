@@ -113,7 +113,7 @@
           size="large"
           class="cartDialog"
           >
-            <div class="goodNum clearfix" v-for="good in shoppingCart">
+            <div class="goodNum clearfix" v-for="(good,index) in shoppingCart">
                     <div class="goodTitle">
                         <div class="goodName">{{good.name}}</div>
                         <div class="cartLabels">
@@ -123,7 +123,7 @@
                         </div>
                     </div>
                     <div class="numControler">
-                        <span class="iconfont icon-minus" @click="minusGood(good)"></span>
+                        <span class="iconfont icon-minus" @click="minusGood(good,index)"></span>
                         {{good.number}}
                         <span class="iconfont icon-plus" @click="addGood(good)"></span>
                     </div>
@@ -358,9 +358,13 @@
                     this.isShowBuyDialog=true
                 }
             },
-            minusGood(good){
+            minusGood(good,index){
                 if(good.number>1){
                     good.number=good.number-1
+                }else{
+                    if(index>=0){
+                        this.shoppingCart.splice(index,1)
+                    }
                 }
             },
             addGood(good,isAdd){
