@@ -16,7 +16,7 @@
 	</div>
 </template>
 <script>
-
+    import server from '../service/customerService'
     export default {
         mixins: [],
         name: 'shop',
@@ -29,6 +29,18 @@
         	}
         },
         mounted() {
+            var href=location.href;
+            var hasCode=href.match(/code=[\d\w]{1,}&/)
+            let shopId=this.shopId
+            let deskId=this.deskId
+            if(!hasCode){
+                location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+            }else{
+                var code=hasCode[0].slice(5,-1)
+                server.sendWXCode(code).then(res=>{
+
+                })
+            }
             this.$root.eventHub.$on('selectTab',(data)=>{
                 if(data){
                     this.selected = data;

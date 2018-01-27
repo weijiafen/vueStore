@@ -1,5 +1,19 @@
 import api from '../lib/axios/api';
 const Service = {
+    sendWXCode:(code)=>{
+        return api
+            .post('/customer/wxCode', {
+                data: {
+                    code:code
+                },
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
     getGoods:(shopId)=>{
         return api.get('/customer/menu',{
 			params:{

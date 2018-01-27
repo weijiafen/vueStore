@@ -21,6 +21,7 @@ var menu=require('./controler/customer/goods.js');
 var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
 var pay=require('./controler/customer/pay.js');
+var wxCode=require('./controler/customer/wxCode.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -163,5 +164,9 @@ module.exports=function(app){
 	//查询销售报表
 	app.get('/manager/saleReport',function(req,res){
 		saleReport('get',req,res);
+	})
+	//通过微信code获取用户信息
+	app.post('/customer/wxCode',function(req,res){
+		wxCode('post',req,res);
 	})
 }

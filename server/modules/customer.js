@@ -13,8 +13,32 @@ var customer = sequelize.define('customer', {
     primaryKey:true,
     autoIncrement: true
   },
+  //微信openid
+  openId:{
+    type:Sequelize.STRING,
+  },
   //顾客名称
-  name:{
+  nickname:{
+    type: Sequelize.STRING 
+  },
+  //顾客性别
+  sex:{
+    type: Sequelize.INTEGER 
+  },
+  //顾客所属省
+  province:{
+    type: Sequelize.STRING 
+  },
+  //顾客所属市
+  city:{
+    type: Sequelize.STRING 
+  },
+  //顾客所属国家
+  country:{
+    type: Sequelize.STRING 
+  },
+  //顾客头像
+  headimgurl:{
     type: Sequelize.STRING 
   },
   createAt:{
