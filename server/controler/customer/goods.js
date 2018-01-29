@@ -13,7 +13,6 @@ module.exports=(async (function(method,req,response){
 	if(method=='get'){
 		var shopId=req.query.shopId||req.session.uid;
 		//临时增加顾客id，待接入微信登录
-		// req.session.cid=123;
 		category.hasMany(good)
 		good.belongsTo(category);
 		good.hasMany(label)

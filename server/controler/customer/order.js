@@ -78,7 +78,8 @@ module.exports=(async (function(method,req,response){
 			await(sequelize.transaction()
 				.then(async(function (t) {
 					let sum=0;
-					let cid=123;
+					console.log("cid----",req.session.cid)
+					let cid=req.session.cid;
 					var shopRes=await(user.findOne({},{
 						where:{
 							id:userId
@@ -111,7 +112,7 @@ module.exports=(async (function(method,req,response){
 				    //创建总单号
 				  	return order.create({
 						count:sum,
-						customerId:parseInt(cid),
+						customerId:cid,
 						isPay:0,
 						status:1,
 						userId:userId,

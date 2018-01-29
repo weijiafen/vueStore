@@ -28,19 +28,32 @@
                 selected:"tab1"
         	}
         },
-        mounted() {
+        beforeRouteEnter(to, from, next){
             var href=location.href;
             var hasCode=href.match(/code=[\d\w]{1,}&/)
-            let shopId=this.shopId
-            let deskId=this.deskId
-            if(!hasCode){
-                location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
-            }else{
-                var code=hasCode[0].slice(5,-1)
-                server.sendWXCode(code).then(res=>{
-
-                })
+            let shopId=to.params.shopId
+            let deskId=to.params.deskId
+            var isLogin=sessionStorage.getItem("isLogin")
+            if(!isLogin){
+                if(hasCode){
+                   next(vm=>{
+                        var code=hasCode[0].slice(5,-1)
+                        server.sendWXCode(code).then(res=>{
+                            if(res.status!=0){
+                                alert("登录异常")
+                                location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+                            }else{
+                                sessionStorage.setItem("isLogin","true")
+                            }
+                        })
+                   }) 
+                }else{
+                    location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+                }
             }
+            
+        },
+        mounted() {
             this.$root.eventHub.$on('selectTab',(data)=>{
                 if(data){
                     this.selected = data;

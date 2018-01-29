@@ -65,6 +65,8 @@
                 server.getOrder(this.orderId).then(res=>{
                     if(res.status==0){
                         this.setOrderData(res.data);
+                    }else{
+                        MessageBox('Notice', res.msg);
                     }
                 })
             })

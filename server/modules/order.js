@@ -15,7 +15,7 @@ var Order = sequelize.define('order', {
   },
   //顾客id
   customerId:{
-    type:Sequelize.INTEGER,
+    type:Sequelize.STRING,
   },
   //订单所属商店ID
   userId:{
