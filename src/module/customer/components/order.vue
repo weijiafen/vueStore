@@ -25,7 +25,7 @@
 <script>
     import server from '../service/customerService'
     import util from '../../../assets/public/util'
-    import { Loadmore } from 'mint-ui';
+    import { Loadmore , MessageBox } from 'mint-ui';
     import Vue from 'vue';
     Vue.component(Loadmore.name, Loadmore);
     export default {
@@ -50,7 +50,9 @@
                     if(res.status==0){
                         this.orderList=res.data
                     }
-                    
+                    else{
+                        MessageBox('Notice', res.msg);
+                    }
                 })
                 
             })
@@ -62,7 +64,9 @@
                         this.orderList=res.data
                         this.$refs.loadmore.onTopLoaded();
                     }
-                    
+                    else{
+                        MessageBox('Notice', res.msg);
+                    }
                 })
             }
         }

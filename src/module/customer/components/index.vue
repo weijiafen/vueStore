@@ -34,6 +34,7 @@
             let shopId=to.params.shopId
             let deskId=to.params.deskId
             var isLogin=sessionStorage.getItem("isLogin")
+            console.log("isLogin",isLogin)
             if(!isLogin){
                 if(hasCode){
                    next(vm=>{
@@ -50,6 +51,8 @@
                 }else{
                     location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
                 }
+            }else{
+                next();
             }
             
         },

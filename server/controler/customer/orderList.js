@@ -20,7 +20,7 @@ var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password,
 module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={
-		status:1000,
+		status:-1,
 		msg:"未登录"
 	}
 	if(method=='get'){
