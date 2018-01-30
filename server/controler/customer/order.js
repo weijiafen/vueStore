@@ -16,8 +16,8 @@ var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password,
 module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={
-		status:1000,
-		msg:"未登录"
+		status:-1,
+		msg:"登录异常,请关闭页面重新进入"
 	}
 	if(method=='get'){
 		var orderId=req.query.orderId;

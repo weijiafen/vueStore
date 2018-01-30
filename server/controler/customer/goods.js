@@ -7,8 +7,8 @@ var label=require('../../modules/label.js');
 var Sequelize=require('sequelize')
 module.exports=(async (function(method,req,response){
 	var result={
-		status:1000,
-		msg:"未登录"
+		status:-1,
+		msg:"登录异常,请关闭页面重新进入"
 	}
 	if(method=='get'){
 		var shopId=req.query.shopId||req.session.uid;

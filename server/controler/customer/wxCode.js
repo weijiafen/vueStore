@@ -8,7 +8,7 @@ module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={
 		status:-1,
-		msg:"登录异常"
+		msg:"登录异常,请关闭页面重新进入"
 	}
     if(method='post'){
         var code=req.body.code;
@@ -22,18 +22,15 @@ module.exports=(async (function(method,req,response){
         let headimgurl=''
         var datas = [];
         var openIdUrl=`https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxa9c22df153e7dd7b&secret=21662b08be44476ed1a6c0d7f4c0d3df&code=${code}&grant_type=authorization_code`
-        console.log("res1 start")
         request(openIdUrl,function(err,res1,body){
-            console.log("res1 body",body)
-            console.log("res1 typeof body",typeof(body))
             body=JSON.parse(body)
+            console.log("res1 body",body)
             if(body.openid){
                 openid=body.openid
                 access_token=body.access_token
                 var infoUrl=`https://api.weixin.qq.com/sns/userinfo?access_token=${access_token}&openid=${openid}&lang=zh_CN`
                 request(infoUrl,async(function(err,res2,body2){
                     body2=JSON.parse(body2)
-                    console.log("res1 body",body2)
                     if(body2.openid){
                         nickname=body2.nickname
                         sex=body2.sex

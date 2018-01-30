@@ -144,7 +144,11 @@
                             });
                             this.$router.push(`/order/${this.shopId}/${this.deskId}`)
                         }else{
+                            var shopId=this.shopId
+                            var deskId=this.deskId
                             MessageBox('Notice', res.msg);
+                            sessionStorage.setItem("isLogin",null)
+                            location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
                         }
                         Indicator.close();
                     })

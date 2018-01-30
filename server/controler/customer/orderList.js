@@ -21,10 +21,11 @@ module.exports=(async (function(method,req,response){
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons
 	var result={
 		status:-1,
-		msg:"未登录"
+		msg:"登录异常,请关闭页面重新进入"
 	}
 	if(method=='get'){
 		var cid=req.session.cid
+		var shopId=req.query.shopId
 		if(cid){
 			var temp=new Date()
 			var year=temp.getFullYear()
@@ -37,6 +38,7 @@ module.exports=(async (function(method,req,response){
 				'order':[['createAt','DESC']],
 				where:{
 					customerId:cid,
+					userId:shopId,
 					createAt:{
                         $gte:starDate,
 					    $lte:endDate

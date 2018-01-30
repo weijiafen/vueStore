@@ -45,13 +45,17 @@
         },
         mounted(){
             this.$nextTick(()=>{
+                var shopId=this.shopId
+                var deskId=this.deskId
                 this.$root.eventHub.$emit('selectTab','tab2')
-                server.getOrderList().then(res=>{
+                server.getOrderList(this.shopId).then(res=>{
                     if(res.status==0){
                         this.orderList=res.data
                     }
                     else{
                         MessageBox('Notice', res.msg);
+                        sessionStorage.setItem("isLogin",'')
+                        location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
                     }
                 })
                 

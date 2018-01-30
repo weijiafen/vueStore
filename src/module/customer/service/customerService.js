@@ -60,8 +60,11 @@ const Service = {
                 throw error;
             });
     },
-    getOrderList:()=>{
+    getOrderList:(shopId)=>{
         return api.get('/customer/orderList',{
+            params:{
+                shopId:shopId
+            }
         }).then((res)=>{
         return res
         },(error)=>{
