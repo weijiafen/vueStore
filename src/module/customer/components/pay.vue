@@ -33,13 +33,14 @@
             <div class="totalPrice priceIcon">
                 总额：{{order.count}}
             </div>
-            <div v-if="order.status==1" class="payBtn" :class="{disabled:!canPay}" @click="payOrder">确认支付</div>
+            <div v-if="order.status==1" class="payBtn" :class="{disabled:!canPay||!payPrepare}" @click="payOrder">确认支付</div>
         </div>
 	</div>
 </template>
 <script>
+    import wx from 'weixin-js-sdk'
     import server from '../service/customerService'
-    import { Header , MessageBox ,Toast , Indicator } from 'mint-ui';
+    import {  MessageBox ,Toast , Indicator } from 'mint-ui';
     export default {
         mixins: [],
         name: 'pay',
@@ -54,7 +55,8 @@
                     desk:{}
                 },
                 payTime:'00:00',
-                canPay:false
+                canPay:false,
+                payPrepare:false
         	}
         },
         activated(){
@@ -68,7 +70,28 @@
                     }else{
                         MessageBox('Notice', res.msg);
                     }
+                }).then(()=>{
+                    if(this.canPay){
+                        var timestamp=new Date().valueOf()
+                        var nonceStr='abcdefg'
+                        var url=location.href.split('#')[0]
+                        server.getSignature(nonceStr,timestamp,url).then(res=>{
+                            if(res.status==0){
+                                wx.config({
+                                    debug: true, 
+                                    appId: 'wxa9c22df153e7dd7b', 
+                                    timestamp: timestamp,
+                                    nonceStr: nonceStr, 
+                                    signature: res.data,
+                                    jsApiList: ['chooseWXPay'] 
+                                });
+                                this.payPrepare=true
+                            }
+                            
+                        })
+                    }
                 })
+                
             })
         },
         methods:{

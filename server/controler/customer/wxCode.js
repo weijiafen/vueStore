@@ -2,7 +2,6 @@ var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var customer=require('../../modules/customer.js');
 var request = require('request');
-var https = require('https');
 module.exports=(async (function(method,req,response){
     console.log("wxcode start")
 	response.writeHead(200,{'Content-Type':'application/json;charset=utf-8'});//设置respons

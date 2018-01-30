@@ -22,6 +22,7 @@ var order=require('./controler/customer/order.js');
 var orderList=require('./controler/customer/orderList.js');
 var pay=require('./controler/customer/pay.js');
 var wxCode=require('./controler/customer/wxCode.js');
+var getSignature=require('./controler/customer/getSignature.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -168,5 +169,9 @@ module.exports=function(app){
 	//通过微信code获取用户信息
 	app.post('/customer/wxCode',function(req,res){
 		wxCode('post',req,res);
+	})
+	//js-sdk获取签名
+	app.get('/customer/getSignature',function(req,res){
+		getSignature('get',req,res);
 	})
 }

@@ -14,6 +14,19 @@ const Service = {
                 throw error;
             });
     },
+    getSignature:(nonceStr,timestamp,url)=>{
+        return api.get('/customer/getSignature',{
+            params:{
+                nonceStr:nonceStr,
+                timestamp:timestamp,
+                url:url
+            }
+        }).then((res)=>{
+        return res
+        },(error)=>{
+            throw error
+        })
+    },
     getGoods:(shopId)=>{
         return api.get('/customer/menu',{
 			params:{
