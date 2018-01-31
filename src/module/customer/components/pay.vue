@@ -153,6 +153,7 @@
                 }
             },
             payOrder(){
+                var that=this
                 if(this.canPay){
                     Indicator.open();
                     server.payOrder({
@@ -167,7 +168,7 @@
                                     position: 'bottom',
                                     duration: 1500
                                 });
-                                this.$router.push(`/order/${this.shopId}/${this.deskId}`)
+                                that.$router.push(`/order/${this.shopId}/${this.deskId}`)
                             }
                             wx.chooseWXPay(config)
                             

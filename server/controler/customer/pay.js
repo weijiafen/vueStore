@@ -114,11 +114,11 @@ module.exports=(async (function(method,req,response){
 								let timestamp=new Date().valueOf()
 								let nonceStr='abcdefg'
 								let prepay_id='prepay_id='+body1.prepay_id[0]
-								let signType='SHA1'
+								let signType='MD5'
 								let stringB=`appId=wxa9c22df153e7dd7b&nonceStr=${nonceStr}&package=${prepay_id}&signType=${signType}&timeStamp=${timestamp}&key=weijixiaodian666weijixiaodian666`
 								console.log("stringB",stringB)
-								let sha1 = crypto.createHash('sha1');
-								let paySign=sha1.update(stringB).digest('hex');
+								let md5 = crypto.createHash('md5');
+								let paySign=md5.update(stringB).digest('hex');
 								paySign=paySign.toUpperCase()
 								result.status=0
 								result.msg=body1.return_msg[0]
