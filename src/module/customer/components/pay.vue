@@ -160,18 +160,25 @@
                         shopId:this.shopId
                     }).then(res=>{
                         if(res.status==0){
-                            Toast({
-                                message: '支付成功',
-                                position: 'bottom',
-                                duration: 1500
-                            });
-                            this.$router.push(`/order/${this.shopId}/${this.deskId}`)
-                        }else{
+                            var config=res.data
+                            config.success=function(){
+                                Toast({
+                                    message: '支付成功',
+                                    position: 'bottom',
+                                    duration: 1500
+                                });
+                                this.$router.push(`/order/${this.shopId}/${this.deskId}`)
+                            }
+                            wx.chooseWXPay(config)
+                            
+                        }else if(status==-1){
                             var shopId=this.shopId
                             var deskId=this.deskId
                             MessageBox('Notice', res.msg);
                             sessionStorage.setItem("isLogin",null)
                             location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
+                        }else{
+                            MessageBox('Notice', res.msg);
                         }
                         Indicator.close();
                     })

@@ -26,13 +26,11 @@ module.exports=(async (function(method,req,response){
 			//签名2小时过期
 			request(accessTokenUrl,function(err,res1,body1){
 				body1=JSON.parse(body1)
-				console.log("accessTokenUrl body1",body1);
 				if(body1.access_token){
 					global.signatureObj.access_token=body1.access_token
 					var ticketUrl='https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token='+global.signatureObj.access_token+'&type=jsapi'
 					request(ticketUrl,function(err,res2,body2){
 						body2=JSON.parse(body2)
-						console.log("ticketUrl body2",body2);
 						if(body2.ticket){
 							//获取ticket并设置过期字段为false，延时将expire设置为true
 							global.signatureObj.jsapi_ticket=body2.ticket
@@ -40,10 +38,6 @@ module.exports=(async (function(method,req,response){
 							setTimeout(function(){
 								global.signatureObj.expire=true
 							},parseInt(body2.expires_in)*1000)
-							console.log("signature params",global.signatureObj.jsapi_ticket)
-							console.log("signature params",noncestr)
-							console.log("signature params",timestamp)
-							console.log("signature params",url)
 							var string1='jsapi_ticket='+global.signatureObj.jsapi_ticket+
 								'&noncestr='+noncestr+'&timestamp='+timestamp
 								+'&url='+url

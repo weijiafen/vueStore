@@ -23,6 +23,7 @@ var orderList=require('./controler/customer/orderList.js');
 var pay=require('./controler/customer/pay.js');
 var wxCode=require('./controler/customer/wxCode.js');
 var getSignature=require('./controler/customer/getSignature.js');
+var payCallback=require('./controler/customer/payCallBack.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -173,5 +174,9 @@ module.exports=function(app){
 	//js-sdk获取签名
 	app.get('/customer/getSignature',function(req,res){
 		getSignature('get',req,res);
+	})
+	//获取微信预下单后回调
+	app.get('/customer/payCallback',function(req,res){
+		payCallback('get',req,res);
 	})
 }

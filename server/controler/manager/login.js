@@ -17,7 +17,6 @@ module.exports=(async (function(req,response){
 		result={status:-1,msg:'验证码错误'}
 	}
 	else{
-
 		var md5 = crypto.createHash('md5');
 		password = md5.update(password).digest('hex');
 		var result={}

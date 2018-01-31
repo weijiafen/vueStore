@@ -81,7 +81,8 @@
     "webpack-dev-middleware": "^1.10.0",
     "webpack-hot-middleware": "^2.18.0",
     "webpack-merge": "^4.1.0",
-    "weixin-js-sdk": "^1.2.0"
+    "weixin-js-sdk": "^1.2.0",
+    "xml2js": "^0.4.19"
   },
   "engines": {
     "node": ">= 4.0.0",
