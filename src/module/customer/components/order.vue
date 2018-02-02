@@ -63,7 +63,7 @@
         },
         methods:{
             loadTop(){
-                server.getOrderList().then(res=>{
+                server.getOrderList(this.shopId).then(res=>{
                     if(res.status==0){
                         this.orderList=res.data
                         this.$refs.loadmore.onTopLoaded();

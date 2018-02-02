@@ -78,7 +78,7 @@
                         server.getSignature(nonceStr,timestamp,url).then(res=>{
                             if(res.status==0){
                                 wx.config({
-                                    debug: true, 
+                                    debug: false, 
                                     appId: 'wxa9c22df153e7dd7b', 
                                     timestamp: timestamp,
                                     nonceStr: nonceStr, 
@@ -168,7 +168,10 @@
                                     position: 'bottom',
                                     duration: 1500
                                 });
-                                that.$router.push(`/order/${this.shopId}/${this.deskId}`)
+                                setTimeout(function(){
+                                    that.$router.push(`/order/${that.shopId}/${that.deskId}`)
+                                },1500)
+                                
                             }
                             wx.chooseWXPay(config)
                             
@@ -179,6 +182,7 @@
                             sessionStorage.setItem("isLogin",null)
                             location.href=`https://open.weixin.qq.com/connect/oauth2/authorize?appid=wxa9c22df153e7dd7b&redirect_uri=http%3A%2F%2Fwww.yslpartition.com%2Fcustomer.html%23%2Fshop%2F${shopId}%2F${deskId}&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect`
                         }else{
+                            Indicator.close();
                             MessageBox('Notice', res.msg);
                         }
                         Indicator.close();

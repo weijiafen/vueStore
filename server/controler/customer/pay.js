@@ -47,24 +47,7 @@ module.exports=(async (function(method,req,response){
 				var orderRes=await(order.findOne({
 					where:{
 						id:orderId
-					},
-					include:[{
-						model:subOrder,
-						where:{
-							orderId:Sequelize.col('order.id')
-						},
-						include:[{
-							model:good,
-							include:[label]
-						}]
-					},
-					{
-						model:desk,
-						where:{
-							id:Sequelize.col('order.deskId')
-						}
 					}
-					]
 				}))
 				if(orderRes.dataValues.status==1){
 					//订单为待支付状态
@@ -108,18 +91,24 @@ module.exports=(async (function(method,req,response){
 					},function(error,res1,body1){
 						parseString(body1, function (err, result2) {
 						    body1 = result2.xml;
-							console.log("prePay callback",body1)
-							if(body1.return_code[0]=='SUCCESS'){
+							if(body1.return_code[0]=='SUCCESS'&&body1.result_code[0]=='SUCCESS'){
 								//统一下单成功
 								let timestamp=new Date().valueOf()
 								let nonceStr='abcdefg'
 								let prepay_id='prepay_id='+body1.prepay_id[0]
 								let signType='MD5'
 								let stringB=`appId=wxa9c22df153e7dd7b&nonceStr=${nonceStr}&package=${prepay_id}&signType=${signType}&timeStamp=${timestamp}&key=weijixiaodian666weijixiaodian666`
-								console.log("stringB",stringB)
 								let md5 = crypto.createHash('md5');
 								let paySign=md5.update(stringB).digest('hex');
 								paySign=paySign.toUpperCase()
+								order.update({
+									paySign:paySign,
+									prepayId:body1.prepay_id[0]
+								},{
+									where:{
+										id:orderId
+									}
+								})
 								result.status=0
 								result.msg=body1.return_msg[0]
 								result.data={
@@ -132,7 +121,7 @@ module.exports=(async (function(method,req,response){
 								response.end(JSON.stringify(result))
 							}else{
 								result.status=-2
-								result.msg=body1.return_msg[0]
+								result.msg=body1.err_code_des[0]
 								response.end(JSON.stringify(result))
 							}
 							

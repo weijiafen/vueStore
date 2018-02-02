@@ -37,6 +37,14 @@ var Order = sequelize.define('order', {
   deskId:{
     type:Sequelize.INTEGER,
   },
+  //微信统一下单id
+  prepayId:{
+    type: Sequelize.STRING 
+  },
+  //下单签名
+  paySign:{
+    type: Sequelize.STRING 
+  },
   createAt:{
     type:Sequelize.BIGINT
   },

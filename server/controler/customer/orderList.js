@@ -30,11 +30,14 @@ module.exports=(async (function(method,req,response){
 			var temp=new Date()
 			var year=temp.getFullYear()
 			var month=temp.getMonth()
-			var starDate=new Date(year,month,1).valueOf()
+			var day=temp.getDate()
+			//取最近一个月订单,最多取100条数据展示
+			var starDate=new Date(year,month-1,day).valueOf()
 			var endDate=temp.valueOf()
 			desk.hasOne(order)
 			order.belongsTo(desk);
 			var orderRes=await(order.findAll({
+				'limit':100,
 				'order':[['createAt','DESC']],
 				where:{
 					customerId:cid,

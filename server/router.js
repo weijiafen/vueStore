@@ -176,7 +176,7 @@ module.exports=function(app){
 		getSignature('get',req,res);
 	})
 	//获取微信预下单后回调
-	app.get('/customer/payCallback',function(req,res){
-		payCallback('get',req,res);
+	app.post('/customer/payCallback',function(req,res){
+		payCallback('post',req,res);
 	})
 }
