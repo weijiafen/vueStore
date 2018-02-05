@@ -2,7 +2,7 @@ import Vue from 'vue'
 import App from './App'
 import store from './store'
 import router from './router'
-new Vue({
+ var vm=new Vue({
     el: '#app',
     store,
     router,
@@ -10,5 +10,10 @@ new Vue({
     components: { App },
     data: {
         eventHub: new Vue()
+    },
+    mounted(){
+    	this.$nextTick(()=>{
+    		window.myVM=vm
+    	})
     }
 })
