@@ -107,7 +107,7 @@ module.exports=(async (function(method,req,response){
 				    		countObj[goodRes.id]=item.number
 				    	}
 				        let orderPay=(price*100*item.number)/100
-				        sum=(sum*100+orderPay*100)/100
+				        sum=parseFloat(((sum*100+orderPay*100)/100).toFixed(2))
 				    }
 				    //创建总单号
 				  	return order.create({

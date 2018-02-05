@@ -89,7 +89,7 @@
                         <div class="goodDescription">{{currentGood.description}}</div>
                     </div>
                     <div class="goodPrice priceIcon">
-                    {{(currentGood.number*(currentGood.price*100))/100}}
+                    {{((currentGood.number*(currentGood.price*100))/100).toFixed(2)}}
                     </div>
                     <div class="numControler">
                         <span class="iconfont icon-minus" @click="minusGood(currentGood)"></span>
@@ -162,7 +162,7 @@
                 let sum=0;
                 for(let order of this.shoppingCart){
                     let orderPay=(order.price*100*order.number)/100
-                    sum=(sum*100+orderPay*100)/100
+                    sum=((sum*100+orderPay*100)/100).toFixed(2)
                 }
                 return sum
             },
