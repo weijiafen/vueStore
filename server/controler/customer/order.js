@@ -80,7 +80,7 @@ module.exports=(async (function(method,req,response){
 					let sum=0;
 					console.log("cid----",req.session.cid)
 					let cid=req.session.cid;
-					var shopRes=await(user.findOne({},{
+					var shopRes=await(user.findOne({
 						where:{
 							id:userId
 						}

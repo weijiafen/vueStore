@@ -10,7 +10,7 @@ module.exports=(async (function(method,req,response){
 	if(method=='get'){
 		var uid=req.session.uid;
         if(uid){
-            var res=await(user.findOne({},{
+            var res=await(user.findOne({
                 where:{
                     id:uid
                 }

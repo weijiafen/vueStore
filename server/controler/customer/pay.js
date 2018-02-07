@@ -32,7 +32,7 @@ module.exports=(async (function(method,req,response){
 			subOrder.belongsTo(good);
 			good.hasMany(label)
 			label.belongsTo(good);
-			var shopRes=await(user.findOne({},{
+			var shopRes=await(user.findOne({
 				where:{
 					id:shopId
 				}

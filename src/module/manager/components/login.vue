@@ -13,6 +13,9 @@
 					<el-input class="verification_code" v-model="captcha" />
 					<img @click="changeCaptcha" :src="captchaImg" alt="验证码">
 				</el-form-item>
+				<el-form-item label="">
+					<el-checkbox v-model="saveAccount" @change="changeSave">记住密码</el-checkbox>
+				</el-form-item>
 				<el-button type="primary" class="login_btn" @click="login">登录</el-button>
 			</el-form>
 		</el-card>
@@ -30,7 +33,18 @@
         		account:'',
         		password:'',
         		captcha:'',
+        		saveAccount:false,
         		captchaImg:"/captcha?"+new Date().valueOf()
+        	}
+        },
+        mounted(){
+        	let isSave=localStorage.getItem("saveAccount")
+        	if(isSave==1){
+        		this.saveAccount=true
+        		this.account=localStorage.getItem("account")
+        		this.password=localStorage.getItem("password")
+        	}else{
+        		this.saveAccount=false
         	}
         },
         methods:{
@@ -54,11 +68,23 @@
         				this.$alert(res.msg)
         				this.changeCaptcha();
         			}
-        			
+        			if(this.saveAccount){
+                        localStorage.setItem("account",this.account)
+                        localStorage.setItem("password",this.password)
+                    }
         		})
         	},
         	changeCaptcha(){
         		this.captchaImg="/captcha?"+new Date().valueOf()
+        	},
+        	changeSave(val){
+        		if(this.saveAccount==0){
+        			localStorage.setItem("saveAccount",0)
+        			localStorage.setItem("account","")
+        			localStorage.setItem("password","")
+        		}else{
+                    localStorage.setItem("saveAccount","1")
+                }
         	}
         }
     }
