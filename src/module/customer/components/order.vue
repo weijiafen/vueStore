@@ -3,7 +3,7 @@
         <mt-loadmore :top-method="loadTop"  ref="loadmore">
 		<div class="orderItem" v-for="order in orderList">
             <h2>
-                {{order.desk.name}}
+                {{order.desk.name}}|订单号:{{order.id}}
                 <span v-if="order.status==1">未支付</span>
                 <span v-if="order.status==2" class="completeTag">已支付</span>
                 <span v-if="order.status==3" class="cancelTag">已取消</span>

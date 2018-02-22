@@ -4,6 +4,10 @@ var dbConfig=require('../connection/dbConfig.js')
 var sequelize = new Sequelize(dbConfig.dbName, dbConfig.user, dbConfig.password, {
   host: dbConfig.host,
   dialect: 'mysql',
+  dialectOption:{
+    charset:"utf8mb4",
+    collate:"utf8mb4_general_ci"
+  },
   pool: dbConfig.pool,
 });
 var customer = sequelize.define('customer', {
