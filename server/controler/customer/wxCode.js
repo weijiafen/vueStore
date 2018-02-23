@@ -59,7 +59,7 @@ module.exports=(async (function(method,req,response){
                         }else{
                             //不存在则自动注册
                             var createRes=await(customer.create({
-                                // nickname:nickname,
+                                nickname:nickname,
                                 sex:parseInt(sex),
                                 province:province,
                                 city:city,
