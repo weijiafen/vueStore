@@ -392,7 +392,7 @@ import categoryService from '../service/categoryService.js'
                 })
             },
             changeOnline(index){
-                var isOnline=this.goods[index].isOnline==0?'1':'0';
+                var isOnline=this.goods[index].isOnline==0?1:0;
                 var id=this.goods[index].id;
                 goodsService.goodOnline({
                     id:id,

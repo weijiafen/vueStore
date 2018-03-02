@@ -1,6 +1,7 @@
 <template>
 	<div class="orderList">
         <mt-loadmore :top-method="loadTop"  ref="loadmore">
+        <p v-if="orderList.length==0">请从《菜单》->《购物车》下单购买并支付订单</p>
 		<div class="orderItem" v-for="order in orderList">
             <h2>
                 {{order.desk.name}}|订单号:{{order.id}}
