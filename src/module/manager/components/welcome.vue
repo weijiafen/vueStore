@@ -227,11 +227,40 @@
                     openBusiness:1
                 }).then(res=>{
                     if(res.status==0){
+                        var that=this;
+                        //`http://yslpartition.com:80?shopId=${this.shopId}`
                         this.socket = io.connect(`http://yslpartition.com:80?shopId=${this.shopId}`);
                         this.isOpen=true;
+                        //心跳保持
+                        that.heartCheck={
+                            timeout:60000,
+                            timeoutObj:null,
+                            reset:function(){
+                                clearTimeout(that.heartCheck.timeoutObj);
+                                that.heartCheck.start();
+                            },
+                            start:function(){
+                                that.heartCheck.timeoutObj=setTimeout(function(){
+                                    that.socket.emit("SHeartBeat","client HeartBeat")
+                                },that.heartCheck.timeout)
+                            },
+                            clear:function(){
+                                clearTimeout(that.heartCheck.timeoutObj);
+                            }
+                        }
                         this.socket.on('postOrder',(data)=>{
                             this.getNewOrder(data);
+                            this.heartCheck.reset();
                         })
+                        this.socket.on('CHeartBeat',(data)=>{
+                            console.log("recieve HeartBeat")
+                            this.heartCheck.reset();
+                        })
+                        this.socket.on('disconnect',(data)=>{
+                            this.heartCheck.clear();
+                            console.log("clear HeartBeat")
+                        })
+                        this.heartCheck.start();
                     }else{
                         this.$message.error(res.msg);
                     }
@@ -475,7 +504,8 @@
                             deskId:""+this.deskId
                         }).then(res=>{
                             if(res.status==0){
-                                that.getOrderList();
+                                // that.getOrderList();
+                                this.orderList.push(res.data)
                                 that.isShowCart=false;
                                 that.shoppingCart=[];
                                 that.$message.success('下单成功')

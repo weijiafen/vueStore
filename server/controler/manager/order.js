@@ -86,12 +86,21 @@ module.exports=(async (function(method,req,response){
 	}
 	else if(method=='post'){
 		var uid=req.session.uid;
-		var orderObj={}
+		var orderId=''
 		if(uid){
 			var cart=req.body.cart
 			var deskId=req.body.deskId
 			var userId=uid
 			var countObj={}
+
+			order.hasMany(subOrder)
+			subOrder.belongsTo(order);
+			desk.hasOne(order)
+			order.belongsTo(desk);
+			good.hasOne(subOrder)
+			subOrder.belongsTo(good);
+			good.hasMany(label)
+			label.belongsTo(good);
 			await(sequelize.transaction()
 				.then(async(function (t) {
 					let sum=0;
@@ -135,8 +144,7 @@ module.exports=(async (function(method,req,response){
 						createAt:(new Date()).valueOf()
 					}, {transaction: t})
 			  	.then(async(function (orderRes) {
-			  		orderObj=orderRes.dataValues
-					orderObj.subOrders=[]
+			  		orderId=orderRes.dataValues.id
 			  		for(let item in countObj){
 			  			let goodRes=await(good.findOne({
 				  			where:{
@@ -182,16 +190,40 @@ module.exports=(async (function(method,req,response){
 						}
 			  		}
 				;}))
-				.then(function () {
+				.then(async(function () {
+					t.commit();
+					var a=orderId;
+					var orderObj=await(order.findOne({
+						where:{
+							id:orderId,
+						},
+						include:[{
+							model:subOrder,
+							where:{
+								orderId:Sequelize.col('order.id')
+							},
+							include:[{
+								model:good,
+								include:[label]
+							}]
+						},
+						{
+							model:desk,
+							where:{
+								id:Sequelize.col('order.deskId')
+							}
+						}
+						]
+					}))
 					result={
 			    		status:0,
 						data:orderObj
 			    	}
 			    	response.end(JSON.stringify(result))
 			  		console.log("commit1！！！！")
-			    	return t.commit();
+			    	return 
 			    	
-			    })
+			    }))
 			    .catch(function (err) {
 			    	result={
 			    		status:-1,

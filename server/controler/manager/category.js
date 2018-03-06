@@ -1,6 +1,7 @@
 var async = require('asyncawait/async');
 var await = require('asyncawait/await');
 var category=require('../../modules/category.js');
+var good=require('../../modules/good.js');
 module.exports=(async (function(method,req,response){
 	var result={
 		status:1000,
@@ -79,6 +80,11 @@ module.exports=(async (function(method,req,response){
 				}
 			}))
 			if(res!=0){
+				good.update({isDelete:1},{
+					where:{
+						categoryId:id
+					}
+				})
 				result.status=0;
 				result.msg="success"
 				result.data={
