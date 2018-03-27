@@ -24,6 +24,8 @@ var pay=require('./controler/customer/pay.js');
 var wxCode=require('./controler/customer/wxCode.js');
 var getSignature=require('./controler/customer/getSignature.js');
 var payCallback=require('./controler/customer/payCallBack.js');
+var rootLogin=require('./controler/super/login.js');
+var saleCount=require('./controler/super/saleCount.js');
 
 module.exports=function(app){
 	//app是一个express()
@@ -178,5 +180,14 @@ module.exports=function(app){
 	//获取微信预下单后回调
 	app.post('/customer/payCallback',function(req,res){
 		payCallback('post',req,res);
+	})
+
+	//超管登录
+	app.post('/super/login',function(req,res){
+		rootLogin(req,res);
+	})
+	//超管获取销售统计
+	app.get('/super/getCount',function(req,res){
+		saleCount('get',req,res);
 	})
 }

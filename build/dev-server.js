@@ -95,6 +95,10 @@ io.sockets.on('connection', function (socket) {
   socket.on('disconnect', function (data) {
     delete global.sockets[socket.shopId]
   });
+  socket.on('SHeartBeat', function (data) {
+  console.log("recieve HeartBeat",data)
+    socket.emit("CHeartBeat",{})
+  });
 });
 module.exports = {
   ready: readyPromise,
