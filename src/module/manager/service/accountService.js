@@ -12,6 +12,17 @@ const Service = {
                 throw error;
             });
     },
+    logout:()=>{
+        return api
+            .post('/user/logout', {
+            })
+            .then((res) => {
+                return res;
+            }, (error) => {
+                console.log('error ', error);
+                throw error;
+            });
+    },
     getSetting:()=>{
         return api.get('/manager/setting').then((res)=>{
             return res

@@ -1,12 +1,44 @@
 var unitTest=require('./unitTest.js');
-	for(let i=0;i<999;i++){
+	for(let i=0;i<20;i++){
 		setTimeout(function(){
 			console.log("step"+i)
 			unitTest(1)
 		},0)
-		// setTimeout(function(){
-		// 	console.log("step"+i)
-		// 	unitTest(2)
-		// },0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(2)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(3)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(4)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(5)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(6)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(7)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(8)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(9)
+		},0)
+		setTimeout(function(){
+			console.log("step"+i)
+			unitTest(10)
+		},0)
 	}
 return 

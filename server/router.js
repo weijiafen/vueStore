@@ -6,6 +6,7 @@ var bodyParser=require('body-parser')
 var captcha=require('./controler/captcha');
 var upload=require('./controler/upload');
 var login=require('./controler/manager/login.js');
+var logout=require('./controler/manager/logout.js');
 var category=require('./controler/manager/category.js');
 var goods=require('./controler/manager/goods.js');
 var label=require('./controler/manager/label.js');
@@ -40,6 +41,9 @@ module.exports=function(app){
 	}));
 	app.post('/user/login',function(req,res){
 		login(req,res);
+	})
+	app.post('/user/logout',function(req,res){
+		logout(req,res);
 	})
 	//获取验证码
 	app.get('/captcha',function(req,res){

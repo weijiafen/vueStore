@@ -21,6 +21,7 @@
                 <el-menu-item index="/goodsReport">商品销售报表</el-menu-item>
                 <el-menu-item index="/saleReport">销售额报表</el-menu-item>
             </el-submenu>
+            <el-button @click="logout" class="logout" type="danger" size="small">退出</el-button>
         </el-menu>
         <div class="mainContainer">
             <transition name="fade" mode="out-in">
@@ -31,11 +32,7 @@
 	
 </template>
 <script>
-
-
-// import 'element-ui/lib/theme-default/index.css'
-
-
+import server from '../service/accountService'
 export default {
     mixins:[],
     components:{},
@@ -53,10 +50,25 @@ export default {
     methods:{
         setNavbarIndex(){
            
+        },
+        logout(){
+            server.logout().then((res)=>{
+                if(res.status==0){
+                    this.$message({
+                        type: 'success',
+                        message: '账号已退出!'
+                    });
+                    this.$router.push("/login")
+                }
+            })
         }
     }
 }
 </script>
 <style type="scss">
-
+    .logout{
+        float: right;
+        margin-top: 18px;
+        margin-right: 6px;
+    }
 </style>
