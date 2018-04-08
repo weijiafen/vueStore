@@ -42,6 +42,9 @@ var User = sequelize.define('user', {
   lastLoginAt:{
     type:Sequelize.BIGINT
   },
+  expireTime:{
+    type:Sequelize.BIGINT
+  },
   createAt:{
     type:Sequelize.BIGINT
   },
