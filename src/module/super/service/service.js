@@ -15,8 +15,10 @@ const Service = {
     getCount:(data)=>{
         return api.get('/super/getCount',{
             params:{
-                type:data.type,
-                filterDate:data.filterDate
+                startDate:data.startDate,
+                endDate:data.endDate,
+                page:data.page,
+                pageSize:data.pageSize,
             }
         }).then((res)=>{
             return res

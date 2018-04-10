@@ -13,37 +13,29 @@ module.exports=(async (function(method,req,response){
 	}
 	if(method=='get'){
 		var rid=req.session.rid
-		var filterDate=req.query.filterDate
-		var type=req.query.type
-        var temp=new Date(parseInt(filterDate))
-        var year=temp.getFullYear()
-        var month=temp.getMonth()
-        var date=temp.getDate()
+        var startDate=req.query.startDate||0
+		var endDate=req.query.endDate||0
+        var pageSize=req.query.pageSize||10
+        var page=req.query.page||1
+        var startDate=new Date(parseInt(startDate))
+        var endDate=new Date(parseInt(endDate))
         var startTime;
         var endTime;
         var userObjs=[]
-		if(type==1){
-			//按天搜索
-			
-		}
-		else if(type==2){
-			//按月份搜索
-            startTime=new Date(year,month,1).valueOf()
-            endTime=new Date(year,month+1,0,23,59,59,999).valueOf();
-		}
-		else if(type==3){
-            //按年份搜索
-            startTime=new Date(year,0,1,0,0,0).valueOf()
-            endTime=new Date(year,11,31,23,59,59,999).valueOf()
-        }
+		startTime=new Date(startDate.getFullYear(),startDate.getMonth(),startDate.getDate()).valueOf()
+        endTime=new Date(endDate.getFullYear(),endDate.getMonth(),endDate.getDate(),23,59,59,999).valueOf()
 		if(rid){
 			good.hasOne(subOrder)
 			subOrder.belongsTo(good);
             order.hasMany(subOrder)
 			subOrder.belongsTo(order);
-            var userRes=await(user.findAll())
+            var userRes=await(user.findAndCountAll({
+                'limit':parseInt(pageSize),
+                'offset':parseInt(pageSize*(page-1)),
+                'order':[['id']],
+            }))
 
-            for(let obj of userRes){
+            for(let obj of userRes.rows){
                 var orderRes=await(subOrder.findOne({
                     attributes:[[Sequelize.fn('SUM',Sequelize.col('subOrder.count')),'sum']],
                     where:{
@@ -86,13 +78,14 @@ module.exports=(async (function(method,req,response){
                     userName:obj.userName,
                     openBusiness:obj.openBusiness,
                     photo:obj.photo,
-                    updateAt:obj.updateAt,
+                    expireTime:obj.expireTime,
                     allCount:parseInt(orderRes.dataValues.sum*100)/100,
                     onlineCount:parseInt(onlinePayRes.dataValues.sum*100)/100
                 })
             }
 			result.status=0;
             result.msg="success"
+            result.total=userRes.count
             result.data=userObjs
 			
 		}

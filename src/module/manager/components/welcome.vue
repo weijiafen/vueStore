@@ -7,22 +7,28 @@
                 <el-button type="danger" v-if="isOpen" @click="close">结束营业</el-button>
                 <div class="orderList">
                     <h2>待制作订单</h2>
-                    <div v-for="(order,index) in orderList" class="subOrder clearfix">
-                        <div class="clearfix subOrderTitle">
-                            <div class="fl orderId">订单号:{{order.id}}</div>
-                            <div class="fl desk">桌号:{{order.desk.name}}</div>
-                        </div>
-                        <div v-for="subOrder in order.subOrders" class="subOrderDetail" :class="{done:subOrder.done}" @click="doneSubOrder(subOrder)">
-                            {{subOrder.good.name}}*
-                            {{subOrder.number}}
-                            <span v-for="label in subOrder.chooceLabels" :style="{backgroundColor:label.bgColor}">
-                                {{label.name}}
-                            </span>
-                        </div>
-                        <div class="fl count">{{order.count}}</div>
-                        <div class="fr makeBtn" v-if="order.status==2" @click="makeOrder(index)">准备制作</div>
-                        <div class="fr completeBtn" v-if="order.status==4" @click="completeOrder(index)">完成订单</div>
-                    </div>
+                    <el-row :gutter="10">
+                        <el-col :xl="24" :sm="12" :md="8" v-for="(order,index) in orderList">
+                            <div  class="subOrder clearfix">
+                                <div class="clearfix subOrderTitle">
+                                    <div class="fl orderId">订单号:{{order.id}}</div>
+                                    <div class="fl desk">桌号:{{order.desk.name}}</div>
+                                </div>
+                                <div v-for="subOrder in order.subOrders" class="subOrderDetail" :class="{done:subOrder.done}" @click="doneSubOrder(subOrder)">
+                                    {{subOrder.good.name}}*
+                                    {{subOrder.number}}
+                                    <span v-for="label in subOrder.chooceLabels" :style="{backgroundColor:label.bgColor}">
+                                        {{label.name}}
+                                    </span>
+                                </div>
+                                <div class="fl count">{{order.count}}</div>
+                                <div class="fr makeBtn" v-if="order.status==2" @click="makeOrder(index)">准备制作</div>
+                                <div class="fr completeBtn" v-if="order.status==4" @click="completeOrder(index)">完成订单</div>
+                            </div>
+                        </el-col>
+                    </el-row>
+                    
+                    
                 </div>
                 <audio id="media" src="/static/mp3/order.mp3" controls="controls" style="display:none">
                 不支持语音播放新订单信息
